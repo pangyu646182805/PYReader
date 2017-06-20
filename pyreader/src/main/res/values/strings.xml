@@ -1,0 +1,16 @@
+<resources>
+    <string name="app_name">PYReader</string>
+
+    <string name="state_error">数据加载失败</string>
+    <string name="state_reload">重新加载</string>
+    <string name="cancel">取消</string>
+    <string name="confirm">确定</string>
+
+    <string name="recommend">追书</string>
+    <string name="community">社区</string>
+    <string name="discover">发现</string>
+
+    <string name="to_add">去添加</string>
+    <string name="default_book_title">大主宰</string>
+    <string name="default_book_sub_title">21小时前:第1581章 魔踪与八目</string>
+</resources>

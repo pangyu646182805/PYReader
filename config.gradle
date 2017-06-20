@@ -1,0 +1,69 @@
+ext {
+    android = [
+            compileSdkVersion: 25,
+            buildToolsVersion: "25.0.2",
+            minSdkVersion    : 19,
+            targetSdkVersion : 25,
+            versionCode      : 1,
+            versionName      : "1.0"
+    ]
+
+    version = [
+            androidSupportSdkVersion: "25.2.0",
+            retrofitSdkVersion      : "2.3.0",
+            dagger2SdkVersion       : "2.10",
+            butterknifeSdkVersion   : "8.6.0",
+            rxlifecycleSdkVersion   : "1.0",
+            rxlifecycle2SdkVersion  : "2.0.1",
+            espressoSdkVersion      : "2.2.2",
+    ]
+
+    dependencies = [
+            // support
+            "appcompat-v7"            : "com.android.support:appcompat-v7:${version["androidSupportSdkVersion"]}",
+            "design"                  : "com.android.support:design:${version["androidSupportSdkVersion"]}",
+            "cardview-v7"             : "com.android.support:cardview-v7:${version["androidSupportSdkVersion"]}",
+            "recyclerview-v7"         : "com.android.support:recyclerview-v7:${version["androidSupportSdkVersion"]}",
+
+            // network
+            "retrofit"                : "com.squareup.retrofit2:retrofit:${version["retrofitSdkVersion"]}",
+            "converter-scalars"          : "com.squareup.retrofit2:converter-scalars:2.1.0",
+            "retrofit-converter-gson" : "com.squareup.retrofit2:converter-gson:${version["retrofitSdkVersion"]}",
+            "retrofit-adapter-rxjava2": "com.squareup.retrofit2:adapter-rxjava2:${version["retrofitSdkVersion"]}",
+            "okhttp3"                 : "com.squareup.okhttp3:okhttp:3.8.0",
+            "glide"                   : "com.github.bumptech.glide:glide:3.8.0",
+
+            "butterknife"             : "com.jakewharton:butterknife:${version["butterknifeSdkVersion"]}",
+            "butterknife-compiler"    : "com.jakewharton:butterknife-compiler:${version["butterknifeSdkVersion"]}",
+            "photoview"               : "com.github.chrisbanes.photoview:library:1.2.3",
+
+            // EventBus
+            "eventbus"                : 'org.greenrobot:eventbus:3.0.0',
+            // 圆形头像
+            "circleimageview"         : "de.hdodenhof:circleimageview:2.1.0",
+            // RecyclerView分割线
+            "recyclerview-divider"    : 'com.yqritc:recyclerview-flexibledivider:1.4.0',
+            // TwinklingRefreshLayout
+            "tkrefreshlayout"         : 'com.lcodecorex:tkrefreshlayout:1.0.7',
+
+            // rx2
+            "rxandroid2"              : "io.reactivex.rxjava2:rxandroid:2.0.1",
+            "rxjava2"                 : "io.reactivex.rxjava2:rxjava:2.1.0",
+            "rxlifecycle2"            : "com.trello.rxlifecycle2:rxlifecycle:${version["rxlifecycle2SdkVersion"]}",
+            "rxlifecycle2-components" : "com.trello.rxlifecycle2:rxlifecycle-components:${version["rxlifecycle2SdkVersion"]}",
+            // "rxcache2"                : "com.github.VictorAlbertos.RxCache:runtime:1.8.0-2.x",
+            // "rxcache-jolyglot-gson"   : "com.github.VictorAlbertos.Jolyglot:gson:0.0.3",
+            "rxeasyhttp"              : "com.zhouyou:rxeasyhttp:1.0.6",
+
+            // tools
+            "dagger2"                 : "com.google.dagger:dagger:${version["dagger2SdkVersion"]}",
+            "dagger2-compiler"        : "com.google.dagger:dagger-compiler:${version["dagger2SdkVersion"]}",
+            "gson"                    : "com.google.code.gson:gson:2.8.0",
+            "systembartint"           : "com.readystatesoftware.systembartint:systembartint:1.0.3",
+
+            // test
+            "junit"                   : "junit:junit:4.12",
+            "androidJUnitRunner"      : "android.support.test.runner.AndroidJUnitRunner",
+            "espresso-core"           : "com.android.support.test.espresso:espresso-core:${version["espressoSdkVersion"]}",
+    ]
+}

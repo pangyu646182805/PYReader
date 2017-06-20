@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:layout_gravity="center_horizontal"
+    android:orientation="vertical">
+
+    <LinearLayout
+        android:layout_width="@dimen/x592"
+        android:layout_height="wrap_content"
+        android:background="@drawable/border_dialog_background"
+        android:orientation="vertical">
+
+        <ImageView
+            android:layout_width="@dimen/x280"
+            android:layout_height="@dimen/y210"
+            android:layout_gravity="center_horizontal"
+            android:background="@mipmap/ic_gender_logo"/>
+
+        <com.neuroandroid.pyreader.widget.NoPaddingTextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:text="我们会根据您的喜好\n推荐相对应的小说"
+            android:textColor="@color/colorGray666"
+            android:textSize="11sp"/>
+
+        <com.neuroandroid.pyreader.widget.NoPaddingTextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="@dimen/y64"
+            android:text="-请选择您的喜好-"
+            android:textColor="@color/colorGray666"
+            android:textSize="11sp"/>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/y88"
+            android:layout_margin="@dimen/x32"
+            android:orientation="horizontal">
+
+            <com.neuroandroid.pyreader.widget.NoPaddingTextView
+                android:id="@+id/tv_left"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:background="@drawable/bg_male_button_selector"
+                android:gravity="center"
+                android:text="男生小说"
+                android:textColor="@color/white"
+                android:textSize="14sp"/>
+
+            <com.neuroandroid.pyreader.widget.NoPaddingTextView
+                android:id="@+id/tv_right"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_marginLeft="@dimen/x32"
+                android:layout_weight="1"
+                android:background="@drawable/bg_female_button_selector"
+                android:gravity="center"
+                android:text="女生小说"
+                android:textColor="@color/white"
+                android:textSize="14sp"/>
+        </LinearLayout>
+    </LinearLayout>
+</LinearLayout>

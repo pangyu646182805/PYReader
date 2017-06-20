@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ProjectModuleManager">
+    <modules>
+      <module fileurl="file://$PROJECT_DIR$/PYReader.iml" filepath="$PROJECT_DIR$/PYReader.iml" />
+      <module fileurl="file://$PROJECT_DIR$/pyreader/pyreader.iml" filepath="$PROJECT_DIR$/pyreader/pyreader.iml" />
+    </modules>
+  </component>
+</project>

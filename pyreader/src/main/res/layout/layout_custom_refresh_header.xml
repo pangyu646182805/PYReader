@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<merge
+    xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <ImageView
+        android:id="@+id/iv_refresh_arrow"
+        android:layout_width="@dimen/x24"
+        android:layout_height="@dimen/y34"
+        android:layout_gravity="center"
+        android:tint="@color/colorPrimary"
+        android:src="@mipmap/ic_refresh_arrow"/>
+
+    <ImageView
+        android:id="@+id/iv_loading"
+        android:layout_width="@dimen/x64"
+        android:layout_height="@dimen/y64"
+        android:layout_gravity="center"
+        android:src="@drawable/anim_loading_view"
+        android:visibility="gone"/>
+</merge>
