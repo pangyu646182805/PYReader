@@ -21,6 +21,7 @@ import com.neuroandroid.pyreader.utils.L;
 import com.neuroandroid.pyreader.utils.ShowUtils;
 import com.neuroandroid.pyreader.utils.UIUtils;
 import com.neuroandroid.pyreader.widget.CustomRefreshHeader;
+import com.neuroandroid.pyreader.widget.dialog.BookDialog;
 
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
@@ -80,6 +81,13 @@ public class RecommendFragment extends BaseLazyFragment<IRecommendContract.Prese
                 checkIsEmpty();
             }
         });
+        mRecommendAdapter.setOnItemLongClickListener((holder, position, item) ->
+                new BookDialog(mContext)
+                        .setBookTitle(item.getTitle())
+                        .setFromSDCard(item.isFromSD())
+                        .setOnDialogItemClickListener((dialog, viewHolder, pos, str) -> {
+                            dialog.dismissDialog();
+                        }).showDialog());
     }
 
     @Override

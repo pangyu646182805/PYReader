@@ -51,6 +51,14 @@ public class Recommend extends BaseResponse {
         private boolean isFromSD;
         private boolean isSelected;
 
+        public boolean isFromSD() {
+            return isFromSD;
+        }
+
+        public void setFromSD(boolean fromSD) {
+            isFromSD = fromSD;
+        }
+
         public String getBookId() {
             return bookId;
         }

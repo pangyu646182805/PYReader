@@ -11,6 +11,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 
 import com.neuroandroid.pyreader.R;
+import com.neuroandroid.pyreader.adapter.base.BaseViewHolder;
 
 /**
  * Created by NeuroAndroid on 2017/6/15.
@@ -266,5 +267,10 @@ public abstract class PYDialog<T extends PYDialog<T>> extends Dialog {
 
     public interface OnDialogClickListener<T> {
         void onClick(T dialog, View view);
+    }
+
+
+    public interface OnDialogItemClickListener<T, ITEM> {
+        void onDialogItemClick(T dialog, BaseViewHolder holder, int position, ITEM item);
     }
 }
