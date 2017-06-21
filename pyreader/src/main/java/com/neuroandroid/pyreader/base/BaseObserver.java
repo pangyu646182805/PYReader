@@ -27,6 +27,7 @@ public abstract class BaseObserver<T> implements Observer<BaseResponse> {
 
     @Override
     public void onNext(@NonNull BaseResponse response) {
+        if (response.isNoOk()) response.setOk(true);
         if (response.isOk()) {
             T data = (T) response;
             onHandleSuccess(data);

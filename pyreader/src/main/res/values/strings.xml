@@ -12,5 +12,9 @@
 
     <string name="to_add">去添加</string>
     <string name="default_book_title">大主宰</string>
+    <string name="default_book_minor_cate">异术超能</string>
     <string name="default_book_sub_title">21小时前:第1581章 魔踪与八目</string>
+
+    <string name="no_internet_dest">网络被外星人劫持啦</string>
+    <string name="book_detail">书籍详情</string>
 </resources>

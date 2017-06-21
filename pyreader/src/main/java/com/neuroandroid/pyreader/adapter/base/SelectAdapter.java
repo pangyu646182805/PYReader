@@ -1,8 +1,6 @@
 package com.neuroandroid.pyreader.adapter.base;
 
 import android.content.Context;
-import android.support.v7.widget.DefaultItemAnimator;
-import android.support.v7.widget.RecyclerView;
 import android.view.View;
 
 import com.neuroandroid.pyreader.annotation.SelectMode;
@@ -61,16 +59,6 @@ public abstract class SelectAdapter<T extends ISelect> extends BaseRvAdapter<T> 
 
     public SelectAdapter(Context context, List<T> dataList, IMultiItemViewType<T> multiItemViewType) {
         super(context, dataList, multiItemViewType);
-    }
-
-    public void clearRvAnim(RecyclerView rv) {
-        if (rv == null) return;
-        RecyclerView.ItemAnimator animator = rv.getItemAnimator();
-        if (animator instanceof DefaultItemAnimator) {
-            ((DefaultItemAnimator) animator).setSupportsChangeAnimations(false);
-        }
-        rv.getItemAnimator().setChangeDuration(333);
-        rv.getItemAnimator().setMoveDuration(333);
     }
 
     /**

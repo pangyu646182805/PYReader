@@ -39,12 +39,12 @@ public class RetrofitUtils {
      *
      * @return
      */
-    public static Retrofit getInstance(String url) {
+    public static Retrofit getInstance(String url, boolean needCache) {
         sRetrofit = new Retrofit.Builder().baseUrl(url)
                 .addConverterFactory(ScalarsConverterFactory.create())
                 .addConverterFactory(GsonConverterFactory.create())
                 .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
-                .client(getCacheClient(UIUtils.getContext()))
+                .client(needCache ? getCacheClient(UIUtils.getContext()) : getClient())
                 .build();
         return sRetrofit;
     }

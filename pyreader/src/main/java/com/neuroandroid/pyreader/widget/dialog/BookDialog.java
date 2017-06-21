@@ -48,8 +48,13 @@ public class BookDialog extends PYDialog<BookDialog> {
     }
 
     public BookDialog setFromSDCard(boolean fromSDCard) {
+        this.isFromSDCard = fromSDCard;
         mBookDialogAdapter.replaceAll(fromSDCard ? FROM_SDCARD : FROM_NET);
         return this;
+    }
+
+    public boolean isFromSDCard() {
+        return this.isFromSDCard;
     }
 
     public BookDialog setBookTitle(String bookTitle) {

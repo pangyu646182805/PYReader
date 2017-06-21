@@ -16,6 +16,7 @@ import com.neuroandroid.pyreader.manager.SettingManager;
 import com.neuroandroid.pyreader.model.response.Recommend;
 import com.neuroandroid.pyreader.mvp.contract.IRecommendContract;
 import com.neuroandroid.pyreader.mvp.presenter.RecommendPresenter;
+import com.neuroandroid.pyreader.ui.activity.BookDetailActivity;
 import com.neuroandroid.pyreader.utils.DividerUtils;
 import com.neuroandroid.pyreader.utils.L;
 import com.neuroandroid.pyreader.utils.ShowUtils;
@@ -86,6 +87,35 @@ public class RecommendFragment extends BaseLazyFragment<IRecommendContract.Prese
                         .setBookTitle(item.getTitle())
                         .setFromSDCard(item.isFromSD())
                         .setOnDialogItemClickListener((dialog, viewHolder, pos, str) -> {
+                            ShowUtils.showToast(dialog.isFromSDCard() + " : " + pos + " : " + str);
+                            if (dialog.isFromSDCard()) {  // 来自SD卡的书籍
+                                switch (pos) {
+                                    case 0:
+
+                                        break;
+                                    case 1:
+
+                                        break;
+                                    case 2:
+
+                                        break;
+                                }
+                            } else {  // 来自网络的书籍
+                                switch (pos) {
+                                    case 0:  // 书籍详情
+                                        BookDetailActivity.startActivity(mContext, item.getBookId());
+                                        break;
+                                    case 1:
+
+                                        break;
+                                    case 2:
+
+                                        break;
+                                    case 3:
+
+                                        break;
+                                }
+                            }
                             dialog.dismissDialog();
                         }).showDialog());
     }

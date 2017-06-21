@@ -12,7 +12,7 @@ import com.neuroandroid.pyreader.utils.RxUtils;
  * Created by NeuroAndroid on 2017/6/14.
  */
 
-public class RecommendPresenter extends BasePresenter<RecommendModelImpl, IRecommendContract.View, Recommend> implements IRecommendContract.Presenter {
+public class RecommendPresenter extends BasePresenter<RecommendModelImpl, IRecommendContract.View> implements IRecommendContract.Presenter {
     public RecommendPresenter(IRecommendContract.View view) {
         super(view);
         mModel = new RecommendModelImpl(Constant.API_BASE_URL);
@@ -21,7 +21,7 @@ public class RecommendPresenter extends BasePresenter<RecommendModelImpl, IRecom
 
     @Override
     public void getRecommend(String gender) {
-        mModelFilteredFactory.compose(mModel.getRecommend(gender))
+        getModelFilteredFactory(Recommend.class).compose(mModel.getRecommend(gender))
                 .compose(RxUtils.bindToLifecycle(mView))
                 .subscribe(new BaseObserver<Recommend>() {
                     @Override

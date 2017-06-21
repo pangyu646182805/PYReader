@@ -9,16 +9,18 @@ import io.reactivex.disposables.Disposable;
  * Created by NeuroAndroid on 2017/6/13.
  */
 
-public class BasePresenter<M extends IModel, V extends IView, T extends BaseResponse> implements IPresenter {
+public class BasePresenter<M extends IModel, V extends IView> implements IPresenter {
     protected CompositeDisposable mCompositeDisposable;
-    protected final ModelFilteredFactory<T> mModelFilteredFactory;
 
     protected M mModel;
     protected V mView;
 
     public BasePresenter(V view) {
         this.mView = view;
-        mModelFilteredFactory = new ModelFilteredFactory<>();
+    }
+
+    protected <clazz> ModelFilteredFactory<clazz> getModelFilteredFactory(Class<clazz> clazz) {
+        return new ModelFilteredFactory<>();
     }
 
     protected void addDispose(Disposable disposable) {

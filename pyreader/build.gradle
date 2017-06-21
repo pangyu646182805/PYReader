@@ -20,6 +20,9 @@ android {
         versionCode rootProject.ext.android["versionCode"]
         versionName rootProject.ext.android["versionName"]
         testInstrumentationRunner rootProject.ext.dependencies["androidJUnitRunner"]
+
+        renderscriptTargetApi 19
+        renderscriptSupportModeEnabled true
     }
     buildTypes {
         release {
@@ -122,6 +125,8 @@ dependencies {
     annotationProcessor rootProject.ext.dependencies["dagger2-compiler"]
     compile rootProject.ext.dependencies["gson"]
     compile rootProject.ext.dependencies["systembartint"]
+    compile rootProject.ext.dependencies["realtimeblurview"]
+    compile rootProject.ext.dependencies["flowlayout"]
 
     // TwinklingRefreshLayout
     compile(rootProject.ext.dependencies["tkrefreshlayout"]) {

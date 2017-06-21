@@ -3,7 +3,9 @@ package com.neuroandroid.pyreader.base;
 import android.os.Bundle;
 import android.support.annotation.LayoutRes;
 import android.support.annotation.Nullable;
+import android.support.annotation.StringRes;
 import android.support.v7.widget.Toolbar;
+import android.view.MenuItem;
 import android.view.View;
 
 import com.neuroandroid.pyreader.R;
@@ -69,6 +71,23 @@ public abstract class BaseActivity<P extends IPresenter> extends RxAppCompatActi
         initView();
         initData();
         initListener();
+    }
+
+    /**
+     * 设置返回按钮
+     */
+    protected void setDisplayHomeAsUpEnabled() {
+        if (mToolbar != null) {
+            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        }
+    }
+
+    protected void setToolbarTitle(CharSequence title) {
+        if (mToolbar != null) getSupportActionBar().setTitle(title);
+    }
+
+    protected void setToolbarTitle(@StringRes int resId) {
+        if (mToolbar != null) getSupportActionBar().setTitle(resId);
     }
 
     /**
@@ -141,6 +160,10 @@ public abstract class BaseActivity<P extends IPresenter> extends RxAppCompatActi
         return mToolbar;
     }
 
+    protected View getStatusBar() {
+        return mStatusBar;
+    }
+
     /**
      * 设置状态栏高度
      */
@@ -160,5 +183,13 @@ public abstract class BaseActivity<P extends IPresenter> extends RxAppCompatActi
         if (useEventBus()) EventBus.getDefault().unregister(this);
         this.mUnBinder = null;
         this.mPresenter = null;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        if (item.getItemId() == android.R.id.home) {
+            onBackPressed();
+        }
+        return super.onOptionsItemSelected(item);
     }
 }

@@ -52,6 +52,7 @@ public abstract class BaseFragment<P extends IPresenter> extends RxFragment impl
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         mContext = getContext();
+        if (useEventBus()) EventBus.getDefault().register(this);
     }
 
     @Nullable
@@ -77,7 +78,6 @@ public abstract class BaseFragment<P extends IPresenter> extends RxFragment impl
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-        if (useEventBus()) EventBus.getDefault().register(this);
         initData();
         initListener();
     }
@@ -152,5 +152,24 @@ public abstract class BaseFragment<P extends IPresenter> extends RxFragment impl
      */
     protected boolean useOptionsMenu() {
         return false;
+    }
+
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        if (mUnBinder != Unbinder.EMPTY) mUnBinder.unbind();
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        // 释放资源
+        if (useEventBus()) EventBus.getDefault().unregister(this);
+        if (mPresenter != null) mPresenter.onDestroy();
+        this.mPresenter = null;
+        this.mUnBinder = null;
+        this.mActivity = null;
+        this.mContext = null;
+        this.mRootView = null;
     }
 }

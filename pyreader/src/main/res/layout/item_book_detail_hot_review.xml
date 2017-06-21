@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@color/backgroundPanel"
+    android:orientation="vertical">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingBottom="@dimen/y16"
+        android:paddingLeft="@dimen/x32"
+        android:paddingRight="@dimen/x32"
+        android:paddingTop="@dimen/y16">
+
+        <com.neuroandroid.pyreader.widget.NoPaddingTextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:text="热门书评"
+            android:textColor="@color/colorGray333"
+            android:textSize="15sp"/>
+
+        <com.neuroandroid.pyreader.widget.NoPaddingTextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:text="更多"
+            android:textColor="@color/colorGray666"
+            android:textSize="14sp"/>
+    </RelativeLayout>
+
+    <View style="@style/HorizontalSplit"/>
+
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/rv_hot_review"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:overScrollMode="never"
+        android:scrollbars="none"/>
+</LinearLayout>

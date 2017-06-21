@@ -2,6 +2,7 @@ package com.neuroandroid.pyreader.adapter.base;
 
 import android.content.Context;
 import android.support.annotation.LayoutRes;
+import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.RecyclerView;
 import android.util.SparseArray;
 import android.view.View;
@@ -49,6 +50,16 @@ public abstract class BaseRvAdapter<T> extends RecyclerView.Adapter<BaseViewHold
         mContext = context;
         mDataList = dataList == null ? new ArrayList<>() : dataList;
         this.mMultiItemViewType = multiItemViewType == null ? provideMultiItemViewType() : multiItemViewType;
+    }
+
+    public void clearRvAnim(RecyclerView rv) {
+        if (rv == null) return;
+        RecyclerView.ItemAnimator animator = rv.getItemAnimator();
+        if (animator instanceof DefaultItemAnimator) {
+            ((DefaultItemAnimator) animator).setSupportsChangeAnimations(false);
+        }
+        rv.getItemAnimator().setChangeDuration(333);
+        rv.getItemAnimator().setMoveDuration(333);
     }
 
     /**

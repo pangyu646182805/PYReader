@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@color/backgroundPanel"
+    android:orientation="vertical">
+
+    <com.neuroandroid.pyreader.widget.NoPaddingTextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingBottom="@dimen/y16"
+        android:paddingLeft="@dimen/x32"
+        android:paddingRight="@dimen/x32"
+        android:paddingTop="@dimen/y16"
+        android:text="推荐书单"
+        android:textColor="@color/colorGray333"
+        android:textSize="15sp"/>
+
+    <View style="@style/HorizontalSplit"/>
+
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/rv_recommend_booklist"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:overScrollMode="never"
+        android:scrollbars="none"/>
+</LinearLayout>

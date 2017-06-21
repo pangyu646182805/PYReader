@@ -8,6 +8,15 @@ import java.io.Serializable;
 
 public class BaseResponse implements Serializable {
     private boolean ok;
+    private boolean noOk;
+
+    public boolean isNoOk() {
+        return noOk;
+    }
+
+    public void setNoOk(boolean noOk) {
+        this.noOk = noOk;
+    }
 
     public boolean isOk() {
         return ok;

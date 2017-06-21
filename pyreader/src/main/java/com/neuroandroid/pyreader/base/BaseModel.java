@@ -11,7 +11,11 @@ public class BaseModel implements IModel {
     protected ApiService mService;
 
     public BaseModel(String baseUrl) {
-        mService = RetrofitUtils.getInstance(baseUrl).create(ApiService.class);
+        this(baseUrl, false);
+    }
+
+    public BaseModel(String baseUrl, boolean needCache) {
+        mService = RetrofitUtils.getInstance(baseUrl, needCache).create(ApiService.class);
     }
 
     @Override

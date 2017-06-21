@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <color name="colorPrimary">#c52828</color>
-    <color name="colorPrimaryDark">#c52828</color>
+    <color name="colorPrimaryDark">#B61C1C</color>
     <color name="colorAccent">#c52828</color>
 
     <color name="btnStrokeColor">#FF4081</color>
@@ -18,13 +18,17 @@
     <color name="white">#fff</color>
     <color name="white_a">#afff</color>
     <color name="white_3">#3fff</color>
+    <color name="white_6">#6fff</color>
     <color name="black">#000</color>
     <color name="black_a">#a000</color>
     <color name="black_3">#3000</color>
+    <color name="black_6">#6000</color>
 
     <color name="gray">#808080</color>
     <color name="gray_a">#aa808080</color>
     <color name="gray_3">#33808080</color>
+
+    <color name="orange">#DE6014</color>
 
     <!--性别选择颜色值-->
     <color name="gender_select_male_normal">#B0E2FF</color>

@@ -34,6 +34,7 @@ public class MainActivity extends BaseActivity {
     protected void initView() {
         PYReaderPagerAdapter pyReaderPagerAdapter = new PYReaderPagerAdapter(getSupportFragmentManager(), this);
         mVpContent.setAdapter(pyReaderPagerAdapter);
+        mVpContent.setOffscreenPageLimit(pyReaderPagerAdapter.getCount() - 1);
         mTabs.setViewPager(mVpContent);
 
         UIUtils.getHandler().postDelayed(() -> showChooseSexDialog(), 500);
