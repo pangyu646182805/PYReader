@@ -10,6 +10,8 @@ import com.neuroandroid.pyreader.base.BaseActivity;
 import com.neuroandroid.pyreader.config.Constant;
 import com.neuroandroid.pyreader.event.ChooseSexEvent;
 import com.neuroandroid.pyreader.manager.SettingManager;
+import com.neuroandroid.pyreader.ui.fragment.SearchFragment;
+import com.neuroandroid.pyreader.utils.FragmentUtils;
 import com.neuroandroid.pyreader.utils.ShowUtils;
 import com.neuroandroid.pyreader.utils.UIUtils;
 import com.neuroandroid.pyreader.widget.dialog.ChooseSexDialog;
@@ -24,6 +26,8 @@ public class MainActivity extends BaseActivity {
     SlidingTabLayout mTabs;
     @BindView(R.id.vp_content)
     ViewPager mVpContent;
+
+    private SearchFragment mSearchFragment;
 
     @Override
     protected int attachLayoutRes() {
@@ -69,7 +73,8 @@ public class MainActivity extends BaseActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.action_search:
-                ShowUtils.showToast("搜索");
+                mSearchFragment = new SearchFragment();
+                FragmentUtils.replaceFragment(getSupportFragmentManager(), mSearchFragment, R.id.fl_container, false);
                 break;
             case R.id.action_scan_book:
                 ShowUtils.showToast("扫描书籍");
@@ -79,5 +84,27 @@ public class MainActivity extends BaseActivity {
                 break;
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    public void onBackPressed() {
+        if (!handleBackPress())
+            super.onBackPressed();
+    }
+
+    public boolean handleBackPress() {
+        if (mSearchFragment != null) {
+            FragmentUtils.removeFragment(mSearchFragment);
+            mSearchFragment = null;
+            return true;
+        }
+        return false;
+    }
+
+    /**
+     * 处理fragment返回事件
+     */
+    public interface MainActivityFragmentCallbacks {
+        boolean handleBackPress();
     }
 }

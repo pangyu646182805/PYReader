@@ -1,7 +1,6 @@
 package com.neuroandroid.pyreader.utils;
 
 import android.text.TextUtils;
-import android.text.format.DateFormat;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -23,7 +22,7 @@ public class FormatUtils {
     private static final String ONE_MONTH_AGO = "月前";
     private static final String ONE_YEAR_AGO = "年前";
     private static SimpleDateFormat sdf = new SimpleDateFormat();
-    private static DateFormat sDateFormat = new DateFormat();
+    public final static String FORMAT_DATE_TIME = "yyyy-MM-dd HH:mm:ss.SSS";
 
     /**
      * 根据时间字符串获取描述性时间，如3分钟前，1天前
@@ -34,6 +33,7 @@ public class FormatUtils {
     public static String getDescriptionTimeFromDateString(String dateString) {
         if (TextUtils.isEmpty(dateString))
             return "";
+        sdf.applyPattern(FORMAT_DATE_TIME);
         try {
             return getDescriptionTimeFromDate(sdf.parse(formatZhuiShuDateString(dateString)));
         } catch (Exception e) {
@@ -110,5 +110,15 @@ public class FormatUtils {
 
     private static long toYears(long date) {
         return toMonths(date) / 365L;
+    }
+
+    public static String formatWordCount(int wordCount) {
+        if (wordCount / 10000 > 0) {
+            return (int) ((wordCount / 10000f) + 0.5) + "万字";
+        } else if (wordCount / 1000 > 0) {
+            return (int) ((wordCount / 1000f) + 0.5) + "千字";
+        } else {
+            return wordCount + "字";
+        }
     }
 }

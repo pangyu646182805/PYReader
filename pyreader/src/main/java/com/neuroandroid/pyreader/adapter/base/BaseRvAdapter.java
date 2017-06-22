@@ -38,6 +38,11 @@ public abstract class BaseRvAdapter<T> extends RecyclerView.Adapter<BaseViewHold
     // EmptyView的位置
     protected int mEmptyViewPosition = -1;
     protected IMultiItemViewType<T> mMultiItemViewType;
+    protected RecyclerView.LayoutManager mLayoutManager;
+
+    public void setLayoutManager(RecyclerView.LayoutManager layoutManager) {
+        mLayoutManager = layoutManager;
+    }
 
     public BaseRvAdapter(Context context, List<T> dataList, int layoutId) {
         mContext = context;

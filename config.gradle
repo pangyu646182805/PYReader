@@ -27,7 +27,7 @@ ext {
 
             // network
             "retrofit"                : "com.squareup.retrofit2:retrofit:${version["retrofitSdkVersion"]}",
-            "converter-scalars"          : "com.squareup.retrofit2:converter-scalars:2.1.0",
+            "converter-scalars"       : "com.squareup.retrofit2:converter-scalars:2.1.0",
             "retrofit-converter-gson" : "com.squareup.retrofit2:converter-gson:${version["retrofitSdkVersion"]}",
             "retrofit-adapter-rxjava2": "com.squareup.retrofit2:adapter-rxjava2:${version["retrofitSdkVersion"]}",
             "okhttp3"                 : "com.squareup.okhttp3:okhttp:3.8.0",
@@ -60,6 +60,9 @@ ext {
             "dagger2-compiler"        : "com.google.dagger:dagger-compiler:${version["dagger2SdkVersion"]}",
             "gson"                    : "com.google.code.gson:gson:2.8.0",
             "systembartint"           : "com.readystatesoftware.systembartint:systembartint:1.0.3",
+            "realtimeblurview"        : "com.github.mmin18:realtimeblurview:1.1.0",
+            "flowlayout"              : "com.nex3z:flow-layout:0.1.4",
+            "expandableTextView"      : "com.ms-square:expandableTextView:0.1.4",
 
             // test
             "junit"                   : "junit:junit:4.12",

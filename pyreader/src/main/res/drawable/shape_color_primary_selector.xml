@@ -3,21 +3,16 @@
     <item android:state_pressed="false" android:state_activated="false">
         <shape android:shape="rectangle">
             <corners android:radius="@dimen/btn_radius"/>
-            <solid android:color="@color/colorPrimary"/>
+            <solid android:color="@color/transparent"/>
+            <stroke android:color="@color/white" android:width="@dimen/btn_stroke_width"/>
         </shape>
     </item>
 
     <item android:state_pressed="true">
         <shape android:shape="rectangle">
             <corners android:radius="@dimen/btn_radius"/>
-            <solid android:color="@color/colorPrimaryDark"/>
-        </shape>
-    </item>
-
-    <item android:state_activated="true">
-        <shape android:shape="rectangle">
-            <corners android:radius="@dimen/btn_radius"/>
-            <solid android:color="@color/gray"/>
+            <solid android:color="@color/gray_6"/>
+            <stroke android:color="@color/white" android:width="@dimen/btn_stroke_width"/>
         </shape>
     </item>
 </selector>

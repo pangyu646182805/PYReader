@@ -127,6 +127,7 @@ dependencies {
     compile rootProject.ext.dependencies["systembartint"]
     compile rootProject.ext.dependencies["realtimeblurview"]
     compile rootProject.ext.dependencies["flowlayout"]
+    compile rootProject.ext.dependencies["expandableTextView"]
 
     // TwinklingRefreshLayout
     compile(rootProject.ext.dependencies["tkrefreshlayout"]) {

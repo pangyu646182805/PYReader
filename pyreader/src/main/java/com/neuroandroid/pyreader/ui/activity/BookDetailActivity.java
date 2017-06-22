@@ -1,7 +1,7 @@
 package com.neuroandroid.pyreader.ui.activity;
 
-import android.content.Context;
-import android.content.Intent;
+import android.graphics.Color;
+import android.os.Build;
 import android.support.design.widget.AppBarLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -18,6 +18,7 @@ import com.neuroandroid.pyreader.model.response.HotReview;
 import com.neuroandroid.pyreader.model.response.RecommendBookList;
 import com.neuroandroid.pyreader.mvp.contract.IBookDetailContract;
 import com.neuroandroid.pyreader.mvp.presenter.BookDetailPresenter;
+import com.neuroandroid.pyreader.utils.ColorUtils;
 import com.neuroandroid.pyreader.utils.DividerUtils;
 import com.neuroandroid.pyreader.utils.L;
 import com.neuroandroid.pyreader.utils.ShowUtils;
@@ -41,10 +42,7 @@ public class BookDetailActivity extends BaseActivity<IBookDetailContract.Present
     private List<BaseResponse> mBookDetailDataList = new ArrayList<>();
     private BookDetailAdapter mBookDetailAdapter;
 
-    public static void startActivity(Context context, String bookId) {
-        context.startActivity(new Intent(context, BookDetailActivity.class)
-                .putExtra(Constant.INTENT_BOOK_ID, bookId));
-    }
+    private int mScrollX;
 
     @Override
     protected void initPresenter() {
@@ -90,6 +88,34 @@ public class BookDetailActivity extends BaseActivity<IBookDetailContract.Present
                 if (mBookDetailAdapter != null) mBookDetailAdapter.setAppBarLayoutHeight(mAppBarLayout.getHeight());
             }
         });
+        mRvBookDetail.addOnScrollListener(new RecyclerView.OnScrollListener() {
+            @Override
+            public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
+                super.onScrolled(recyclerView, dx, dy);
+                if (mBookDetailAdapter != null && mBookDetailAdapter.getBookDetailHeaderHeight() != -1) {
+                    mScrollX = mScrollX + dy;  // 累加y值 解决滑动一半y值为0
+                    if (mScrollX <= 0) {  // 设置标题的背景颜色
+                        // getTitleBar().setBackgroundResource(R.drawable.bg_toolbar_shade);
+                        mAppBarLayout.setBackgroundColor(Color.TRANSPARENT);
+                        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+                            mAppBarLayout.setTranslationZ(0f);
+                        }
+                    } else if (mScrollX > 0 && mScrollX <= mBookDetailAdapter.getBookDetailHeaderHeight()) {
+                        // 滑动距离小于banner图的高度时，设置背景和字体颜色颜色透明度渐变
+                        float scale = (float) mScrollX / mBookDetailAdapter.getBookDetailHeaderHeight();
+                        mAppBarLayout.setBackgroundColor(ColorUtils.adjustAlpha(UIUtils.getColor(R.color.colorPrimary), scale));
+                        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+                            mAppBarLayout.setTranslationZ(scale * UIUtils.getDimen(R.dimen.y8));
+                        }
+                    } else {
+                        mAppBarLayout.setBackgroundColor(UIUtils.getColor(R.color.colorPrimary));
+                        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+                            mAppBarLayout.setTranslationZ(UIUtils.getDimen(R.dimen.y8));
+                        }
+                    }
+                }
+            }
+        });
     }
 
     @Override
@@ -99,6 +125,7 @@ public class BookDetailActivity extends BaseActivity<IBookDetailContract.Present
         if (mBookDetailAdapter != null)
             mBookDetailAdapter.set(BookDetailAdapter.VIEW_TYPE_BOOK_DETAIL_HEADER, bookDetail);
         hideLoadingAfterPresenter();
+        mRvBookDetail.scrollToPosition(0);
     }
 
     @Override
@@ -108,6 +135,7 @@ public class BookDetailActivity extends BaseActivity<IBookDetailContract.Present
         if (mBookDetailAdapter != null)
             mBookDetailAdapter.set(BookDetailAdapter.VIEW_TYPE_BOOK_DETAIL_HOT_REVIEW, hotReview);
         hideLoadingAfterPresenter();
+        mRvBookDetail.scrollToPosition(0);
     }
 
     @Override
@@ -117,6 +145,7 @@ public class BookDetailActivity extends BaseActivity<IBookDetailContract.Present
         if (mBookDetailAdapter != null)
             mBookDetailAdapter.set(BookDetailAdapter.VIEW_TYPE_BOOK_DETAIL_RECOMMEND_BOOK_LIST, recommendBookList);
         hideLoadingAfterPresenter();
+        mRvBookDetail.scrollToPosition(0);
     }
 
     @Override

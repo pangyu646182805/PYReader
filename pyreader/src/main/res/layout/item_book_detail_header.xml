@@ -13,10 +13,11 @@
         android:layout_height="wrap_content">
 
         <ImageView
+            android:id="@+id/iv_blur_background_cover"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:scaleType="fitCenter"
-            android:background="@mipmap/dazhuzai"/>
+            tools:background="@mipmap/dazhuzai"/>
 
         <com.github.mmin18.widget.RealtimeBlurView
             android:layout_width="match_parent"
@@ -41,13 +42,14 @@
 
                 <ImageView
                     android:id="@+id/iv_book_cover"
-                    android:layout_width="@dimen/x90"
-                    android:layout_height="@dimen/y120"
+                    android:layout_width="@dimen/x150"
+                    android:layout_height="@dimen/y200"
+                    android:layout_gravity="center_vertical"
                     android:scaleType="centerInside"
                     android:src="@mipmap/cover_default"/>
 
                 <LinearLayout
-                    android:layout_width="wrap_content"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_vertical"
                     android:layout_marginLeft="@dimen/x32"
@@ -59,9 +61,9 @@
                         android:layout_height="wrap_content"
                         android:ellipsize="end"
                         android:lines="1"
-                        tools:text="@string/default_book_title"
                         android:textColor="@color/white"
-                        android:textSize="14sp"/>
+                        android:textSize="14sp"
+                        tools:text="@string/default_book_title"/>
 
                     <LinearLayout
                         android:layout_width="wrap_content"
@@ -75,9 +77,9 @@
                             android:layout_height="wrap_content"
                             android:ellipsize="end"
                             android:lines="1"
-                            tools:text="天蚕土豆"
                             android:textColor="@color/orange"
-                            android:textSize="12sp"/>
+                            android:textSize="12sp"
+                            tools:text="天蚕土豆"/>
 
                         <com.neuroandroid.pyreader.widget.NoPaddingTextView
                             android:layout_width="wrap_content"
@@ -92,9 +94,9 @@
                             android:layout_height="wrap_content"
                             android:ellipsize="end"
                             android:lines="1"
-                            tools:text="@string/default_book_minor_cate"
                             android:textColor="@color/white"
-                            android:textSize="12sp"/>
+                            android:textSize="12sp"
+                            tools:text="@string/default_book_minor_cate"/>
 
                         <com.neuroandroid.pyreader.widget.NoPaddingTextView
                             android:layout_width="wrap_content"
@@ -109,9 +111,9 @@
                             android:layout_height="wrap_content"
                             android:ellipsize="end"
                             android:lines="1"
-                            tools:text="574万字"
                             android:textColor="@color/white"
-                            android:textSize="12sp"/>
+                            android:textSize="12sp"
+                            tools:text="574万字"/>
                     </LinearLayout>
 
                     <com.neuroandroid.pyreader.widget.NoPaddingTextView
@@ -121,47 +123,46 @@
                         android:layout_marginTop="@dimen/y16"
                         android:ellipsize="end"
                         android:lines="1"
-                        tools:text="2天前"
                         android:textColor="@color/white"
-                        android:textSize="13sp"/>
+                        android:textSize="13sp"
+                        tools:text="2天前"/>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/y16"
+                        android:orientation="horizontal">
+
+                        <com.neuroandroid.pyreader.widget.NoPaddingTextView
+                            android:id="@+id/tv_collection"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:background="@drawable/shape_color_primary_selector"
+                            android:clickable="true"
+                            android:gravity="center"
+                            android:paddingBottom="@dimen/y16"
+                            android:paddingTop="@dimen/y16"
+                            android:text="追更新"
+                            android:textColor="@color/white"
+                            android:textSize="14sp"/>
+
+                        <com.neuroandroid.pyreader.widget.NoPaddingTextView
+                            android:id="@+id/tv_read"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_marginLeft="@dimen/x32"
+                            android:layout_weight="1"
+                            android:background="@drawable/shape_color_primary_selector"
+                            android:clickable="true"
+                            android:gravity="center"
+                            android:paddingBottom="@dimen/y16"
+                            android:paddingTop="@dimen/y16"
+                            android:text="开始阅读"
+                            android:textColor="@color/white"
+                            android:textSize="14sp"/>
+                    </LinearLayout>
                 </LinearLayout>
-            </LinearLayout>
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:paddingLeft="@dimen/x32"
-                android:paddingRight="@dimen/x32">
-
-                <com.neuroandroid.pyreader.widget.NoPaddingTextView
-                    android:id="@+id/tv_collection"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:background="@drawable/shape_color_primary_selector"
-                    android:clickable="true"
-                    android:gravity="center"
-                    android:paddingBottom="@dimen/y16"
-                    android:paddingTop="@dimen/y16"
-                    android:text="追更新"
-                    android:textColor="@color/white"
-                    android:textSize="14sp"/>
-
-                <com.neuroandroid.pyreader.widget.NoPaddingTextView
-                    android:id="@+id/tv_read"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_marginLeft="@dimen/x32"
-                    android:layout_weight="1"
-                    android:background="@drawable/shape_color_primary_selector"
-                    android:clickable="true"
-                    android:gravity="center"
-                    android:paddingBottom="@dimen/y16"
-                    android:paddingTop="@dimen/y16"
-                    android:text="开始阅读"
-                    android:textColor="@color/white"
-                    android:textSize="14sp"/>
             </LinearLayout>
 
             <LinearLayout
@@ -190,9 +191,9 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="@dimen/y12"
-                        tools:text="67358"
                         android:textColor="@color/white"
-                        android:textSize="14sp"/>
+                        android:textSize="14sp"
+                        tools:text="67358"/>
                 </LinearLayout>
 
                 <LinearLayout
@@ -214,9 +215,9 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="@dimen/y12"
-                        tools:text="52.33%"
                         android:textColor="@color/white"
-                        android:textSize="14sp"/>
+                        android:textSize="14sp"
+                        tools:text="52.33%"/>
                 </LinearLayout>
 
                 <LinearLayout
@@ -238,36 +239,54 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="@dimen/y12"
-                        tools:text="6987"
                         android:textColor="@color/white"
-                        android:textSize="14sp"/>
+                        android:textSize="14sp"
+                        tools:text="6987"/>
                 </LinearLayout>
             </LinearLayout>
         </LinearLayout>
     </FrameLayout>
 
-    <com.zhy.view.flowlayout.TagFlowLayout
-        android:id="@+id/tab_layout"
+    <com.nex3z.flowlayout.FlowLayout
+        android:id="@+id/tag_layout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:paddingBottom="@dimen/y16"
-        android:paddingLeft="@dimen/x32"
-        android:paddingRight="@dimen/x32"
-        android:paddingTop="@dimen/y16"/>
-
-    <View
-        style="@style/HorizontalSplit"/>
-
-    <com.neuroandroid.pyreader.widget.NoPaddingTextView
-        android:id="@+id/tv_book_intro"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:ellipsize="end"
-        android:maxLines="4"
         android:paddingBottom="@dimen/y16"
         android:paddingLeft="@dimen/x32"
         android:paddingRight="@dimen/x32"
         android:paddingTop="@dimen/y16"
-        android:textColor="@color/colorGray333"
-        android:textSize="15sp"/>
+        app:childSpacing="@dimen/x16"
+        app:rowSpacing="@dimen/y16"/>
+
+    <View
+        style="@style/HorizontalSplit"/>
+
+    <com.ms.square.android.expandabletextview.ExpandableTextView
+        android:id="@+id/expand_layout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:animDuration="200"
+        app:maxCollapsedLines="4">
+
+        <com.neuroandroid.pyreader.widget.NoPaddingTextView
+            android:id="@id/expandable_text"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:ellipsize="end"
+            android:paddingBottom="@dimen/y16"
+            android:paddingLeft="@dimen/x32"
+            android:paddingRight="@dimen/x32"
+            android:paddingTop="@dimen/y16"
+            android:textColor="@color/colorGray333"
+            android:textSize="15sp"/>
+
+        <ImageButton
+            android:id="@id/expand_collapse"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:visibility="gone"
+            android:padding="16dp"
+            android:layout_gravity="right|bottom"
+            android:background="@android:color/transparent"/>
+    </com.ms.square.android.expandabletextview.ExpandableTextView>
 </LinearLayout>

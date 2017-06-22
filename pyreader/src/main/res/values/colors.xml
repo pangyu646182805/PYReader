@@ -26,9 +26,12 @@
 
     <color name="gray">#808080</color>
     <color name="gray_a">#aa808080</color>
+    <color name="gray_6">#66808080</color>
     <color name="gray_3">#33808080</color>
 
     <color name="orange">#DE6014</color>
+    <color name="light_coffee">#A58D5E</color>
+    <color name="immediately_order">#f19976</color>
 
     <!--性别选择颜色值-->
     <color name="gender_select_male_normal">#B0E2FF</color>

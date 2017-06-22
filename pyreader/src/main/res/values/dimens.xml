@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <dimen name="btn_radius">@dimen/x8</dimen>
+    <dimen name="btn_radius_16">@dimen/x16</dimen>
     <dimen name="btn_stroke_width">@dimen/x1</dimen>
 </resources>

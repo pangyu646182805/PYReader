@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@color/backgroundPanel"
+    android:foreground="?attr/selectableItemBackground"
+    android:orientation="horizontal"
+    android:paddingBottom="@dimen/y16"
+    android:paddingLeft="@dimen/x32"
+    android:paddingRight="@dimen/x32"
+    android:paddingTop="@dimen/y16">
+
+    <ImageView
+        android:id="@+id/iv_book_cover"
+        android:layout_width="@dimen/x135"
+        android:layout_height="@dimen/y180"
+        android:layout_gravity="center_vertical"
+        android:scaleType="centerInside"
+        android:src="@mipmap/cover_default"/>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_vertical"
+        android:layout_marginLeft="@dimen/x32"
+        android:orientation="vertical">
+
+        <com.neuroandroid.pyreader.widget.NoPaddingTextView
+            android:id="@+id/tv_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:ellipsize="end"
+            android:lines="1"
+            android:textColor="@color/colorGray333"
+            android:textSize="16sp"
+            tools:text="@string/default_book_title"/>
+
+        <com.neuroandroid.pyreader.widget.NoPaddingTextView
+            android:id="@+id/tv_author"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/y8"
+            android:textColor="@color/colorGray666"
+            android:textSize="14sp"
+            tools:text="鱼人二代"/>
+
+        <com.neuroandroid.pyreader.widget.NoPaddingTextView
+            android:id="@+id/tv_desc"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/y8"
+            android:ellipsize="end"
+            android:lines="1"
+            android:textColor="@color/colorGray666"
+            android:textSize="15sp"
+            tools:text="☆准星（不好看），★一星，★★二星，★★★三星，★★★★，★★★★★五星 （持续更新中……）……………本期歌单:周慧敏《自作多情》、赵雷《已是两条路上的人》、张韶涵《寓言》、张惠妹《我最亲爱的》、张惠妹《哭砂》、张惠妹《剪爱》、张碧晨《渡红尘》、Amy Winehouse《You know I'm no good》、邓紫棋《偶尔》、邓紫棋《喜欢你》、叶倩文《曾经心疼》、叶倩文《祝福》"/>
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/y8"
+            android:gravity="center_vertical"
+            android:orientation="horizontal">
+
+            <com.neuroandroid.pyreader.widget.NoPaddingTextView
+                android:id="@+id/tv_recommend_count"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/book_detail_recommend_book_list_book_count"
+                android:textColor="@color/colorGray999"
+                android:textSize="13sp"/>
+
+            <com.neuroandroid.pyreader.widget.NoPaddingTextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="  |  "
+                android:textColor="@color/colorGray999"
+                android:textSize="14sp"/>
+
+            <com.neuroandroid.pyreader.widget.NoPaddingTextView
+                android:id="@+id/tv_collect_count"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/book_detail_recommend_book_list_collect_count"
+                android:textColor="@color/colorGray999"
+                android:textSize="13sp"/>
+        </LinearLayout>
+    </LinearLayout>
+</LinearLayout>

@@ -17,4 +17,9 @@
 
     <string name="no_internet_dest">网络被外星人劫持啦</string>
     <string name="book_detail">书籍详情</string>
+    <string name="book_detail_retention_ratio">%1$s%%</string>
+    <string name="book_detail_user_lv">&#160;lv.%1$d</string>
+    <string name="book_detail_recommend_book_list_book_count">共%1$d本书 |&#160;</string>
+    <string name="book_detail_recommend_book_list_collect_count">%1$d人收藏</string>
+    <string name="search_hint_text">输入书名或作者名</string>
 </resources>

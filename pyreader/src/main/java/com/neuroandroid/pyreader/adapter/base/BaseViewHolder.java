@@ -45,6 +45,11 @@ public class BaseViewHolder extends RecyclerView.ViewHolder {
         return this;
     }
 
+    public void setOnClickListener(@IdRes int viewId, View.OnClickListener onClickListener) {
+        View view = getView(viewId);
+        if (view != null) view.setOnClickListener(onClickListener);
+    }
+
     public <T extends View> T getView(int viewId) {
         View view = mViews.get(viewId);
         if (view == null) {

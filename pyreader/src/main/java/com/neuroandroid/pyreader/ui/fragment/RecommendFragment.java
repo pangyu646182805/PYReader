@@ -16,9 +16,9 @@ import com.neuroandroid.pyreader.manager.SettingManager;
 import com.neuroandroid.pyreader.model.response.Recommend;
 import com.neuroandroid.pyreader.mvp.contract.IRecommendContract;
 import com.neuroandroid.pyreader.mvp.presenter.RecommendPresenter;
-import com.neuroandroid.pyreader.ui.activity.BookDetailActivity;
 import com.neuroandroid.pyreader.utils.DividerUtils;
 import com.neuroandroid.pyreader.utils.L;
+import com.neuroandroid.pyreader.utils.NavigationUtils;
 import com.neuroandroid.pyreader.utils.ShowUtils;
 import com.neuroandroid.pyreader.utils.UIUtils;
 import com.neuroandroid.pyreader.widget.CustomRefreshHeader;
@@ -87,7 +87,7 @@ public class RecommendFragment extends BaseLazyFragment<IRecommendContract.Prese
                         .setBookTitle(item.getTitle())
                         .setFromSDCard(item.isFromSD())
                         .setOnDialogItemClickListener((dialog, viewHolder, pos, str) -> {
-                            ShowUtils.showToast(dialog.isFromSDCard() + " : " + pos + " : " + str);
+                            dialog.dismissDialog();
                             if (dialog.isFromSDCard()) {  // 来自SD卡的书籍
                                 switch (pos) {
                                     case 0:
@@ -103,7 +103,7 @@ public class RecommendFragment extends BaseLazyFragment<IRecommendContract.Prese
                             } else {  // 来自网络的书籍
                                 switch (pos) {
                                     case 0:  // 书籍详情
-                                        BookDetailActivity.startActivity(mContext, item.getBookId());
+                                        NavigationUtils.goToBookDetailPage(mActivity, item.getBookId());
                                         break;
                                     case 1:
 
@@ -116,7 +116,6 @@ public class RecommendFragment extends BaseLazyFragment<IRecommendContract.Prese
                                         break;
                                 }
                             }
-                            dialog.dismissDialog();
                         }).showDialog());
     }
 

@@ -33,14 +33,14 @@ public class ImageLoader {
         return ImageLoaderHolder.INSTANCE;
     }
 
-
-    // 直接加载网络图片
+    //直接加载网络图片
     public void displayImage(Context context, String url, int errorResId, ImageView imageView) {
         Glide
                 .with(context)
                 .load(url)
                 .error(errorResId)
-                .diskCacheStrategy(DiskCacheStrategy.NONE)
+                .placeholder(errorResId)
+                .diskCacheStrategy(DiskCacheStrategy.SOURCE)
                 .centerCrop()
                 .crossFade()
                 .into(imageView);
@@ -62,7 +62,7 @@ public class ImageLoader {
         Glide
                 .with(context)
                 .load(file)
-                .diskCacheStrategy(DiskCacheStrategy.NONE)
+                .diskCacheStrategy(DiskCacheStrategy.SOURCE)
                 .centerCrop()
                 .crossFade()
                 .into(imageView);
@@ -86,7 +86,7 @@ public class ImageLoader {
                 .with(context)
                 .load(url)
                 .error(errorResId)
-                .diskCacheStrategy(DiskCacheStrategy.NONE)
+                .diskCacheStrategy(DiskCacheStrategy.SOURCE)
                 .centerCrop()
                 .override(width, height)
                 .crossFade()
