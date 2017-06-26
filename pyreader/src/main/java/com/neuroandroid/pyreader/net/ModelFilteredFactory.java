@@ -27,7 +27,6 @@ public class ModelFilteredFactory<T> {
         public ObservableSource apply(@NonNull Observable upstream) {
             return upstream.subscribeOn(Schedulers.io())
                     .observeOn(AndroidSchedulers.mainThread())
-                    .unsubscribeOn(Schedulers.io())
                     .timeout(5, TimeUnit.SECONDS)  // 重连间隔时间
                     .retry(5);  // 重连次数
         }

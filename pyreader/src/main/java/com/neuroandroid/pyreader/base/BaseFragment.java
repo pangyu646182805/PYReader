@@ -11,7 +11,6 @@ import android.view.ViewGroup;
 
 import com.neuroandroid.pyreader.R;
 import com.neuroandroid.pyreader.utils.SystemUtils;
-import com.neuroandroid.pyreader.utils.UIUtils;
 import com.neuroandroid.pyreader.widget.StateLayout;
 import com.trello.rxlifecycle2.components.support.RxFragment;
 
@@ -132,7 +131,6 @@ public abstract class BaseFragment<P extends IPresenter> extends RxFragment impl
         if (getBaseActivity() != null) {
             if (getBaseActivity().mImmersive) {
                 statusBar.getLayoutParams().height = SystemUtils.getStatusHeight(mActivity);
-                statusBar.setBackgroundColor(UIUtils.getColor(R.color.colorPrimary));
             }
         }
     }

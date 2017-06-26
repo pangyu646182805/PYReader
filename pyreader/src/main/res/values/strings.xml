@@ -22,4 +22,8 @@
     <string name="book_detail_recommend_book_list_book_count">共%1$d本书 |&#160;</string>
     <string name="book_detail_recommend_book_list_collect_count">%1$d人收藏</string>
     <string name="search_hint_text">输入书名或作者名</string>
+
+    <string name="search_result_lately_follower">"%1$d人在追  |  "</string>
+    <string name="search_result_retention_ratio">"%1$s%%读者留存  |  "</string>
+    <string name="search_result_author">%1$s著</string>
 </resources>

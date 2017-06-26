@@ -2,8 +2,10 @@ package com.neuroandroid.pyreader.model.api;
 
 import com.neuroandroid.pyreader.model.response.BookDetail;
 import com.neuroandroid.pyreader.model.response.HotReview;
+import com.neuroandroid.pyreader.model.response.HotWord;
 import com.neuroandroid.pyreader.model.response.Recommend;
 import com.neuroandroid.pyreader.model.response.RecommendBookList;
+import com.neuroandroid.pyreader.model.response.SearchBooks;
 
 import io.reactivex.Observable;
 import retrofit2.http.GET;
@@ -38,4 +40,16 @@ public interface ApiService {
      */
     @GET("/book-list/{bookId}/recommend")
     Observable<RecommendBookList> getRecommendBookList(@Path("bookId") String bookId, @Query("limit") String limit);
+
+    /**
+     * 获取热搜书籍
+     */
+    @GET("/book/hot-word")
+    Observable<HotWord> getHotWord();
+
+    /**
+     * 书籍查询
+     */
+    @GET("/book/fuzzy-search")
+    Observable<SearchBooks> searchBooks(@Query("query") String query);
 }

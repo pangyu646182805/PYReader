@@ -1,70 +1,140 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
+<FrameLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/transparent"
-    android:orientation="vertical">
+    android:background="@color/transparent">
 
-    <android.support.design.widget.AppBarLayout
-        android:id="@+id/app_bar"
+    <com.github.mmin18.widget.RealtimeBlurView
+        android:id="@+id/blur_view"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar">
+        android:layout_height="match_parent"
+        app:realtimeBlurRadius="0dp"
+        app:realtimeOverlayColor="@color/white_6"/>
 
-        <View
-            android:id="@+id/status_bar"
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+        <android.support.design.widget.AppBarLayout
+            android:id="@+id/app_bar"
             android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:background="?attr/colorPrimary"/>
+            android:layout_height="wrap_content"
+            android:background="@color/transparent"
+            android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
+            app:elevation="0dp">
 
-        <FrameLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content">
-
-            <android.support.v7.widget.Toolbar
-                android:id="@+id/tool_bar"
+            <View
+                android:id="@+id/status_bar"
                 android:layout_width="match_parent"
-                android:layout_height="?attr/actionBarSize"
-                android:background="?attr/colorPrimary"
-                app:popupTheme="@style/ThemeOverlay.AppCompat.Light"
-                app:title=""/>
+                android:layout_height="0dp"/>
+
+            <FrameLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <android.support.v7.widget.Toolbar
+                    android:id="@+id/tool_bar"
+                    android:layout_width="match_parent"
+                    android:layout_height="?attr/actionBarSize"
+                    android:background="@color/transparent"
+                    app:popupTheme="@style/ThemeOverlay.AppCompat.Light"
+                    app:title=""/>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_margin="@dimen/x16"
+                    android:background="@drawable/shape_search_view_background"
+                    android:orientation="horizontal"
+                    android:paddingLeft="@dimen/x16"
+                    android:translationZ="@dimen/x4">
+
+                    <ImageView
+                        android:id="@+id/iv_back"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_vertical"
+                        app:srcCompat="@drawable/ic_arrow_back_black"/>
+
+                    <com.neuroandroid.pyreader.widget.ClearEditText
+                        android:id="@+id/et_search"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_marginLeft="@dimen/x32"
+                        android:background="@color/transparent"
+                        android:ellipsize="end"
+                        android:gravity="center_vertical"
+                        android:hint="@string/search_hint_text"
+                        android:lines="1"
+                        android:paddingRight="@dimen/x16"
+                        android:textColor="@color/colorGray333"
+                        android:textColorHint="@color/colorGray666"
+                        android:textSize="13sp"/>
+                </LinearLayout>
+            </FrameLayout>
+        </android.support.design.widget.AppBarLayout>
+
+        <android.support.v4.widget.NestedScrollView
+            android:id="@+id/sv_nested"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:layout_margin="@dimen/x12"
-                android:background="@drawable/shape_search_view_background"
-                android:orientation="horizontal"
-                android:paddingLeft="@dimen/x16">
+                android:orientation="vertical">
 
-                <ImageView
-                    android:layout_width="wrap_content"
+                <android.support.v7.widget.RecyclerView
+                    android:id="@+id/rv_search"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_gravity="center_vertical"
-                    app:srcCompat="@drawable/ic_arrow_back_black"/>
+                    android:nestedScrollingEnabled="false"
+                    android:overScrollMode="never"/>
 
-                <com.neuroandroid.pyreader.widget.ClearEditText
+                <LinearLayout
+                    android:id="@+id/ll_loading"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:layout_marginLeft="@dimen/x32"
-                    android:background="@color/transparent"
-                    android:ellipsize="end"
-                    android:gravity="center_vertical"
-                    android:hint="@string/search_hint_text"
-                    android:lines="1"
-                    android:textColor="@color/colorGray333"
-                    android:textColorHint="@color/colorGray666"
-                    android:textSize="13sp"/>
-            </LinearLayout>
-        </FrameLayout>
-    </android.support.design.widget.AppBarLayout>
+                    android:gravity="center"
+                    android:orientation="horizontal"
+                    android:visibility="gone">
 
-    <LinearLayout
+                    <com.neuroandroid.pyreader.widget.ProgressWheel
+                        xmlns:app="http://schemas.android.com/apk/res-auto"
+                        android:layout_width="@dimen/x48"
+                        android:layout_height="@dimen/y48"
+                        app:matProg_barColor="@color/colorPrimary"
+                        app:matProg_progressIndeterminate="true"
+                        app:matProg_rimColor="@color/black_3"/>
+
+                    <com.neuroandroid.pyreader.widget.NoPaddingTextView
+                        android:id="@+id/tv_loading_text"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_vertical"
+                        android:layout_marginLeft="@dimen/x16"
+                        android:text="正在加载..."
+                        android:textColor="@color/colorGray666"
+                        android:textSize="12sp"/>
+                </LinearLayout>
+
+                <android.support.v7.widget.RecyclerView
+                    android:id="@+id/rv_search_result"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:nestedScrollingEnabled="false"
+                    android:overScrollMode="never"/>
+            </LinearLayout>
+        </android.support.v4.widget.NestedScrollView>
+    </LinearLayout>
+
+    <!--<LinearLayout
         android:id="@+id/ll_search"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:background="@color/backgroundColor"
-        android:orientation="vertical"></LinearLayout>
-</LinearLayout>
+        android:orientation="vertical"></LinearLayout>-->
+</FrameLayout>

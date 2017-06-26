@@ -90,10 +90,13 @@ public abstract class BaseRvAdapter<T> extends RecyclerView.Adapter<BaseViewHold
 
     @Override
     public BaseViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+        BaseViewHolder viewHolder;
         if (viewType >= BaseViewType.FOOTER && mFooterViews != null && mFooterViews.get(viewType) != null) {
-            return BaseViewHolder.createViewHolder(mContext, mFooterViews.get(viewType));
+            viewHolder = BaseViewHolder.createViewHolder(mContext, mFooterViews.get(viewType));
+            return viewHolder;
         } else if (viewType >= BaseViewType.HEADER && mHeaderViews != null && mHeaderViews.get(viewType) != null) {
-            return BaseViewHolder.createViewHolder(mContext, mHeaderViews.get(viewType));
+            viewHolder = BaseViewHolder.createViewHolder(mContext, mHeaderViews.get(viewType));
+            return viewHolder;
         } else {
             int layoutId;
             if (mMultiItemViewType != null) {
@@ -101,7 +104,7 @@ public abstract class BaseRvAdapter<T> extends RecyclerView.Adapter<BaseViewHold
             } else {
                 layoutId = mLayoutId;
             }
-            BaseViewHolder viewHolder = BaseViewHolder.createViewHolder(mContext, parent, layoutId);
+            viewHolder = BaseViewHolder.createViewHolder(mContext, parent, layoutId);
             setListener(viewHolder);
             return viewHolder;
         }

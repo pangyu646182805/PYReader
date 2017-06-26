@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@color/backgroundPanel"
+    android:foreground="?attr/selectableItemBackground"
+    android:orientation="horizontal"
+    android:padding="@dimen/x16">
+
+    <ImageView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:srcCompat="@drawable/ic_history"/>
+
+    <com.neuroandroid.pyreader.widget.NoPaddingTextView
+        android:id="@+id/tv_search_history"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="@dimen/x24"
+        android:ellipsize="end"
+        android:lines="1"
+        android:maxEms="20"
+        android:text="大主宰"
+        android:textColor="@color/colorGray666"
+        android:textSize="13sp"/>
+</LinearLayout>

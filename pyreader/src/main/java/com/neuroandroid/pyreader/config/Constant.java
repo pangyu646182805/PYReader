@@ -22,6 +22,10 @@ public class Constant {
 
     public static final String RECOMMEND = "recommend";
 
+    public static final String SEARCH_HISTORY = "search_history";
+
+    public static final int MAX_SAVE_SEARCH_HISTORY_COUNT = 10;
+
     public static final String INTENT_BOOK_ID = "intent_book_id";
 
     public static String RECOMMEND_COLLECT = FileUtils.createRootPath(UIUtils.getContext()) + "/recommend";
