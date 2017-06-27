@@ -6,31 +6,17 @@
     android:background="@color/backgroundPanel"
     android:orientation="vertical">
 
-    <RelativeLayout
+    <com.neuroandroid.pyreader.widget.NoPaddingTextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_centerVertical="true"
         android:paddingBottom="@dimen/y16"
         android:paddingLeft="@dimen/x32"
         android:paddingRight="@dimen/x32"
-        android:paddingTop="@dimen/y16">
-
-        <com.neuroandroid.pyreader.widget.NoPaddingTextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_centerVertical="true"
-            android:text="热门书评"
-            android:textColor="@color/colorGray333"
-            android:textSize="15sp"/>
-
-        <com.neuroandroid.pyreader.widget.NoPaddingTextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentRight="true"
-            android:layout_centerVertical="true"
-            android:text="更多"
-            android:textColor="@color/colorGray666"
-            android:textSize="14sp"/>
-    </RelativeLayout>
+        android:paddingTop="@dimen/y16"
+        android:text="热门书评"
+        android:textColor="@color/colorGray333"
+        android:textSize="15sp"/>
 
     <View style="@style/HorizontalSplit"/>
 
@@ -40,4 +26,18 @@
         android:layout_height="match_parent"
         android:overScrollMode="never"
         android:scrollbars="none"/>
+
+    <View style="@style/HorizontalSplit"/>
+
+    <com.neuroandroid.pyreader.widget.NoPaddingTextView
+        android:id="@+id/tv_all_review_count"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="?attr/selectableItemBackground"
+        android:clickable="true"
+        android:gravity="center"
+        android:paddingBottom="@dimen/y12"
+        android:paddingTop="@dimen/y12"
+        android:text="@string/book_detail_all_review_count"
+        android:textColor="@color/colorPrimary"/>
 </LinearLayout>

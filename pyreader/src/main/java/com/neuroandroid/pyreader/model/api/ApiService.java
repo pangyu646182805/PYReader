@@ -1,6 +1,9 @@
 package com.neuroandroid.pyreader.model.api;
 
 import com.neuroandroid.pyreader.model.response.BookDetail;
+import com.neuroandroid.pyreader.model.response.BookListDetail;
+import com.neuroandroid.pyreader.model.response.BooksByTag;
+import com.neuroandroid.pyreader.model.response.DiscussionList;
 import com.neuroandroid.pyreader.model.response.HotReview;
 import com.neuroandroid.pyreader.model.response.HotWord;
 import com.neuroandroid.pyreader.model.response.Recommend;
@@ -52,4 +55,48 @@ public interface ApiService {
      */
     @GET("/book/fuzzy-search")
     Observable<SearchBooks> searchBooks(@Query("query") String query);
+
+    /**
+     * 根据tag获取书籍列表
+     * 分页获取
+     */
+    @GET("/book/by-tags")
+    Observable<BooksByTag> getBooksByTag(@Query("tags") String tags, @Query("start") String start, @Query("limit") String limit);
+
+    /**
+     * 获取书籍详情书评列表
+     *
+     * @param book bookId
+     * @param sort updated(默认排序)
+     *             created(最新发布)
+     *             helpful(最有用的)
+     *             comment-count(最多评论)
+     * @return
+     */
+    @GET("/post/review/by-book")
+    Observable<HotReview> getBookDetailReviewList(@Query("book") String book, @Query("sort") String sort,
+                                                  @Query("start") String start, @Query("limit") String limit);
+
+    /**
+     * 获取书籍详情讨论列表
+     *
+     * @param book bookId
+     * @param sort updated(默认排序)
+     *             created(最新发布)
+     *             comment-count(最多评论)
+     * @param type "normal,vote"
+     * @return
+     */
+    @GET("/post/by-book")
+    Observable<DiscussionList> getBookDetailDiscussionList(@Query("book") String book,
+                                                            @Query("sort") String sort,
+                                                            @Query("type") String type,
+                                                            @Query("start") String start,
+                                                            @Query("limit") String limit);
+
+    /**
+     * 获取书单详情
+     */
+    @GET("/book-list/{bookListId}")
+    Observable<BookListDetail> getBookListDetail(@Path("bookListId") String bookListId);
 }

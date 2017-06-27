@@ -15,6 +15,7 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 
 import com.neuroandroid.pyreader.R;
+import com.neuroandroid.pyreader.utils.UIUtils;
 
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
@@ -141,14 +142,17 @@ public class StateLayout extends FrameLayout implements View.OnClickListener {
                 setVisibility(VISIBLE);
                 mLlError.setVisibility(GONE);
                 mLlLoading.setVisibility(View.VISIBLE);
+                setBackgroundColor(UIUtils.getColor(R.color.transparent));
                 break;
             case STATE_ERROR:
                 setVisibility(VISIBLE);
                 mLlError.setVisibility(VISIBLE);
                 mLlLoading.setVisibility(View.GONE);
+                setBackgroundColor(UIUtils.getColor(R.color.backgroundColor));
                 break;
             case STATE_HIDE:
                 setVisibility(GONE);
+                setBackgroundColor(UIUtils.getColor(R.color.transparent));
                 break;
         }
     }

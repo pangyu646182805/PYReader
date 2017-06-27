@@ -1,5 +1,6 @@
 package com.neuroandroid.pyreader.model.response;
 
+import com.google.gson.annotations.SerializedName;
 import com.neuroandroid.pyreader.base.BaseResponse;
 
 import java.util.List;
@@ -44,7 +45,8 @@ public class BookDetail extends BaseResponse {
      * donate : false
      * copyright : 阅文集团正版授权
      */
-    private String _id;
+    @SerializedName("_id")
+    private String bookId;
     private String title;
     private String author;
     private String longIntro;
@@ -75,16 +77,26 @@ public class BookDetail extends BaseResponse {
     private List<String> gender;
     private List<String> tags;
 
+    public Recommend.BooksBean generateRecommendBook() {
+        Recommend.BooksBean book = new Recommend.BooksBean();
+        book.setTitle(getTitle());
+        book.setBookId(getBookId());
+        book.setUpdated(getUpdated());
+        book.setCover(getCover());
+        book.setLastChapter(getLastChapter());
+        return book;
+    }
+
     public BookDetail() {
         setNoOk(true);
     }
 
-    public String get_id() {
-        return _id;
+    public String getBookId() {
+        return bookId;
     }
 
-    public void set_id(String _id) {
-        this._id = _id;
+    public void setBookId(String bookId) {
+        this.bookId = bookId;
     }
 
     public String getTitle() {

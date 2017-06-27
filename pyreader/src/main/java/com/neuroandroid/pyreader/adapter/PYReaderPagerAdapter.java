@@ -43,12 +43,12 @@ public class PYReaderPagerAdapter extends FragmentPagerAdapter {
 
     @SuppressWarnings("synthetic-access")
     public void add(@NonNull final Class<? extends Fragment> className, final Bundle params) {
-        final Holder mHolder = new Holder();
-        mHolder.mClassName = className.getName();
-        mHolder.mParams = params;
+        final Holder holder = new Holder();
+        holder.mClassName = className.getName();
+        holder.mParams = params;
 
-        final int mPosition = mHolderList.size();
-        mHolderList.add(mPosition, mHolder);
+        final int size = mHolderList.size();
+        mHolderList.add(size, holder);
         notifyDataSetChanged();
     }
 
@@ -63,20 +63,20 @@ public class PYReaderPagerAdapter extends FragmentPagerAdapter {
     @NonNull
     @Override
     public Object instantiateItem(@NonNull final ViewGroup container, final int position) {
-        final Fragment mFragment = (Fragment) super.instantiateItem(container, position);
+        final Fragment fragment = (Fragment) super.instantiateItem(container, position);
         final WeakReference<Fragment> mWeakFragment = mFragmentArray.get(position);
         if (mWeakFragment != null) {
             mWeakFragment.clear();
         }
-        mFragmentArray.put(position, new WeakReference<>(mFragment));
-        return mFragment;
+        mFragmentArray.put(position, new WeakReference<>(fragment));
+        return fragment;
     }
 
     @Override
     public Fragment getItem(int position) {
-        final Holder mCurrentHolder = mHolderList.get(position);
+        final Holder holder = mHolderList.get(position);
         return Fragment.instantiate(mContext,
-                mCurrentHolder.mClassName, mCurrentHolder.mParams);
+                holder.mClassName, holder.mParams);
     }
 
     @Override

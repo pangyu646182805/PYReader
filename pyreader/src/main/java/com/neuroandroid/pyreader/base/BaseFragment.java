@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.annotation.StringRes;
 import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -36,6 +37,10 @@ public abstract class BaseFragment<P extends IPresenter> extends RxFragment impl
     @BindView(R.id.tool_bar)
     Toolbar mToolbar;
 
+    @Nullable
+    @BindView(R.id.status_bar)
+    View mStatusBar;
+
     protected P mPresenter;
     private Unbinder mUnBinder;
 
@@ -66,6 +71,9 @@ public abstract class BaseFragment<P extends IPresenter> extends RxFragment impl
             if (mToolbar != null) {
                 getBaseActivity().setSupportActionBar(mToolbar);
                 if (useOptionsMenu()) setHasOptionsMenu(true);
+                if (supportImmersive() && mStatusBar != null) {
+                    setStatusBar(mStatusBar);
+                }
             }
             initView();
         }
@@ -115,6 +123,23 @@ public abstract class BaseFragment<P extends IPresenter> extends RxFragment impl
 
     }
 
+    /**
+     * 设置返回按钮
+     */
+    protected void setDisplayHomeAsUpEnabled() {
+        if (mToolbar != null) {
+            getBaseActivity().getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        }
+    }
+
+    protected void setToolbarTitle(CharSequence title) {
+        if (mToolbar != null) getBaseActivity().getSupportActionBar().setTitle(title);
+    }
+
+    protected void setToolbarTitle(@StringRes int resId) {
+        if (mToolbar != null) getBaseActivity().getSupportActionBar().setTitle(resId);
+    }
+
     protected BaseActivity getBaseActivity() {
         if (mActivity instanceof BaseActivity) {
             return (BaseActivity) mActivity;
@@ -133,6 +158,14 @@ public abstract class BaseFragment<P extends IPresenter> extends RxFragment impl
                 statusBar.getLayoutParams().height = SystemUtils.getStatusHeight(mActivity);
             }
         }
+    }
+
+    /**
+     * 是否支持沉浸式状态栏
+     * 默认支持
+     */
+    protected boolean supportImmersive() {
+        return true;
     }
 
     /**

@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/backgroundColor">
+
+    <com.lcodecore.tkrefreshlayout.TwinklingRefreshLayout
+        android:id="@+id/refresh_layout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        app:tr_autoLoadMore="true"
+        app:tr_max_bottom_height="@dimen/y1280"
+        app:tr_max_head_height="@dimen/y1280">
+
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/rv_discussion_list"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:overScrollMode="never"/>
+    </com.lcodecore.tkrefreshlayout.TwinklingRefreshLayout>
+
+    <com.neuroandroid.pyreader.widget.StateLayout
+        android:id="@id/state_layout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        app:state_layout_error_text="@string/error_desc"
+        app:state_layout_img_height="@dimen/y210"
+        app:state_layout_img_res="@mipmap/ic_no_internet"
+        app:state_layout_img_width="@dimen/x288"
+        app:state_layout_reload_text="@string/state_reload"/>
+</FrameLayout>

@@ -1,5 +1,6 @@
 package com.neuroandroid.pyreader.adapter.base;
 
+import android.app.Activity;
 import android.content.Context;
 import android.support.annotation.LayoutRes;
 import android.support.v7.widget.DefaultItemAnimator;
@@ -55,6 +56,16 @@ public abstract class BaseRvAdapter<T> extends RecyclerView.Adapter<BaseViewHold
         mContext = context;
         mDataList = dataList == null ? new ArrayList<>() : dataList;
         this.mMultiItemViewType = multiItemViewType == null ? provideMultiItemViewType() : multiItemViewType;
+    }
+
+    /**
+     * 获取activity
+     */
+    public <T> T getActivity(Class<T> clazz) {
+        if (mContext instanceof Activity) {
+            return (T) mContext;
+        }
+        return null;
     }
 
     public void clearRvAnim(RecyclerView rv) {

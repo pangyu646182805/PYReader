@@ -3,6 +3,9 @@ package com.neuroandroid.pyreader.config;
 import com.neuroandroid.pyreader.utils.FileUtils;
 import com.neuroandroid.pyreader.utils.UIUtils;
 
+import java.lang.annotation.Retention;
+import java.lang.annotation.RetentionPolicy;
+
 /**
  * Created by NeuroAndroid on 2017/6/14.
  */
@@ -28,5 +31,24 @@ public class Constant {
 
     public static final String INTENT_BOOK_ID = "intent_book_id";
 
+    public static final String BOOK_TAG = "book_tag";
+
+    public static final String BOOK_ID = "book_ID";
+
+    public static final String BOOK_TITLE = "book_title";
+
+    public static final String BOOK_DETAIL_COMMUNITY_INDEX = "book_detail_community_index";
+
     public static String RECOMMEND_COLLECT = FileUtils.createRootPath(UIUtils.getContext()) + "/recommend";
+
+    @Retention(RetentionPolicy.SOURCE)
+    public @interface SortType {
+        String DEFAULT = "updated";
+
+        String CREATED = "created";
+
+        String HELPFUL = "helpful";
+
+        String COMMENT_COUNT = "comment-count";
+    }
 }

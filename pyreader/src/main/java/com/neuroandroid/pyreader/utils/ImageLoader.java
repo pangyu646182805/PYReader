@@ -39,8 +39,8 @@ public class ImageLoader {
                 .with(context)
                 .load(url)
                 .error(errorResId)
-                .placeholder(errorResId)
                 .diskCacheStrategy(DiskCacheStrategy.SOURCE)
+                // .placeholder(errorResId)
                 .centerCrop()
                 .crossFade()
                 .into(imageView);

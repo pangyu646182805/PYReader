@@ -32,12 +32,14 @@
 
             <com.neuroandroid.pyreader.widget.tablayout.SlidingTabLayout
                 android:id="@+id/tabs"
-                android:layout_width="match_parent"
+                android:layout_width="wrap_content"
                 android:layout_height="@dimen/y88"
-                app:tabMode="scrollable"
+                android:layout_gravity="center_horizontal"
+                app:tabMode="fixed"
                 app:tl_indicator_color="@color/white"
                 app:tl_indicator_style="TRIANGLE"
-                app:tl_tab_space_equal="true"
+                app:tl_tab_padding="@dimen/x64"
+                app:tl_tab_space_equal="false"
                 app:tl_textSelectColor="@color/white"
                 app:tl_textUnselectColor="@color/white_a"/>
         </android.support.design.widget.AppBarLayout>
@@ -45,8 +47,7 @@
         <android.support.v4.view.ViewPager
             android:id="@+id/vp_content"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            app:layout_behavior="@string/appbar_scrolling_view_behavior"/>
+            android:layout_height="match_parent"/>
     </LinearLayout>
 
     <FrameLayout

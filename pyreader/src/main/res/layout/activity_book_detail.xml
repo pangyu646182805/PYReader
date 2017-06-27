@@ -41,10 +41,15 @@
             android:id="@id/state_layout"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            app:state_layout_error_text="@string/no_internet_dest"
+            app:state_layout_error_text="@string/no_internet_desc"
             app:state_layout_img_height="@dimen/y210"
             app:state_layout_img_res="@mipmap/ic_no_internet"
             app:state_layout_img_width="@dimen/x288"
             app:state_layout_reload_text="@string/state_reload"/>
     </LinearLayout>
+
+    <FrameLayout
+        android:id="@+id/fl_container"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"/>
 </FrameLayout>

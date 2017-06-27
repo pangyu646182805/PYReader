@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@color/backgroundPanel"
+    android:foreground="?attr/selectableItemBackground"
+    android:orientation="horizontal"
+    android:paddingBottom="@dimen/y16"
+    android:paddingLeft="@dimen/x32"
+    android:paddingRight="@dimen/x32"
+    android:paddingTop="@dimen/y16">
+
+    <ImageView
+        android:id="@+id/iv_book_cover"
+        android:layout_width="@dimen/x90"
+        android:layout_height="@dimen/y120"
+        android:scaleType="centerInside"
+        android:src="@mipmap/cover_default"/>
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_vertical"
+        android:layout_marginLeft="@dimen/x32"
+        android:orientation="vertical">
+
+        <com.neuroandroid.pyreader.widget.NoPaddingTextView
+            android:id="@+id/tv_book_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:ellipsize="end"
+            android:lines="1"
+            tools:text="@string/default_book_title"
+            android:textColor="@color/colorGray333"
+            android:textSize="14sp"/>
+
+        <com.neuroandroid.pyreader.widget.NoPaddingTextView
+            android:id="@+id/tv_book_intro"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/y16"
+            android:ellipsize="end"
+            android:lines="1"
+            tools:text="他是威震国际的武学宗师，武道神化，十步杀一人；他是温文尔雅的古玩大家，赌石赏画，收.藏富可敌国；他是鼎鼎大名的玄门高手，能断风水，善察吉凶，让佛道两教共尊。他更"
+            android:textColor="@color/colorGray666"
+            android:textSize="12sp"/>
+
+        <com.neuroandroid.pyreader.widget.NoPaddingTextView
+            android:id="@+id/tv_book_tags"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/y16"
+            android:ellipsize="end"
+            android:lines="1"
+            tools:text="玄幻 | 热血"
+            android:textColor="@color/colorGray999"
+            android:textSize="11sp"/>
+    </LinearLayout>
+</LinearLayout>

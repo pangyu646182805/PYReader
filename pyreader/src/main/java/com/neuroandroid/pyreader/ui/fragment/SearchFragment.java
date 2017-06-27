@@ -46,8 +46,6 @@ import butterknife.BindView;
 
 public class SearchFragment extends BaseFragment<ISearchContract.Presenter> implements
         MainActivity.MainActivityFragmentCallbacks, ISearchContract.View {
-    @BindView(R.id.status_bar)
-    View mStatusBar;
     @BindView(R.id.app_bar)
     AppBarLayout mAppBarLayout;
     @BindView(R.id.blur_view)
@@ -85,7 +83,6 @@ public class SearchFragment extends BaseFragment<ISearchContract.Presenter> impl
 
     @Override
     protected void initView() {
-        setStatusBar(mStatusBar);
         mRvSearch.setLayoutManager(new LinearLayoutManager(mContext));
         mRvSearchResult.setLayoutManager(new LinearLayoutManager(mContext));
         mSearchAdapter = new SearchAdapter(mContext, null, null);
@@ -124,15 +121,15 @@ public class SearchFragment extends BaseFragment<ISearchContract.Presenter> impl
                 mAppBarLayout.getViewTreeObserver().removeOnGlobalLayoutListener(this);
                 mAppBarLayoutHeight = mAppBarLayout.getHeight();
                 mAppBarLayout.setTranslationY(-mAppBarLayoutHeight);
-                ViewCompat.animate(mAppBarLayout).translationY(0).setDuration(600).setInterpolator(new DecelerateInterpolator()).start();
+                ViewCompat.animate(mAppBarLayout).translationY(0).setDuration(400).setInterpolator(new DecelerateInterpolator()).start();
 
-                ValueAnimator animator = ValueAnimator.ofInt(0, 80);
+                ValueAnimator animator = ValueAnimator.ofInt(0, 100);
                 animator.addUpdateListener(valueAnimator -> {
                     int blurRadius = (int) valueAnimator.getAnimatedValue();
                     mBlurView.setBlurRadius(blurRadius);
                 });
                 animator.setInterpolator(new DecelerateInterpolator());
-                animator.setDuration(600);
+                animator.setDuration(400);
                 animator.start();
             }
         });
@@ -223,7 +220,13 @@ public class SearchFragment extends BaseFragment<ISearchContract.Presenter> impl
     public void showSearchResult(SearchBooks searchBooks) {
         hideLoading();
         mSearchBooksAdapter.replaceAll(searchBooks.getBooks());
-        UIUtils.getHandler().postDelayed(() -> mSvNested.smoothScrollTo(0, mRvSearch.getHeight()), 250);
+        mRvSearch.getViewTreeObserver().addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
+            @Override
+            public void onGlobalLayout() {
+                mRvSearch.getViewTreeObserver().removeOnGlobalLayoutListener(this);
+                mSvNested.smoothScrollTo(0, mRvSearch.getHeight());
+            }
+        });
     }
 
     @Override

@@ -2,6 +2,7 @@ package com.neuroandroid.pyreader.ui.activity;
 
 import android.graphics.Color;
 import android.os.Build;
+import android.os.Bundle;
 import android.support.design.widget.AppBarLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -11,6 +12,7 @@ import com.google.gson.Gson;
 import com.neuroandroid.pyreader.R;
 import com.neuroandroid.pyreader.adapter.BookDetailAdapter;
 import com.neuroandroid.pyreader.base.BaseActivity;
+import com.neuroandroid.pyreader.base.BaseFragment;
 import com.neuroandroid.pyreader.base.BaseResponse;
 import com.neuroandroid.pyreader.config.Constant;
 import com.neuroandroid.pyreader.model.response.BookDetail;
@@ -18,8 +20,12 @@ import com.neuroandroid.pyreader.model.response.HotReview;
 import com.neuroandroid.pyreader.model.response.RecommendBookList;
 import com.neuroandroid.pyreader.mvp.contract.IBookDetailContract;
 import com.neuroandroid.pyreader.mvp.presenter.BookDetailPresenter;
+import com.neuroandroid.pyreader.ui.fragment.BookDetailCommunityFragment;
+import com.neuroandroid.pyreader.ui.fragment.BooksByTagFragment;
+import com.neuroandroid.pyreader.ui.fragment.RecommendBookListFragment;
 import com.neuroandroid.pyreader.utils.ColorUtils;
 import com.neuroandroid.pyreader.utils.DividerUtils;
+import com.neuroandroid.pyreader.utils.FragmentUtils;
 import com.neuroandroid.pyreader.utils.L;
 import com.neuroandroid.pyreader.utils.ShowUtils;
 import com.neuroandroid.pyreader.utils.UIUtils;
@@ -38,11 +44,16 @@ public class BookDetailActivity extends BaseActivity<IBookDetailContract.Present
     AppBarLayout mAppBarLayout;
     @BindView(R.id.rv_book_detail)
     RecyclerView mRvBookDetail;
-    private String mBookId;
+    private String mBookId, mBookTitle;
     private List<BaseResponse> mBookDetailDataList = new ArrayList<>();
     private BookDetailAdapter mBookDetailAdapter;
 
     private int mScrollX;
+    private BaseFragment mCurrentFragment;
+
+    public void setBookTitle(String bookTitle) {
+        mBookTitle = bookTitle;
+    }
 
     @Override
     protected void initPresenter() {
@@ -116,14 +127,21 @@ public class BookDetailActivity extends BaseActivity<IBookDetailContract.Present
                 }
             }
         });
+        mBookDetailAdapter.setOnItemClickListener((holder, position, item) -> {
+            if (position == BookDetailAdapter.VIEW_TYPE_BOOK_DETAIL_COMMUNITY) {
+                openBookDetailCommunityFragment(0);
+            }
+        });
     }
 
     @Override
     public void showBookDetail(BookDetail bookDetail) {
         L.e("json : " + new Gson().toJson(bookDetail));
+        setTransparentToolbar();
         mBookDetailDataList.set(0, bookDetail);
         if (mBookDetailAdapter != null)
             mBookDetailAdapter.set(BookDetailAdapter.VIEW_TYPE_BOOK_DETAIL_HEADER, bookDetail);
+        mBookDetailAdapter.set(BookDetailAdapter.VIEW_TYPE_BOOK_DETAIL_COMMUNITY, null);
         hideLoadingAfterPresenter();
         mRvBookDetail.scrollToPosition(0);
     }
@@ -152,6 +170,13 @@ public class BookDetailActivity extends BaseActivity<IBookDetailContract.Present
     public void showTip(String tip) {
         ShowUtils.showToast(tip);
         hideLoading();
+        setColorPrimaryToolbar();
+        showError(() -> {
+            showLoading();
+            mPresenter.getBookDetail(mBookId);
+            mPresenter.getHotReview(mBookId);
+            mPresenter.getRecommendBookList(mBookId, "3");
+        });
     }
 
     /**
@@ -162,10 +187,54 @@ public class BookDetailActivity extends BaseActivity<IBookDetailContract.Present
         mAppBarLayout.setBackgroundColor(UIUtils.getColor(R.color.colorPrimary));
     }
 
+    private void setTransparentToolbar() {
+        mAppBarLayout.setBackgroundColor(UIUtils.getColor(R.color.transparent));
+    }
+
     private void hideLoadingAfterPresenter() {
         if (mBookDetailDataList.get(0) != null && mBookDetailDataList.get(1) != null
                 && mBookDetailDataList.get(3) != null) {
             hideLoading();
         }
+    }
+
+    /**
+     * 打开BooksByTagFragment
+     */
+    public void openBooksByTagFragment(String tag) {
+        mCurrentFragment = new BooksByTagFragment();
+        Bundle bundle = new Bundle();
+        bundle.putString(Constant.BOOK_TAG, tag);
+        mCurrentFragment.setArguments(bundle);
+        FragmentUtils.replaceFragment(getSupportFragmentManager(), mCurrentFragment, R.id.fl_container, false);
+    }
+
+    /**
+     * 打开BookDetailCommunityFragment
+     * index : (0 : 讨论  1 : 书评)
+     */
+    public void openBookDetailCommunityFragment(int index) {
+        mCurrentFragment = new BookDetailCommunityFragment();
+        Bundle bundle = new Bundle();
+        bundle.putString(Constant.BOOK_ID, mBookId);
+        bundle.putString(Constant.BOOK_TITLE, mBookTitle);
+        bundle.putInt(Constant.BOOK_DETAIL_COMMUNITY_INDEX, index);
+        mCurrentFragment.setArguments(bundle);
+        FragmentUtils.replaceFragment(getSupportFragmentManager(), mCurrentFragment, R.id.fl_container, false);
+    }
+
+    public void openRecommendBookListFragment() {
+        mCurrentFragment = new RecommendBookListFragment();
+        FragmentUtils.replaceFragment(getSupportFragmentManager(), mCurrentFragment, R.id.fl_container, false);
+    }
+
+    @Override
+    public void onBackPressed() {
+        if (mCurrentFragment != null) {
+            FragmentUtils.removeFragment(mCurrentFragment);
+            mCurrentFragment = null;
+            return;
+        }
+        super.onBackPressed();
     }
 }

@@ -2,6 +2,8 @@ package com.neuroandroid.pyreader.ui.fragment;
 
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.view.LayoutInflater;
+import android.view.View;
 
 import com.google.gson.Gson;
 import com.lcodecore.tkrefreshlayout.RefreshListenerAdapter;
@@ -55,7 +57,7 @@ public class RecommendFragment extends BaseLazyFragment<IRecommendContract.Prese
     protected void initView() {
         mRvRecommend.setLayoutManager(new LinearLayoutManager(mContext));
         mRvRecommend.addItemDecoration(DividerUtils.defaultHorizontalDivider(mContext));
-        mRecommendAdapter = new RecommendAdapter(mContext, null, null);
+        mRecommendAdapter = new RecommendAdapter(mContext, null, R.layout.item_recomment);
         mRecommendAdapter.setSelectedMode(ISelect.MULTIPLE_MODE);
         mRecommendAdapter.updateSelectMode(false);
         mRecommendAdapter.longTouchSelectModeEnable(false);
@@ -63,6 +65,9 @@ public class RecommendFragment extends BaseLazyFragment<IRecommendContract.Prese
         mRvRecommend.setAdapter(mRecommendAdapter);
 
         mRefreshLayout.setHeaderView(new CustomRefreshHeader(mContext));
+
+        View footerView = LayoutInflater.from(mContext).inflate(R.layout.item_recomment_footer, mRvRecommend, false);
+        mRecommendAdapter.addFooterView(footerView);
     }
 
     @Override
@@ -167,6 +172,9 @@ public class RecommendFragment extends BaseLazyFragment<IRecommendContract.Prese
         switch (event.getEventFlag()) {
             case BaseEvent.EVENT_CHOOSE_SEX:
                 mPresenter.getRecommend(SettingManager.getChooseSex(mContext));
+                break;
+            case BaseEvent.EVENT_RECOMMEND:
+                mRefreshLayout.startRefresh();
                 break;
         }
     }

@@ -6,6 +6,7 @@ package com.neuroandroid.pyreader.event;
 
 public class BaseEvent {
     public static final int EVENT_CHOOSE_SEX = 200;
+    public static final int EVENT_RECOMMEND = 300;
     private int eventFlag;
 
     public int getEventFlag() {

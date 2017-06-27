@@ -8,22 +8,19 @@
     android:background="@color/backgroundPanel"
     android:foreground="?attr/selectableItemBackground"
     android:orientation="horizontal"
-    android:paddingLeft="@dimen/x32"
-    android:paddingRight="@dimen/x32"
-    android:paddingTop="@dimen/y32">
+    android:padding="@dimen/x32">
 
     <de.hdodenhof.circleimageview.CircleImageView
         android:id="@+id/iv_head"
-        android:layout_width="@dimen/x72"
-        android:layout_height="@dimen/y72"
+        android:layout_width="@dimen/x88"
+        android:layout_height="@dimen/y88"
         tools:src="@mipmap/ic_male"/>
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginLeft="@dimen/x32"
-        android:orientation="vertical"
-        android:paddingBottom="@dimen/y16">
+        android:orientation="vertical">
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -51,19 +48,18 @@
                 tools:text="@string/book_detail_user_lv"/>
 
             <com.neuroandroid.pyreader.widget.NoPaddingTextView
-                android:id="@+id/tv_review_time"
+                android:id="@+id/tv_discussion_time"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="@dimen/x4"
                 android:lines="1"
                 android:textColor="@color/colorGray666"
                 android:textSize="13sp"
-                android:visibility="gone"
                 tools:text="昨天"/>
         </LinearLayout>
 
         <com.neuroandroid.pyreader.widget.NoPaddingTextView
-            android:id="@+id/tv_review_title"
+            android:id="@+id/tv_discussion_title"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/y8"
@@ -71,51 +67,41 @@
             android:textSize="14sp"
             tools:text="非常好看的一本书"/>
 
-        <com.neuroandroid.pyreader.widget.PYRatingBar
-            android:id="@+id/rb_book_rating"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/y8"
-            app:clickable="false"
-            app:star_count="5"
-            app:star_empty="@drawable/ic_un_star"
-            app:star_fill="@drawable/ic_star"
-            app:star_image_size="@dimen/x24"
-            app:star_padding="@dimen/x8"
-            app:star_step="0"
-            app:step_size="full"/>
-
-        <com.neuroandroid.pyreader.widget.NoPaddingTextView
-            android:id="@+id/tv_review_content"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/y8"
-            android:ellipsize="end"
-            android:maxLines="2"
-            android:textColor="@color/colorGray666"
-            android:textSize="12sp"
-            tools:text="test"/>
-
         <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/y16"
+            android:layout_marginTop="@dimen/y8"
             android:gravity="center_vertical"
             android:orientation="horizontal">
 
             <ImageView
                 android:layout_width="@dimen/x24"
                 android:layout_height="@dimen/y24"
-                app:srcCompat="@drawable/ic_thumb_up"/>
+                app:srcCompat="@drawable/ic_comment"/>
 
             <com.neuroandroid.pyreader.widget.NoPaddingTextView
-                android:id="@+id/tv_thumb_up"
+                android:id="@+id/tv_comment_count"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="@dimen/x8"
-                android:textColor="@color/gray_a"
-                android:textSize="13sp"
-                tools:text="109"/>
+                android:textColor="@color/colorGray999"
+                android:textSize="11sp"
+                tools:text="308"/>
+
+            <ImageView
+                android:layout_width="@dimen/x24"
+                android:layout_height="@dimen/y24"
+                android:layout_marginLeft="@dimen/x16"
+                app:srcCompat="@drawable/ic_favorite"/>
+
+            <com.neuroandroid.pyreader.widget.NoPaddingTextView
+                android:id="@+id/tv_like_count"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/x8"
+                android:textColor="@color/colorGray999"
+                android:textSize="11sp"
+                tools:text="38"/>
         </LinearLayout>
     </LinearLayout>
 </LinearLayout>

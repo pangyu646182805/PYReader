@@ -7,6 +7,7 @@ import android.view.View;
 import android.view.ViewTreeObserver;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.TextView;
 
 import com.ms.square.android.expandabletextview.ExpandableTextView;
 import com.neuroandroid.pyreader.R;
@@ -15,21 +16,23 @@ import com.neuroandroid.pyreader.adapter.base.BaseViewHolder;
 import com.neuroandroid.pyreader.adapter.base.IMultiItemViewType;
 import com.neuroandroid.pyreader.base.BaseResponse;
 import com.neuroandroid.pyreader.config.Constant;
+import com.neuroandroid.pyreader.manager.RecommendManager;
 import com.neuroandroid.pyreader.model.response.BookDetail;
 import com.neuroandroid.pyreader.model.response.HotReview;
+import com.neuroandroid.pyreader.model.response.Recommend;
 import com.neuroandroid.pyreader.model.response.RecommendBookList;
+import com.neuroandroid.pyreader.ui.activity.BookDetailActivity;
 import com.neuroandroid.pyreader.utils.DividerUtils;
 import com.neuroandroid.pyreader.utils.FormatUtils;
 import com.neuroandroid.pyreader.utils.ImageLoader;
 import com.neuroandroid.pyreader.utils.ShowUtils;
 import com.neuroandroid.pyreader.utils.UIUtils;
 import com.neuroandroid.pyreader.widget.NoPaddingTextView;
-import com.neuroandroid.pyreader.widget.PYRatingBar;
 import com.nex3z.flowlayout.FlowLayout;
 
 import java.util.List;
 
-import de.hdodenhof.circleimageview.CircleImageView;
+import static com.neuroandroid.pyreader.utils.UIUtils.getString;
 
 /**
  * Created by NeuroAndroid on 2017/6/21.
@@ -43,6 +46,8 @@ public class BookDetailAdapter extends BaseRvAdapter<BaseResponse> {
 
     private int mToolBarHeight;
     private int mBookDetailHeaderHeight = -1;
+    private int mPostCount;
+    private boolean mBookInRecommend;
 
     public int getBookDetailHeaderHeight() {
         return mBookDetailHeaderHeight;
@@ -65,6 +70,8 @@ public class BookDetailAdapter extends BaseRvAdapter<BaseResponse> {
                 llBookDetailHeader.setPadding(0, mToolBarHeight, 0, 0);
                 if (item != null) {
                     BookDetail bookDetail = (BookDetail) item;
+                    mPostCount = bookDetail.getPostCount();
+                    getActivity(BookDetailActivity.class).setBookTitle(bookDetail.getTitle());
                     ImageView ivBookCover = holder.getView(R.id.iv_book_cover);
                     ImageView ivBlurCover = holder.getView(R.id.iv_blur_background_cover);
                     ImageLoader.getInstance().displayImage(mContext, Constant.IMG_BASE_URL + bookDetail.getCover(), R.mipmap.cover_default, ivBookCover);
@@ -76,7 +83,7 @@ public class BookDetailAdapter extends BaseRvAdapter<BaseResponse> {
                             .setText(R.id.tv_book_update, FormatUtils.getDescriptionTimeFromDateString(bookDetail.getUpdated()))
                             .setText(R.id.tv_follower, String.valueOf(bookDetail.getLatelyFollower()))
                             .setText(R.id.tv_retention_ratio, UIUtils.isEmpty(bookDetail.getRetentionRatio()) ?
-                                    "-" : String.format(UIUtils.getString(R.string.book_detail_retention_ratio),
+                                    "-" : String.format(getString(R.string.book_detail_retention_ratio),
                                     bookDetail.getRetentionRatio()))
                             .setText(R.id.tv_serialize_word_count, bookDetail.getSerializeWordCount() < 0 ? "-" : String.valueOf(bookDetail.getSerializeWordCount()));
                     FlowLayout tagLayout = holder.getView(R.id.tag_layout);
@@ -91,10 +98,29 @@ public class BookDetailAdapter extends BaseRvAdapter<BaseResponse> {
                             @Override
                             public void onGlobalLayout() {
                                 llBookDetailHeader.getViewTreeObserver().removeOnGlobalLayoutListener(this);
-                                mBookDetailHeaderHeight = llBookDetailHeader.getHeight();
+                                mBookDetailHeaderHeight = llBookDetailHeader.getHeight() - mToolBarHeight;
                             }
                         });
                     }
+
+                    refreshCollectionButtonText(bookDetail, holder.getView(R.id.tv_collection));
+                    holder.setOnClickListener(R.id.tv_collection, view -> {
+                        if (mBookInRecommend) {
+                            RecommendManager.getInstance().removeRecommend(bookDetail.getBookId());
+                            ShowUtils.showToast(String.format(UIUtils.getString(
+                                    R.string.book_detail_has_remove_the_book_shelf), bookDetail.getTitle()));
+                            initCollectionButtonText(holder.getView(R.id.tv_collection), true);
+                        } else {
+                            Recommend.BooksBean book = bookDetail.generateRecommendBook();
+                            RecommendManager.getInstance().addRecommend(book);
+                            ShowUtils.showToast(String.format(UIUtils.getString(
+                                    R.string.book_detail_has_joined_the_book_shelf), book.getTitle()));
+                            initCollectionButtonText(holder.getView(R.id.tv_collection), false);
+                        }
+                    });
+                    holder.setOnClickListener(R.id.tv_read, view -> {
+
+                    });
                 }
                 break;
             case VIEW_TYPE_BOOK_DETAIL_HOT_REVIEW:
@@ -103,10 +129,18 @@ public class BookDetailAdapter extends BaseRvAdapter<BaseResponse> {
                     RecyclerView rvHotReview = holder.getView(R.id.rv_hot_review);
                     rvHotReview.setLayoutManager(new LinearLayoutManager(mContext));
                     rvHotReview.addItemDecoration(DividerUtils.defaultHorizontalDivider(mContext));
-                    rvHotReview.setAdapter(new HotReviewAdapter(mContext, hotReview.getReviews(), R.layout.item_hot_review));
+                    HotReviewAdapter hotReviewAdapter = new HotReviewAdapter(mContext, hotReview.getReviews(), R.layout.item_hot_review);
+                    hotReviewAdapter.setShowReviewTime(false);
+                    rvHotReview.setAdapter(hotReviewAdapter);
+                    holder.setText(R.id.tv_all_review_count, String.format(UIUtils.getString(
+                            R.string.book_detail_all_review_count), hotReview.getTotal()));
+                    holder.setOnClickListener(R.id.tv_all_review_count, view ->
+                            getActivity(BookDetailActivity.class).openBookDetailCommunityFragment(1));
                 }
                 break;
             case VIEW_TYPE_BOOK_DETAIL_COMMUNITY:
+                holder.setText(R.id.tv_book_posts_count, String.format(UIUtils.getString(
+                        R.string.book_detail_post_count), mPostCount));
                 break;
             case VIEW_TYPE_BOOK_DETAIL_RECOMMEND_BOOK_LIST:
                 if (item != null) {
@@ -114,9 +148,31 @@ public class BookDetailAdapter extends BaseRvAdapter<BaseResponse> {
                     RecyclerView rvRecommendBookList = holder.getView(R.id.rv_recommend_booklist);
                     rvRecommendBookList.setLayoutManager(new LinearLayoutManager(mContext));
                     rvRecommendBookList.addItemDecoration(DividerUtils.defaultHorizontalDivider(mContext));
-                    rvRecommendBookList.setAdapter(new RecommendBookListAdapter(mContext, recommendBookList.getBooklists(), R.layout.item_recommend_booklist));
+                    RecommendBookListAdapter recommendBookListAdapter = new RecommendBookListAdapter(mContext, recommendBookList.getBooklists(), R.layout.item_recommend_booklist);
+                    rvRecommendBookList.setAdapter(recommendBookListAdapter);
+                    recommendBookListAdapter.setOnItemClickListener((holder1, position1, item1) -> {
+                        getActivity(BookDetailActivity.class).openRecommendBookListFragment();
+                    });
                 }
                 break;
+        }
+    }
+
+    private void refreshCollectionButtonText(BookDetail bookDetail, TextView tvCollection) {
+        if (RecommendManager.getInstance().bookInRecommend(bookDetail.getBookId())) {
+            initCollectionButtonText(tvCollection, false);
+        } else {
+            initCollectionButtonText(tvCollection, true);
+        }
+    }
+
+    private void initCollectionButtonText(TextView tvCollection, boolean collection) {
+        if (collection) {
+            tvCollection.setText("追更新");
+            mBookInRecommend = false;
+        } else {
+            tvCollection.setText("不追了");
+            mBookInRecommend = true;
         }
     }
 
@@ -168,30 +224,7 @@ public class BookDetailAdapter extends BaseRvAdapter<BaseResponse> {
 
         @Override
         public void onClick(View view) {
-            ShowUtils.showToast(tag);
-        }
-    }
-
-    private class HotReviewAdapter extends BaseRvAdapter<HotReview.ReviewsBean> {
-        public HotReviewAdapter(Context context, List<HotReview.ReviewsBean> dataList, int layoutId) {
-            super(context, dataList, layoutId);
-        }
-
-        @Override
-        public void convert(BaseViewHolder holder, HotReview.ReviewsBean item, int position, int viewType) {
-            CircleImageView ivHead = holder.getView(R.id.iv_head);
-            HotReview.ReviewsBean.AuthorBean author = item.getAuthor();
-            ImageLoader.getInstance().displayImage(mContext, Constant.IMG_BASE_URL + author.getAvatar(),
-                    Constant.MALE.equals(author.getGender()) ? R.mipmap.ic_male : R.mipmap.ic_female, ivHead);
-
-            holder.setText(R.id.tv_nickname, author.getNickname())
-                    .setText(R.id.tv_user_level, String.format(UIUtils.getString(R.string
-                            .book_detail_user_lv), author.getLv()))
-                    .setText(R.id.tv_review_title, item.getTitle())
-                    .setText(R.id.tv_review_content, item.getContent())
-                    .setText(R.id.tv_thumb_up, String.valueOf(item.getHelpful().getYes()));
-            PYRatingBar rbBookRating = holder.getView(R.id.rb_book_rating);
-            rbBookRating.setStar(item.getRating());
+            getActivity(BookDetailActivity.class).openBooksByTagFragment(tag);
         }
     }
 
@@ -208,9 +241,9 @@ public class BookDetailAdapter extends BaseRvAdapter<BaseResponse> {
             holder.setText(R.id.tv_title, item.getTitle())
                     .setText(R.id.tv_author, item.getAuthor())
                     .setText(R.id.tv_desc, item.getDesc())
-                    .setText(R.id.tv_recommend_count, String.format(UIUtils.getString(R.string
+                    .setText(R.id.tv_recommend_count, String.format(getString(R.string
                             .book_detail_recommend_book_list_book_count), item.getBookCount()))
-                    .setText(R.id.tv_collect_count, String.format(UIUtils.getString(R.string
+                    .setText(R.id.tv_collect_count, String.format(getString(R.string
                             .book_detail_recommend_book_list_collect_count), item.getCollectorCount()));
         }
     }
