@@ -18,6 +18,7 @@ import com.neuroandroid.pyreader.base.BaseResponse;
 import com.neuroandroid.pyreader.config.Constant;
 import com.neuroandroid.pyreader.manager.RecommendManager;
 import com.neuroandroid.pyreader.model.response.BookDetail;
+import com.neuroandroid.pyreader.model.response.BookList;
 import com.neuroandroid.pyreader.model.response.HotReview;
 import com.neuroandroid.pyreader.model.response.Recommend;
 import com.neuroandroid.pyreader.model.response.RecommendBookList;
@@ -151,7 +152,9 @@ public class BookDetailAdapter extends BaseRvAdapter<BaseResponse> {
                     RecommendBookListAdapter recommendBookListAdapter = new RecommendBookListAdapter(mContext, recommendBookList.getBooklists(), R.layout.item_recommend_booklist);
                     rvRecommendBookList.setAdapter(recommendBookListAdapter);
                     recommendBookListAdapter.setOnItemClickListener((holder1, position1, item1) -> {
-                        getActivity(BookDetailActivity.class).openRecommendBookListFragment();
+                        BookList.BookListsBean bookListsBean = BookList.BookListsBean.generateBookListsBean(item1);
+
+                        getActivity(BookDetailActivity.class).openRecommendBookListFragment(bookListsBean);
                     });
                 }
                 break;

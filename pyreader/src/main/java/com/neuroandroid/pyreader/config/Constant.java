@@ -23,6 +23,10 @@ public class Constant {
 
     public static final String FEMALE = "female";
 
+    public static final String MALE_TEXT = "男生";
+
+    public static final String FEMALE_TEXT = "女生";
+
     public static final String RECOMMEND = "recommend";
 
     public static final String SEARCH_HISTORY = "search_history";

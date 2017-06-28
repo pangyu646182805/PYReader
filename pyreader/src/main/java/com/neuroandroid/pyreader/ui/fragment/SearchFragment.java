@@ -1,5 +1,7 @@
 package com.neuroandroid.pyreader.ui.fragment;
 
+import android.animation.Animator;
+import android.animation.AnimatorListenerAdapter;
 import android.animation.ValueAnimator;
 import android.content.Context;
 import android.support.design.widget.AppBarLayout;
@@ -28,7 +30,6 @@ import com.neuroandroid.pyreader.model.response.HotWord;
 import com.neuroandroid.pyreader.model.response.SearchBooks;
 import com.neuroandroid.pyreader.mvp.contract.ISearchContract;
 import com.neuroandroid.pyreader.mvp.presenter.SearchPresenter;
-import com.neuroandroid.pyreader.ui.activity.MainActivity;
 import com.neuroandroid.pyreader.utils.NavigationUtils;
 import com.neuroandroid.pyreader.utils.ShowUtils;
 import com.neuroandroid.pyreader.utils.SoftKeyboardStateWatcher;
@@ -44,8 +45,7 @@ import butterknife.BindView;
  * Created by NeuroAndroid on 2017/6/22.
  */
 
-public class SearchFragment extends BaseFragment<ISearchContract.Presenter> implements
-        MainActivity.MainActivityFragmentCallbacks, ISearchContract.View {
+public class SearchFragment extends BaseFragment<ISearchContract.Presenter> implements ISearchContract.View {
     @BindView(R.id.app_bar)
     AppBarLayout mAppBarLayout;
     @BindView(R.id.blur_view)
@@ -83,6 +83,7 @@ public class SearchFragment extends BaseFragment<ISearchContract.Presenter> impl
 
     @Override
     protected void initView() {
+        setToolbarTitle("");
         mRvSearch.setLayoutManager(new LinearLayoutManager(mContext));
         mRvSearchResult.setLayoutManager(new LinearLayoutManager(mContext));
         mSearchAdapter = new SearchAdapter(mContext, null, null);
@@ -100,9 +101,6 @@ public class SearchFragment extends BaseFragment<ISearchContract.Presenter> impl
         mSearchDataList.add(null);
         mSearchDataList.add(null);
         mSearchAdapter.replaceAll(mSearchDataList);
-        mPresenter.getHotWord();
-
-        refreshSearchHistory();
     }
 
     /**
@@ -114,19 +112,27 @@ public class SearchFragment extends BaseFragment<ISearchContract.Presenter> impl
 
     @Override
     protected void initListener() {
-        mRootView.setOnTouchListener((view, motionEvent) -> true);
         mAppBarLayout.getViewTreeObserver().addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
             @Override
             public void onGlobalLayout() {
                 mAppBarLayout.getViewTreeObserver().removeOnGlobalLayoutListener(this);
                 mAppBarLayoutHeight = mAppBarLayout.getHeight();
                 mAppBarLayout.setTranslationY(-mAppBarLayoutHeight);
-                ViewCompat.animate(mAppBarLayout).translationY(0).setDuration(400).setInterpolator(new DecelerateInterpolator()).start();
 
                 ValueAnimator animator = ValueAnimator.ofInt(0, 100);
                 animator.addUpdateListener(valueAnimator -> {
                     int blurRadius = (int) valueAnimator.getAnimatedValue();
                     mBlurView.setBlurRadius(blurRadius);
+                });
+                animator.addListener(new AnimatorListenerAdapter() {
+                    @Override
+                    public void onAnimationEnd(Animator animation) {
+                        super.onAnimationEnd(animation);
+                        ViewCompat.animate(mAppBarLayout).translationY(0).setDuration(400).setInterpolator(new DecelerateInterpolator()).start();
+                        mPresenter.getHotWord();
+
+                        refreshSearchHistory();
+                    }
                 });
                 animator.setInterpolator(new DecelerateInterpolator());
                 animator.setDuration(400);
@@ -204,11 +210,6 @@ public class SearchFragment extends BaseFragment<ISearchContract.Presenter> impl
         CacheManager.saveSearchHistory(mContext, history);
 
         refreshSearchHistory();
-    }
-
-    @Override
-    public boolean handleBackPress() {
-        return false;
     }
 
     @Override

@@ -28,11 +28,8 @@ public class RecommendAdapter extends SelectAdapter<Recommend.BooksBean> {
     @Override
     public void convert(BaseViewHolder holder, Recommend.BooksBean item, int position, int viewType) {
         AppCompatCheckBox cbRecommend = holder.getView(R.id.cb_recommend);
-        if (isSelectMode()) {
-            cbRecommend.setVisibility(View.VISIBLE);
-        } else {
-            cbRecommend.setVisibility(View.GONE);
-        }
+        cbRecommend.setVisibility(isSelectMode() ? View.VISIBLE : View.GONE);
+        cbRecommend.setChecked(item.isSelected());
         ImageView ivBookCover = holder.getView(R.id.iv_book_cover);
         ImageLoader.getInstance().displayImage(mContext, Constant.IMG_BASE_URL + item.getCover(), R.mipmap.cover_default, ivBookCover);
 

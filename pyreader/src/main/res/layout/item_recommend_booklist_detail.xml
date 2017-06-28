@@ -1,0 +1,103 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.v7.widget.CardView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginBottom="@dimen/y16"
+    android:layout_marginLeft="@dimen/x16"
+    android:layout_marginRight="@dimen/x16"
+    android:foreground="?attr/selectableItemBackground"
+    app:cardBackgroundColor="@color/backgroundPanel"
+    app:cardCornerRadius="@dimen/x12"
+    app:cardElevation="@dimen/x4">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:padding="@dimen/x16">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <ImageView
+                android:id="@+id/iv_book_cover"
+                android:layout_width="@dimen/x135"
+                android:layout_height="@dimen/y180"
+                android:layout_gravity="center_vertical"
+                android:scaleType="centerInside"
+                android:src="@mipmap/cover_default"/>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:layout_marginLeft="@dimen/x32"
+                android:orientation="vertical">
+
+                <com.neuroandroid.pyreader.widget.NoPaddingTextView
+                    android:id="@+id/tv_title"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:ellipsize="end"
+                    android:lines="1"
+                    android:textColor="@color/colorGray333"
+                    android:textSize="16sp"
+                    tools:text="@string/default_book_title"/>
+
+                <com.neuroandroid.pyreader.widget.NoPaddingTextView
+                    android:id="@+id/tv_author"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/y16"
+                    android:textColor="@color/colorGray666"
+                    android:textSize="14sp"
+                    tools:text="鱼人二代"/>
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/y16"
+                    android:gravity="center_vertical"
+                    android:orientation="horizontal">
+
+                    <com.neuroandroid.pyreader.widget.NoPaddingTextView
+                        android:id="@+id/tv_recommend_count"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/subject_book_list_detail_book_lately_follower"
+                        android:textColor="@color/colorGray999"
+                        android:textSize="13sp"/>
+
+                    <com.neuroandroid.pyreader.widget.NoPaddingTextView
+                        android:id="@+id/tv_word_count"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/subject_book_list_detail_book_word_count"
+                        android:textColor="@color/colorGray999"
+                        android:textSize="13sp"/>
+                </LinearLayout>
+            </LinearLayout>
+        </LinearLayout>
+
+        <View
+            style="@style/HorizontalSplit"
+            android:layout_marginBottom="@dimen/y16"
+            android:layout_marginTop="@dimen/y16"/>
+
+        <com.neuroandroid.pyreader.widget.NoPaddingTextView
+            android:id="@+id/tv_book_detail_desc"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:ellipsize="end"
+            android:lineSpacingExtra="@dimen/y4"
+            android:maxLines="10"
+            android:textColor="@color/colorGray666"
+            android:textSize="13sp"
+            tools:text="book_detail_post_countbook_detail_post_countbook_detail_post_countbook_detail_post_countbook_detail_post_countbook_detail_post_countbook_detail_post_countbook_detail_post_countbook_detail_post_countbook_detail_post_countbook_detail_post_countbook_detail_post_countbook_detail_post_countbook_detail_post_countbook_detail_post_countbook_detail_post_countbook_detail_post_countbook_detail_post_countbook_detail_post_countbook_detail_post_countbook_detail_post_count"/>
+    </LinearLayout>
+</android.support.v7.widget.CardView>

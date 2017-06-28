@@ -4,7 +4,7 @@
         <shape android:shape="rectangle">
             <corners android:radius="@dimen/btn_radius"/>
             <solid android:color="@color/transparent"/>
-            <stroke android:color="@color/colorPrimary" android:width="@dimen/btn_stroke_width"/>
+            <stroke android:color="@color/white" android:width="@dimen/btn_stroke_width"/>
         </shape>
     </item>
 
@@ -12,7 +12,7 @@
         <shape android:shape="rectangle">
             <corners android:radius="@dimen/btn_radius"/>
             <solid android:color="@color/gray_6"/>
-            <stroke android:color="@color/colorPrimary" android:width="@dimen/btn_stroke_width"/>
+            <stroke android:color="@color/white" android:width="@dimen/btn_stroke_width"/>
         </shape>
     </item>
 </selector>

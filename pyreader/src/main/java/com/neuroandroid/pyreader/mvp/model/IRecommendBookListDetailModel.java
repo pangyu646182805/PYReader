@@ -8,6 +8,6 @@ import io.reactivex.Observable;
  * Created by NeuroAndroid on 2017/6/27.
  */
 
-public interface IRecommendBookListModel {
+public interface IRecommendBookListDetailModel {
     Observable<BookListDetail> getBookListDetail(String bookListId);
 }

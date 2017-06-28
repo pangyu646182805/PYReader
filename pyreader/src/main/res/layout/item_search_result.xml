@@ -9,9 +9,9 @@
     android:layout_marginRight="@dimen/x16"
     android:layout_marginTop="@dimen/y8"
     android:foreground="?attr/selectableItemBackground"
-    app:cardBackgroundColor="@color/backgroundPanel"
+    app:cardBackgroundColor="@color/white_a"
     app:cardCornerRadius="@dimen/x12"
-    app:cardElevation="@dimen/x4">
+    app:cardElevation="0dp">
 
     <LinearLayout
         android:layout_width="match_parent"

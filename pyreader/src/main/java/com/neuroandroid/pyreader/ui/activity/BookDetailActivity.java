@@ -16,13 +16,14 @@ import com.neuroandroid.pyreader.base.BaseFragment;
 import com.neuroandroid.pyreader.base.BaseResponse;
 import com.neuroandroid.pyreader.config.Constant;
 import com.neuroandroid.pyreader.model.response.BookDetail;
+import com.neuroandroid.pyreader.model.response.BookList;
 import com.neuroandroid.pyreader.model.response.HotReview;
 import com.neuroandroid.pyreader.model.response.RecommendBookList;
 import com.neuroandroid.pyreader.mvp.contract.IBookDetailContract;
 import com.neuroandroid.pyreader.mvp.presenter.BookDetailPresenter;
 import com.neuroandroid.pyreader.ui.fragment.BookDetailCommunityFragment;
 import com.neuroandroid.pyreader.ui.fragment.BooksByTagFragment;
-import com.neuroandroid.pyreader.ui.fragment.RecommendBookListFragment;
+import com.neuroandroid.pyreader.ui.fragment.RecommendBookListDetailFragment;
 import com.neuroandroid.pyreader.utils.ColorUtils;
 import com.neuroandroid.pyreader.utils.DividerUtils;
 import com.neuroandroid.pyreader.utils.FragmentUtils;
@@ -223,8 +224,11 @@ public class BookDetailActivity extends BaseActivity<IBookDetailContract.Present
         FragmentUtils.replaceFragment(getSupportFragmentManager(), mCurrentFragment, R.id.fl_container, false);
     }
 
-    public void openRecommendBookListFragment() {
-        mCurrentFragment = new RecommendBookListFragment();
+    public void openRecommendBookListFragment(BookList.BookListsBean bookListsBean) {
+        mCurrentFragment = new RecommendBookListDetailFragment();
+        Bundle bundle = new Bundle();
+        bundle.putSerializable(RecommendBookListDetailFragment.BUNDLE_BEAN, bookListsBean);
+        mCurrentFragment.setArguments(bundle);
         FragmentUtils.replaceFragment(getSupportFragmentManager(), mCurrentFragment, R.id.fl_container, false);
     }
 

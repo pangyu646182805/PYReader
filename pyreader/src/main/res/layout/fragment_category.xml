@@ -15,7 +15,6 @@
         android:layout_height="match_parent">
 
         <com.lcodecore.tkrefreshlayout.TwinklingRefreshLayout
-            android:id="@+id/refresh_layout"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             app:tr_max_bottom_height="@dimen/y1280"
@@ -23,22 +22,17 @@
             app:tr_pureScrollMode_on="true">
 
             <android.support.v7.widget.RecyclerView
-                android:id="@+id/rv_book_list"
+                android:id="@+id/rv_category"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:overScrollMode="never"
-                android:scrollbarStyle="insideOverlay"
-                android:scrollbars="vertical"/>
+                android:overScrollMode="never"/>
         </com.lcodecore.tkrefreshlayout.TwinklingRefreshLayout>
 
-        <com.neuroandroid.pyreader.widget.StateLayout
-            android:id="@id/state_layout"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            app:state_layout_error_text="@string/error_desc"
-            app:state_layout_img_height="@dimen/y210"
-            app:state_layout_img_res="@mipmap/ic_no_internet"
-            app:state_layout_img_width="@dimen/x288"
-            app:state_layout_reload_text="@string/state_reload"/>
+        <android.support.v4.widget.ContentLoadingProgressBar
+            android:id="@+id/pb"
+            style="?android:attr/progressBarStyle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"/>
     </FrameLayout>
 </LinearLayout>

@@ -4,19 +4,19 @@ import com.neuroandroid.pyreader.base.BaseObserver;
 import com.neuroandroid.pyreader.base.BasePresenter;
 import com.neuroandroid.pyreader.config.Constant;
 import com.neuroandroid.pyreader.model.response.BookListDetail;
-import com.neuroandroid.pyreader.mvp.contract.IRecommendBookListContract;
-import com.neuroandroid.pyreader.mvp.model.impl.RecommendBookListModelImpl;
+import com.neuroandroid.pyreader.mvp.contract.IRecommendBookListDetailContract;
+import com.neuroandroid.pyreader.mvp.model.impl.RecommendBookListDetailModelImpl;
 import com.neuroandroid.pyreader.utils.RxUtils;
 
 /**
  * Created by NeuroAndroid on 2017/6/27.
  */
 
-public class RecommendBookListPresenter extends BasePresenter<RecommendBookListModelImpl, IRecommendBookListContract.View>
-        implements IRecommendBookListContract.Presenter {
-    public RecommendBookListPresenter(IRecommendBookListContract.View view) {
+public class RecommendBookListDetailPresenter extends BasePresenter<RecommendBookListDetailModelImpl, IRecommendBookListDetailContract.View>
+        implements IRecommendBookListDetailContract.Presenter {
+    public RecommendBookListDetailPresenter(IRecommendBookListDetailContract.View view) {
         super(view);
-        mModel = new RecommendBookListModelImpl(Constant.API_BASE_URL);
+        mModel = new RecommendBookListDetailModelImpl(Constant.API_BASE_URL);
         mView.setPresenter(this);
     }
 

@@ -3,14 +3,19 @@ package com.neuroandroid.pyreader.ui.fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 
+import com.afollestad.materialcab.MaterialCab;
 import com.google.gson.Gson;
 import com.lcodecore.tkrefreshlayout.RefreshListenerAdapter;
 import com.lcodecore.tkrefreshlayout.TwinklingRefreshLayout;
 import com.neuroandroid.pyreader.R;
 import com.neuroandroid.pyreader.adapter.RecommendAdapter;
+import com.neuroandroid.pyreader.adapter.base.BaseViewHolder;
 import com.neuroandroid.pyreader.adapter.base.ISelect;
+import com.neuroandroid.pyreader.adapter.base.SelectAdapter;
 import com.neuroandroid.pyreader.base.BaseLazyFragment;
 import com.neuroandroid.pyreader.event.BaseEvent;
 import com.neuroandroid.pyreader.manager.RecommendManager;
@@ -18,6 +23,7 @@ import com.neuroandroid.pyreader.manager.SettingManager;
 import com.neuroandroid.pyreader.model.response.Recommend;
 import com.neuroandroid.pyreader.mvp.contract.IRecommendContract;
 import com.neuroandroid.pyreader.mvp.presenter.RecommendPresenter;
+import com.neuroandroid.pyreader.ui.activity.MainActivity;
 import com.neuroandroid.pyreader.utils.DividerUtils;
 import com.neuroandroid.pyreader.utils.L;
 import com.neuroandroid.pyreader.utils.NavigationUtils;
@@ -29,6 +35,7 @@ import com.neuroandroid.pyreader.widget.dialog.BookDialog;
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.BindView;
@@ -36,12 +43,15 @@ import butterknife.BindView;
 /**
  * Created by NeuroAndroid on 2017/6/19.
  */
-public class RecommendFragment extends BaseLazyFragment<IRecommendContract.Presenter> implements IRecommendContract.View {
+public class RecommendFragment extends BaseLazyFragment<IRecommendContract.Presenter> implements IRecommendContract.View, MaterialCab.Callback {
     @BindView(R.id.refresh_layout)
     TwinklingRefreshLayout mRefreshLayout;
     @BindView(R.id.rv_recommend)
     RecyclerView mRvRecommend;
     private RecommendAdapter mRecommendAdapter;
+    private MaterialCab mCab;
+
+    private List<Recommend.BooksBean> mSelectedBooks = new ArrayList<>();
 
     @Override
     protected void initPresenter() {
@@ -116,12 +126,30 @@ public class RecommendFragment extends BaseLazyFragment<IRecommendContract.Prese
                                     case 2:
 
                                         break;
-                                    case 3:
-
+                                    case 3:  // 批量管理
+                                        mCab = getActivity(MainActivity.class).openCab(R.menu.menu_book_manage, this);
                                         break;
                                 }
                             }
                         }).showDialog());
+        mRecommendAdapter.setItemSelectedListener(new SelectAdapter.OnItemSelectedListener<Recommend.BooksBean>() {
+            @Override
+            public void onItemSelected(BaseViewHolder viewHolder, int position, boolean isSelected, Recommend.BooksBean booksBean) {
+                if (isSelected) {
+                    mSelectedBooks.add(booksBean);
+                } else {
+                    mSelectedBooks.remove(booksBean);
+                }
+                setMaterialCabTitle();
+                mCab.getMenu().findItem(R.id.action_select_all).setTitle(mSelectedBooks.size() == mRecommendAdapter.getDataListSize() ?
+                        UIUtils.getString(R.string.un_select_all) : UIUtils.getString(R.string.select_all));
+            }
+
+            @Override
+            public void onNothingSelected() {
+                closeMaterialCab();
+            }
+        });
     }
 
     @Override
@@ -133,6 +161,24 @@ public class RecommendFragment extends BaseLazyFragment<IRecommendContract.Prese
             }
         } else {
             mRefreshLayout.finishRefreshing();
+        }
+    }
+
+    /**
+     * 关闭MaterialCab
+     */
+    private void closeMaterialCab() {
+        if (mCab != null && mCab.isActive()) mCab.finish();
+    }
+
+    /**
+     * 设置MaterialCab的标题
+     */
+    private void setMaterialCabTitle() {
+        if (mSelectedBooks.size() == 1) {
+            mCab.setTitle(mSelectedBooks.get(0).getTitle());
+        } else if (mSelectedBooks.size() > 1) {
+            mCab.setTitle(String.format(UIUtils.getString(R.string.x_selected), mSelectedBooks.size()));
         }
     }
 
@@ -177,5 +223,48 @@ public class RecommendFragment extends BaseLazyFragment<IRecommendContract.Prese
                 mRefreshLayout.startRefresh();
                 break;
         }
+    }
+
+    @Override
+    public boolean onCabCreated(MaterialCab cab, Menu menu) {
+        mRefreshLayout.setEnableRefresh(false);
+        mRecommendAdapter.updateSelectMode(true);
+        cab.setTitle(UIUtils.getString(R.string.book_manage));
+        return true;
+    }
+
+    @Override
+    public boolean onCabItemClicked(MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.action_select_all:
+                if (UIUtils.getString(R.string.select_all).equals(item.getTitle())) {
+                    // 全选
+                    item.setTitle(UIUtils.getString(R.string.un_select_all));
+                    mRecommendAdapter.selectAll();
+                    mSelectedBooks.clear();
+                    mSelectedBooks.addAll(mRecommendAdapter.getDataList());
+                    setMaterialCabTitle();
+                } else {
+                    // 取消全选
+                    item.setTitle(UIUtils.getString(R.string.select_all));
+                    mRecommendAdapter.clearSelected();
+                    mCab.setTitle(UIUtils.getString(R.string.book_manage));
+                    mSelectedBooks.clear();
+                }
+                mRecommendAdapter.notifyDataSetChanged();
+                break;
+            case R.id.action_delete:
+                ShowUtils.showToast("删除");
+                break;
+        }
+        return true;
+    }
+
+    @Override
+    public boolean onCabFinished(MaterialCab cab) {
+        mRefreshLayout.setEnableRefresh(true);
+        mRecommendAdapter.updateSelectMode(false);
+        mSelectedBooks.clear();
+        return true;
     }
 }

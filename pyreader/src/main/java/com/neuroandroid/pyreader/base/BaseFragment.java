@@ -7,6 +7,8 @@ import android.support.annotation.Nullable;
 import android.support.annotation.StringRes;
 import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
@@ -70,7 +72,7 @@ public abstract class BaseFragment<P extends IPresenter> extends RxFragment impl
             initPresenter();
             if (mToolbar != null) {
                 getBaseActivity().setSupportActionBar(mToolbar);
-                if (useOptionsMenu()) setHasOptionsMenu(true);
+                setHasOptionsMenu(true);
                 if (supportImmersive() && mStatusBar != null) {
                     setStatusBar(mStatusBar);
                 }
@@ -123,6 +125,10 @@ public abstract class BaseFragment<P extends IPresenter> extends RxFragment impl
 
     }
 
+    protected Toolbar getToolbar() {
+        return mToolbar;
+    }
+
     /**
      * 设置返回按钮
      */
@@ -145,6 +151,13 @@ public abstract class BaseFragment<P extends IPresenter> extends RxFragment impl
             return (BaseActivity) mActivity;
         }
         return null;
+    }
+
+    /**
+     * 获取activity
+     */
+    public <T> T getActivity(Class<T> clazz) {
+        return (T) mActivity;
     }
 
     /**
@@ -173,16 +186,20 @@ public abstract class BaseFragment<P extends IPresenter> extends RxFragment impl
      */
     protected abstract int attachLayoutRes();
 
-    protected void initPresenter() {}
+    protected void initPresenter() {
+    }
 
     /**
      * 初始化视图控件
      */
-    protected void initView() {}
+    protected void initView() {
+    }
 
-    protected void initData() {}
+    protected void initData() {
+    }
 
-    protected void initListener() {}
+    protected void initListener() {
+    }
 
     /**
      * 是否使用EventBus(默认不适用)
@@ -193,12 +210,14 @@ public abstract class BaseFragment<P extends IPresenter> extends RxFragment impl
     }
 
     /**
-     * Fragment是否使用ToolBar菜单
      * setHasOptionsMenu(true) 表示加载ToolBar菜单
-     * 默认为false， 如需求子类实现此方法并且返回true
+     * 但是Fragment的ToolBar菜单是Activity传递过来的
+     * Fragment需要实现自己的ToolBar菜单则需要menu.clear()
      */
-    protected boolean useOptionsMenu() {
-        return false;
+    @Override
+    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+        super.onCreateOptionsMenu(menu, inflater);
+        menu.clear();
     }
 
     @Override

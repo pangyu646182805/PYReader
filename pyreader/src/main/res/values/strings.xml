@@ -6,9 +6,17 @@
     <string name="cancel">取消</string>
     <string name="confirm">确定</string>
 
+    <string name="book_manage">批量管理</string>
+    <string name="x_selected">已选择 %1$d</string>
+    <string name="select_all">全选</string>
+    <string name="un_select_all">取消全选</string>
+
     <string name="recommend">追书</string>
-    <string name="community">社区</string>
     <string name="discover">发现</string>
+
+    <string name="ranking">排行榜</string>
+    <string name="topic">主题书单</string>
+    <string name="category">分类</string>
 
     <string name="discussion">讨论</string>
     <string name="review">书评</string>
@@ -26,6 +34,8 @@
     <string name="book_detail_recommend_book_list_book_count">共%1$d本书 |&#160;</string>
     <string name="book_detail_recommend_book_list_collect_count">%1$d人收藏</string>
     <string name="search_hint_text">输入书名或作者名</string>
+    <string name="subject_book_list_detail_book_word_count">|  %1$d&#160;万字</string>
+    <string name="subject_book_list_detail_book_lately_follower">%1$d&#160;人在追&#160;</string>
 
     <string name="search_result_lately_follower">"%1$d人在追  |  "</string>
     <string name="search_result_retention_ratio">"%1$s%%读者留存  |  "</string>
@@ -36,4 +46,6 @@
 
     <string name="book_detail_all_review_count">全部书评%1$d条</string>
     <string name="book_detail_post_count">共有%1$d个帖子</string>
+
+    <string name="category_book_count">%1$d本</string>
 </resources>

@@ -10,9 +10,8 @@ import android.util.SparseArray;
 import android.view.ViewGroup;
 
 import com.neuroandroid.pyreader.R;
-import com.neuroandroid.pyreader.ui.fragment.RecommendFragment;
-import com.neuroandroid.pyreader.ui.fragment.CommunityFragment;
 import com.neuroandroid.pyreader.ui.fragment.DiscoverFragment;
+import com.neuroandroid.pyreader.ui.fragment.RecommendFragment;
 import com.neuroandroid.pyreader.utils.UIUtils;
 
 import java.lang.ref.WeakReference;
@@ -33,7 +32,6 @@ public class PYReaderPagerAdapter extends FragmentPagerAdapter {
         super(fm);
         mContext = context;
         mTitles = new String[]{UIUtils.getString(R.string.recommend),
-                UIUtils.getString(R.string.community),
                 UIUtils.getString(R.string.discover)};
         final PYReaderFragments[] fragments = PYReaderFragments.values();
         for (final PYReaderPagerAdapter.PYReaderFragments fragment : fragments) {
@@ -100,7 +98,6 @@ public class PYReaderPagerAdapter extends FragmentPagerAdapter {
 
     public enum PYReaderFragments {
         RECOMMEND(RecommendFragment.class),
-        COMMUNITY(CommunityFragment.class),
         DISCOVER(DiscoverFragment.class);
 
         private final Class<? extends Fragment> mFragmentClass;

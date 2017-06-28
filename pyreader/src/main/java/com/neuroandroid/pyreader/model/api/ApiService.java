@@ -3,6 +3,7 @@ package com.neuroandroid.pyreader.model.api;
 import com.neuroandroid.pyreader.model.response.BookDetail;
 import com.neuroandroid.pyreader.model.response.BookListDetail;
 import com.neuroandroid.pyreader.model.response.BooksByTag;
+import com.neuroandroid.pyreader.model.response.CategoryList;
 import com.neuroandroid.pyreader.model.response.DiscussionList;
 import com.neuroandroid.pyreader.model.response.HotReview;
 import com.neuroandroid.pyreader.model.response.HotWord;
@@ -99,4 +100,10 @@ public interface ApiService {
      */
     @GET("/book-list/{bookListId}")
     Observable<BookListDetail> getBookListDetail(@Path("bookListId") String bookListId);
+
+    /**
+     * 获取分类
+     */
+    @GET("/cats/lv2/statistics")
+    Observable<CategoryList> getCategoryList();
 }

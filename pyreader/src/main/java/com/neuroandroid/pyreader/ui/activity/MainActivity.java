@@ -1,17 +1,25 @@
 package com.neuroandroid.pyreader.ui.activity;
 
+import android.support.annotation.NonNull;
 import android.support.v4.view.ViewPager;
 import android.view.Menu;
 import android.view.MenuItem;
 
+import com.afollestad.materialcab.MaterialCab;
 import com.neuroandroid.pyreader.R;
 import com.neuroandroid.pyreader.adapter.PYReaderPagerAdapter;
 import com.neuroandroid.pyreader.base.BaseActivity;
+import com.neuroandroid.pyreader.base.BaseFragment;
 import com.neuroandroid.pyreader.config.Constant;
 import com.neuroandroid.pyreader.event.ChooseSexEvent;
+import com.neuroandroid.pyreader.interfaces.MaterialCabCallBack;
 import com.neuroandroid.pyreader.manager.SettingManager;
+import com.neuroandroid.pyreader.ui.fragment.CategoryFragment;
+import com.neuroandroid.pyreader.ui.fragment.RankingFragment;
 import com.neuroandroid.pyreader.ui.fragment.SearchFragment;
+import com.neuroandroid.pyreader.ui.fragment.TopicFragment;
 import com.neuroandroid.pyreader.utils.FragmentUtils;
+import com.neuroandroid.pyreader.utils.L;
 import com.neuroandroid.pyreader.utils.ShowUtils;
 import com.neuroandroid.pyreader.utils.UIUtils;
 import com.neuroandroid.pyreader.widget.dialog.ChooseSexDialog;
@@ -21,13 +29,14 @@ import org.greenrobot.eventbus.EventBus;
 
 import butterknife.BindView;
 
-public class MainActivity extends BaseActivity {
+public class MainActivity extends BaseActivity implements MaterialCabCallBack {
     @BindView(R.id.tabs)
     SlidingTabLayout mTabs;
     @BindView(R.id.vp_content)
     ViewPager mVpContent;
 
-    private SearchFragment mSearchFragment;
+    private BaseFragment mCurrentFragment;
+    private MaterialCab mCab;
 
     @Override
     protected int attachLayoutRes() {
@@ -73,8 +82,7 @@ public class MainActivity extends BaseActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.action_search:
-                mSearchFragment = new SearchFragment();
-                FragmentUtils.replaceFragment(getSupportFragmentManager(), mSearchFragment, R.id.fl_container, false);
+                openSearchFragment();
                 break;
             case R.id.action_scan_book:
                 ShowUtils.showToast("扫描书籍");
@@ -93,18 +101,85 @@ public class MainActivity extends BaseActivity {
     }
 
     public boolean handleBackPress() {
-        if (mSearchFragment != null) {
-            FragmentUtils.removeFragment(mSearchFragment);
-            mSearchFragment = null;
+        if (mCurrentFragment != null) {
+            FragmentUtils.removeFragment(mCurrentFragment);
+            mCurrentFragment = null;
+            return true;
+        }
+        return closeMaterialCab();
+    }
+
+    /**
+     * 关闭MaterialCab
+     */
+    private boolean closeMaterialCab() {
+        if (mCab != null && mCab.isActive()) {
+            mCab.finish();
             return true;
         }
         return false;
     }
 
+    @NonNull
+    @Override
+    public MaterialCab openCab(int menuRes, MaterialCab.Callback callback) {
+        if (mCab != null && mCab.isActive()) mCab.finish();
+        mCab = new MaterialCab(this, R.id.cab_stub)
+                .setMenu(menuRes)
+                .setPopupMenuTheme(R.style.ThemeOverlay_AppCompat_Light)
+                .setCloseDrawableRes(R.drawable.ic_close_white)
+                .setBackgroundColorRes(R.color.colorPrimary)
+                .start(new MaterialCab.Callback() {
+                    @Override
+                    public boolean onCabCreated(MaterialCab cab, Menu menu) {
+                        L.e("onCabCreated");
+                        return callback.onCabCreated(cab, menu);
+                    }
+
+                    @Override
+                    public boolean onCabItemClicked(MenuItem item) {
+                        L.e("onCabItemClicked");
+                        return callback.onCabItemClicked(item);
+                    }
+
+                    @Override
+                    public boolean onCabFinished(MaterialCab cab) {
+                        L.e("onCabFinished");
+                        return callback.onCabFinished(cab);
+                    }
+                });
+        return mCab;
+    }
+
     /**
-     * 处理fragment返回事件
+     * 打开SearchFragment
      */
-    public interface MainActivityFragmentCallbacks {
-        boolean handleBackPress();
+    private void openSearchFragment() {
+        mCurrentFragment = new SearchFragment();
+        FragmentUtils.replaceFragment(getSupportFragmentManager(), mCurrentFragment, R.id.fl_container, false);
+    }
+
+    /**
+     * 打开CategoryFragment
+     */
+    public void openCategoryFragment() {
+        mCurrentFragment = new CategoryFragment();
+        FragmentUtils.replaceFragment(getSupportFragmentManager(), mCurrentFragment, R.id.fl_container, false);
+    }
+
+    /**
+     * 打开RankingFragment
+     */
+    public void openRankingFragment() {
+        mCurrentFragment = new RankingFragment();
+        FragmentUtils.replaceFragment(getSupportFragmentManager(), mCurrentFragment, R.id.fl_container, false);
+    }
+
+    /**
+     * 打开TopicFragment
+     */
+    public void openTopicFragment() {
+        mCurrentFragment = new TopicFragment();
+        FragmentUtils.replaceFragment(getSupportFragmentManager(), mCurrentFragment, R.id.fl_container, false);
     }
 }

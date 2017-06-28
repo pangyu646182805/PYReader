@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@color/backgroundPanel"
+    android:orientation="vertical"
+    android:padding="@dimen/x32">
+
+    <com.neuroandroid.pyreader.widget.NoPaddingTextView
+        android:id="@+id/tv_text"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:lines="1"
+        android:maxEms="10"
+        android:text="男生"
+        android:textColor="@color/colorGray666"
+        android:textSize="13sp"/>
+</LinearLayout>

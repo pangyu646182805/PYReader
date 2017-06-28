@@ -8,7 +8,7 @@ import com.neuroandroid.pyreader.model.response.BookListDetail;
  * Created by NeuroAndroid on 2017/6/14.
  */
 
-public interface IRecommendBookListContract {
+public interface IRecommendBookListDetailContract {
     interface Presenter extends IPresenter {
         /**
          * 获取书单详情
