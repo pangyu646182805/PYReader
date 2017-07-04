@@ -19,6 +19,8 @@ public class Constant {
 
     public static final String USER_CHOOSE_SEX = "user_choose_sex";
 
+    public static final String GENDER = "gender";
+
     public static final String MALE = "male";
 
     public static final String FEMALE = "female";
@@ -28,6 +30,8 @@ public class Constant {
     public static final String FEMALE_TEXT = "女生";
 
     public static final String RECOMMEND = "recommend";
+
+    public static final String CATEGORY_NAME = "category_name";
 
     public static final String SEARCH_HISTORY = "search_history";
 
@@ -55,4 +59,23 @@ public class Constant {
 
         String COMMENT_COUNT = "comment-count";
     }
+
+    @Retention(RetentionPolicy.SOURCE)
+    public @interface MajorType {
+        String HOT = "hot";
+
+        String NEW = "new";
+
+        String REPUTATION = "reputation";
+
+        String OVER = "over";
+    }
+
+    public static final String HOT = "热门";
+
+    public static final String NEW = "新书";
+
+    public static final String REPUTATION = "好评";
+
+    public static final String OVER = "完结";
 }

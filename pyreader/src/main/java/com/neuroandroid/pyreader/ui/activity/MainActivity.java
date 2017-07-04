@@ -1,6 +1,7 @@
 package com.neuroandroid.pyreader.ui.activity;
 
 import android.support.annotation.NonNull;
+import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewPager;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -9,7 +10,6 @@ import com.afollestad.materialcab.MaterialCab;
 import com.neuroandroid.pyreader.R;
 import com.neuroandroid.pyreader.adapter.PYReaderPagerAdapter;
 import com.neuroandroid.pyreader.base.BaseActivity;
-import com.neuroandroid.pyreader.base.BaseFragment;
 import com.neuroandroid.pyreader.config.Constant;
 import com.neuroandroid.pyreader.event.ChooseSexEvent;
 import com.neuroandroid.pyreader.interfaces.MaterialCabCallBack;
@@ -35,7 +35,7 @@ public class MainActivity extends BaseActivity implements MaterialCabCallBack {
     @BindView(R.id.vp_content)
     ViewPager mVpContent;
 
-    private BaseFragment mCurrentFragment;
+    private MainActivityFragmentCallbacks mCurrentFragment;
     private MaterialCab mCab;
 
     @Override
@@ -100,11 +100,18 @@ public class MainActivity extends BaseActivity implements MaterialCabCallBack {
             super.onBackPressed();
     }
 
+    /**
+     * 返回true则会屏蔽返回事件
+     */
     public boolean handleBackPress() {
-        if (mCurrentFragment != null) {
-            FragmentUtils.removeFragment(mCurrentFragment);
-            mCurrentFragment = null;
+        if (mCurrentFragment != null && mCurrentFragment.handleBackPress()) {
             return true;
+        } else {
+            if (mCurrentFragment != null) {
+                FragmentUtils.removeFragment((Fragment) mCurrentFragment);
+                mCurrentFragment = null;
+                return true;
+            }
         }
         return closeMaterialCab();
     }
@@ -155,31 +162,39 @@ public class MainActivity extends BaseActivity implements MaterialCabCallBack {
      * 打开SearchFragment
      */
     private void openSearchFragment() {
-        mCurrentFragment = new SearchFragment();
-        FragmentUtils.replaceFragment(getSupportFragmentManager(), mCurrentFragment, R.id.fl_container, false);
+        setCurrentFragment(new SearchFragment());
     }
 
     /**
      * 打开CategoryFragment
      */
     public void openCategoryFragment() {
-        mCurrentFragment = new CategoryFragment();
-        FragmentUtils.replaceFragment(getSupportFragmentManager(), mCurrentFragment, R.id.fl_container, false);
+        setCurrentFragment(new CategoryFragment());
     }
 
     /**
      * 打开RankingFragment
      */
     public void openRankingFragment() {
-        mCurrentFragment = new RankingFragment();
-        FragmentUtils.replaceFragment(getSupportFragmentManager(), mCurrentFragment, R.id.fl_container, false);
+        setCurrentFragment(new RankingFragment());
     }
 
     /**
      * 打开TopicFragment
      */
     public void openTopicFragment() {
-        mCurrentFragment = new TopicFragment();
-        FragmentUtils.replaceFragment(getSupportFragmentManager(), mCurrentFragment, R.id.fl_container, false);
+        setCurrentFragment(new TopicFragment());
+    }
+
+    private void setCurrentFragment(Fragment fragment) {
+        FragmentUtils.replaceFragment(getSupportFragmentManager(), fragment, R.id.fl_container, false);
+        mCurrentFragment = (MainActivityFragmentCallbacks) fragment;
+    }
+
+    /**
+     * 处理fragment返回事件
+     */
+    public interface MainActivityFragmentCallbacks {
+        boolean handleBackPress();
     }
 }

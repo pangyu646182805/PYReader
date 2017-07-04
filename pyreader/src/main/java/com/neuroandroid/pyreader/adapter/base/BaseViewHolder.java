@@ -9,6 +9,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import static android.R.attr.value;
+
 /**
  * Created by NeuroAndroid on 2017/6/14.
  */
@@ -42,6 +44,12 @@ public class BaseViewHolder extends RecyclerView.ViewHolder {
     public BaseViewHolder setText(@IdRes int viewId, CharSequence value) {
         TextView view = getView(viewId);
         if (view != null) view.setText(value);
+        return this;
+    }
+
+    public BaseViewHolder setTextColor(@IdRes int viewId, int color) {
+        TextView view = getView(viewId);
+        if (view != null) view.setTextColor(color);
         return this;
     }
 

@@ -1,6 +1,8 @@
 package com.neuroandroid.pyreader.ui.fragment;
 
 import android.content.Context;
+import android.os.Bundle;
+import android.support.v4.app.Fragment;
 import android.support.v4.widget.ContentLoadingProgressBar;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -14,7 +16,9 @@ import com.neuroandroid.pyreader.config.Constant;
 import com.neuroandroid.pyreader.model.response.CategoryList;
 import com.neuroandroid.pyreader.mvp.contract.ICategoryContract;
 import com.neuroandroid.pyreader.mvp.presenter.CategoryPresenter;
+import com.neuroandroid.pyreader.ui.activity.MainActivity;
 import com.neuroandroid.pyreader.utils.DividerUtils;
+import com.neuroandroid.pyreader.utils.FragmentUtils;
 import com.neuroandroid.pyreader.utils.ShowUtils;
 import com.neuroandroid.pyreader.utils.UIUtils;
 
@@ -27,7 +31,8 @@ import butterknife.BindView;
  * Created by NeuroAndroid on 2017/6/28.
  */
 
-public class CategoryFragment extends BaseFragment<ICategoryContract.Presenter> implements ICategoryContract.View {
+public class CategoryFragment extends BaseFragment<ICategoryContract.Presenter>
+        implements ICategoryContract.View, MainActivity.MainActivityFragmentCallbacks {
     private static final int CATEGORY_SPAN_SIZE = 3;
 
     @BindView(R.id.rv_category)
@@ -38,6 +43,8 @@ public class CategoryFragment extends BaseFragment<ICategoryContract.Presenter> 
     private GridLayoutManager mGridLayoutManager;
     private List<CategoryList.MaleBean> mCategoryDataList = new ArrayList<>();
     private int size;
+
+    private MainActivity.MainActivityFragmentCallbacks mCurrentFragment;
 
     @Override
     protected void initPresenter() {
@@ -78,7 +85,17 @@ public class CategoryFragment extends BaseFragment<ICategoryContract.Presenter> 
             }
         });
         mRvCategory.setLayoutManager(mGridLayoutManager);
-        mRvCategory.setAdapter(new CategoryAdapter(mContext, mCategoryDataList, null));
+        CategoryAdapter categoryAdapter = new CategoryAdapter(mContext, mCategoryDataList, null);
+        mRvCategory.setAdapter(categoryAdapter);
+        categoryAdapter.setOnItemClickListener((holder, position, item) -> {
+            if (item != null) {
+                if (position < size) {
+                    toCategoryListFragment(item.getName(), Constant.MALE);
+                } else {
+                    toCategoryListFragment(item.getName(), Constant.FEMALE);
+                }
+            }
+        });
     }
 
     @Override
@@ -95,6 +112,40 @@ public class CategoryFragment extends BaseFragment<ICategoryContract.Presenter> 
             spanSize = 1;
         }
         return spanSize;
+    }
+
+    /**
+     * 跳转到CategoryListFragment页面
+     */
+    private void toCategoryListFragment(String categoryName, String gender) {
+        CategoryListFragment categoryListFragment = new CategoryListFragment();
+        Bundle bundle = new Bundle();
+        bundle.putString(Constant.CATEGORY_NAME, categoryName);
+        bundle.putString(Constant.GENDER, gender);
+        categoryListFragment.setArguments(bundle);
+        setCurrentFragment(categoryListFragment);
+    }
+
+    private void setCurrentFragment(Fragment fragment) {
+        FragmentUtils.replaceFragment(getChildFragmentManager(), fragment, R.id.fl_container, false);
+        mCurrentFragment = (MainActivity.MainActivityFragmentCallbacks) fragment;
+    }
+
+    /**
+     * 返回true屏蔽一次返回事件
+     */
+    @Override
+    public boolean handleBackPress() {
+        if (mCurrentFragment != null && mCurrentFragment.handleBackPress()) {
+            return true;
+        } else {
+            if (mCurrentFragment != null) {
+                FragmentUtils.removeFragment((Fragment) mCurrentFragment);
+                mCurrentFragment = null;
+                return true;
+            }
+        }
+        return false;
     }
 
     class CategoryAdapter extends BaseRvAdapter<CategoryList.MaleBean> {

@@ -30,6 +30,7 @@ import com.neuroandroid.pyreader.model.response.HotWord;
 import com.neuroandroid.pyreader.model.response.SearchBooks;
 import com.neuroandroid.pyreader.mvp.contract.ISearchContract;
 import com.neuroandroid.pyreader.mvp.presenter.SearchPresenter;
+import com.neuroandroid.pyreader.ui.activity.MainActivity;
 import com.neuroandroid.pyreader.utils.NavigationUtils;
 import com.neuroandroid.pyreader.utils.ShowUtils;
 import com.neuroandroid.pyreader.utils.SoftKeyboardStateWatcher;
@@ -45,7 +46,8 @@ import butterknife.BindView;
  * Created by NeuroAndroid on 2017/6/22.
  */
 
-public class SearchFragment extends BaseFragment<ISearchContract.Presenter> implements ISearchContract.View {
+public class SearchFragment extends BaseFragment<ISearchContract.Presenter>
+        implements ISearchContract.View, MainActivity.MainActivityFragmentCallbacks {
     @BindView(R.id.app_bar)
     AppBarLayout mAppBarLayout;
     @BindView(R.id.blur_view)
@@ -255,5 +257,10 @@ public class SearchFragment extends BaseFragment<ISearchContract.Presenter> impl
     @Override
     public void hideLoading() {
         if (mLlLoading != null) mLlLoading.setVisibility(View.GONE);
+    }
+
+    @Override
+    public boolean handleBackPress() {
+        return false;
     }
 }

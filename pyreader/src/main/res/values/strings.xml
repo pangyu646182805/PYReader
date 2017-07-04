@@ -39,6 +39,7 @@
 
     <string name="search_result_lately_follower">"%1$d人在追  |  "</string>
     <string name="search_result_retention_ratio">"%1$s%%读者留存  |  "</string>
+    <string name="retention_ratio">"%1$s%%读者留存"</string>
     <string name="search_result_author">%1$s著</string>
 
     <string name="book_detail_has_joined_the_book_shelf">《%1$s》成功加入书架</string>

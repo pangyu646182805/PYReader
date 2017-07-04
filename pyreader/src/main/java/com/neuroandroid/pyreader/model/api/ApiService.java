@@ -2,8 +2,10 @@ package com.neuroandroid.pyreader.model.api;
 
 import com.neuroandroid.pyreader.model.response.BookDetail;
 import com.neuroandroid.pyreader.model.response.BookListDetail;
+import com.neuroandroid.pyreader.model.response.BooksByCategory;
 import com.neuroandroid.pyreader.model.response.BooksByTag;
 import com.neuroandroid.pyreader.model.response.CategoryList;
+import com.neuroandroid.pyreader.model.response.CategoryListLv2;
 import com.neuroandroid.pyreader.model.response.DiscussionList;
 import com.neuroandroid.pyreader.model.response.HotReview;
 import com.neuroandroid.pyreader.model.response.HotWord;
@@ -90,10 +92,10 @@ public interface ApiService {
      */
     @GET("/post/by-book")
     Observable<DiscussionList> getBookDetailDiscussionList(@Query("book") String book,
-                                                            @Query("sort") String sort,
-                                                            @Query("type") String type,
-                                                            @Query("start") String start,
-                                                            @Query("limit") String limit);
+                                                           @Query("sort") String sort,
+                                                           @Query("type") String type,
+                                                           @Query("start") String start,
+                                                           @Query("limit") String limit);
 
     /**
      * 获取书单详情
@@ -106,4 +108,27 @@ public interface ApiService {
      */
     @GET("/cats/lv2/statistics")
     Observable<CategoryList> getCategoryList();
+
+    /**
+     * 获取二级分类
+     *
+     * @return
+     */
+    @GET("/cats/lv2")
+    Observable<CategoryListLv2> getCategoryListLv2();
+
+    /**
+     * 按分类获取书籍列表
+     *
+     * @param gender male、female
+     * @param type   hot(热门)、new(新书)、reputation(好评)、over(完结)
+     * @param major  玄幻
+     * @param minor  东方玄幻、异界大陆、异界争霸、远古神话
+     * @param limit  50
+     * @return
+     */
+    @GET("/book/by-categories")
+    Observable<BooksByCategory> getBooksByCategory(@Query("gender") String gender, @Query("type") String type,
+                                                   @Query("major") String major, @Query("minor") String minor,
+                                                   @Query("start") int start, @Query("limit") int limit);
 }

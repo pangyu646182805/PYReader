@@ -1,38 +1,48 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
+<FrameLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/backgroundColor"
-    android:clickable="true"
-    android:orientation="vertical">
+    android:clickable="true">
 
-    <include layout="@layout/layout_toolbar"/>
-
-    <FrameLayout
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:orientation="vertical">
 
-        <com.lcodecore.tkrefreshlayout.TwinklingRefreshLayout
+        <include layout="@layout/layout_toolbar"/>
+
+        <FrameLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            app:tr_max_bottom_height="@dimen/y1280"
-            app:tr_max_head_height="@dimen/y1280"
-            app:tr_pureScrollMode_on="true">
+            android:layout_height="match_parent">
 
-            <android.support.v7.widget.RecyclerView
-                android:id="@+id/rv_category"
+            <com.lcodecore.tkrefreshlayout.TwinklingRefreshLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:overScrollMode="never"/>
-        </com.lcodecore.tkrefreshlayout.TwinklingRefreshLayout>
+                app:tr_max_bottom_height="@dimen/y1280"
+                app:tr_max_head_height="@dimen/y1280"
+                app:tr_pureScrollMode_on="true">
 
-        <android.support.v4.widget.ContentLoadingProgressBar
-            android:id="@+id/pb"
-            style="?android:attr/progressBarStyle"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"/>
-    </FrameLayout>
-</LinearLayout>
+                <android.support.v7.widget.RecyclerView
+                    android:id="@+id/rv_category"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:overScrollMode="never"/>
+            </com.lcodecore.tkrefreshlayout.TwinklingRefreshLayout>
+
+            <android.support.v4.widget.ContentLoadingProgressBar
+                android:id="@+id/pb"
+                style="?android:attr/progressBarStyle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"/>
+        </FrameLayout>
+    </LinearLayout>
+
+    <FrameLayout
+        android:id="@+id/fl_container"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"/>
+</FrameLayout>

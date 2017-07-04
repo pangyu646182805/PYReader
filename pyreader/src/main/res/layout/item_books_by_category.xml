@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@color/backgroundPanel"
+    android:foreground="?attr/selectableItemBackground"
+    android:orientation="horizontal"
+    android:paddingBottom="@dimen/y16"
+    android:paddingLeft="@dimen/x32"
+    android:paddingRight="@dimen/x32"
+    android:paddingTop="@dimen/y16">
+
+    <ImageView
+        android:id="@+id/iv_book_cover"
+        android:layout_width="@dimen/x135"
+        android:layout_height="@dimen/y180"
+        android:layout_gravity="center_vertical"
+        android:scaleType="centerInside"
+        android:src="@mipmap/cover_default"/>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_vertical"
+        android:layout_marginLeft="@dimen/x32"
+        android:orientation="vertical">
+
+        <com.neuroandroid.pyreader.widget.NoPaddingTextView
+            android:id="@+id/tv_book_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:ellipsize="end"
+            android:lines="1"
+            android:textColor="@color/colorGray333"
+            android:textSize="14sp"
+            android:textStyle="bold"
+            tools:text="第四生物帝国"/>
+
+        <com.neuroandroid.pyreader.widget.NoPaddingTextView
+            android:id="@+id/tv_book_author"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/y12"
+            android:textColor="@color/colorGray999"
+            android:textSize="12sp"
+            tools:text="天蚕土豆 | 玄幻"/>
+
+        <com.neuroandroid.pyreader.widget.NoPaddingTextView
+            android:id="@+id/tv_book_intro"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/y12"
+            android:ellipsize="end"
+            android:lines="1"
+            android:textColor="@color/colorGray999"
+            android:textSize="12sp"
+            tools:text="天蚕土豆天蚕土豆天蚕土豆天蚕土豆天蚕土豆天蚕土豆天蚕土豆"/>
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/y16"
+            android:gravity="center_vertical"
+            android:orientation="horizontal">
+
+            <com.neuroandroid.pyreader.widget.NoPaddingTextView
+                android:id="@+id/tv_follower"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/subject_book_list_detail_book_lately_follower"
+                android:textColor="@color/colorGray666"
+                android:textSize="13sp"/>
+
+            <com.neuroandroid.pyreader.widget.NoPaddingTextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="  |  "
+                android:textColor="@color/colorGray666"
+                android:textSize="13sp"/>
+
+            <com.neuroandroid.pyreader.widget.NoPaddingTextView
+                android:id="@+id/tv_word_count"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/retention_ratio"
+                android:textColor="@color/colorGray666"
+                android:textSize="13sp"/>
+        </LinearLayout>
+    </LinearLayout>
+</LinearLayout>
