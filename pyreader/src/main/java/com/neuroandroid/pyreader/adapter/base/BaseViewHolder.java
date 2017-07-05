@@ -4,12 +4,11 @@ import android.content.Context;
 import android.support.annotation.IdRes;
 import android.support.v7.widget.RecyclerView;
 import android.util.SparseArray;
+import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
-
-import static android.R.attr.value;
 
 /**
  * Created by NeuroAndroid on 2017/6/14.
@@ -47,9 +46,21 @@ public class BaseViewHolder extends RecyclerView.ViewHolder {
         return this;
     }
 
+    public BaseViewHolder setTextSize(@IdRes int viewId, float size) {
+        TextView view = getView(viewId);
+        if (view != null) view.setTextSize(TypedValue.COMPLEX_UNIT_SP, size);
+        return this;
+    }
+
     public BaseViewHolder setTextColor(@IdRes int viewId, int color) {
         TextView view = getView(viewId);
         if (view != null) view.setTextColor(color);
+        return this;
+    }
+
+    public BaseViewHolder setBackgroundColor(@IdRes int viewId, int color) {
+        View view = getView(viewId);
+        if (view != null) view.setBackgroundColor(color);
         return this;
     }
 

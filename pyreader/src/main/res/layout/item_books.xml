@@ -69,7 +69,7 @@
                 android:id="@+id/tv_follower"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/subject_book_list_detail_book_lately_follower"
+                tools:text="@string/subject_book_list_detail_book_lately_follower"
                 android:textColor="@color/colorGray666"
                 android:textSize="13sp"/>
 
@@ -84,7 +84,7 @@
                 android:id="@+id/tv_word_count"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/retention_ratio"
+                tools:text="@string/retention_ratio"
                 android:textColor="@color/colorGray666"
                 android:textSize="13sp"/>
         </LinearLayout>

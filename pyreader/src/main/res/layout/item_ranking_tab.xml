@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:background="@color/transparent"
+    android:orientation="vertical"
+    android:paddingRight="@dimen/x24">
+
+    <com.neuroandroid.pyreader.widget.NoPaddingTextView
+        android:id="@+id/tv_tab_title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="@drawable/shape_ranking_tab"
+        android:paddingBottom="@dimen/y8"
+        android:paddingLeft="@dimen/x18"
+        android:paddingRight="@dimen/x18"
+        android:paddingTop="@dimen/y8"
+        android:textColor="@color/tab_item_text"
+        tools:text="男生"/>
+</LinearLayout>

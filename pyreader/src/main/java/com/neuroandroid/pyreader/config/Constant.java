@@ -25,6 +25,10 @@ public class Constant {
 
     public static final String FEMALE = "female";
 
+    public static final int MALE_INT = 0;
+
+    public static final int FEMALE_INT = 1;
+
     public static final String MALE_TEXT = "男生";
 
     public static final String FEMALE_TEXT = "女生";

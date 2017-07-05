@@ -6,10 +6,29 @@
     <string name="cancel">取消</string>
     <string name="confirm">确定</string>
 
+    <string name="book_list_detail">书单详情</string>
+
     <string name="book_manage">批量管理</string>
     <string name="x_selected">已选择 %1$d</string>
     <string name="select_all">全选</string>
     <string name="un_select_all">取消全选</string>
+
+    <string-array name="topic_tabs">
+        <item>本周最热</item>
+        <item>最新发布</item>
+        <item>最多收藏</item>
+    </string-array>
+
+    <string-array name="ranking_tabs">
+        <item>周榜</item>
+        <item>月榜</item>
+        <item>总榜</item>
+    </string-array>
+
+    <string-array name="gender_tabs">
+        <item>男生</item>
+        <item>女生</item>
+    </string-array>
 
     <string name="recommend">追书</string>
     <string name="discover">发现</string>
@@ -49,4 +68,7 @@
     <string name="book_detail_post_count">共有%1$d个帖子</string>
 
     <string name="category_book_count">%1$d本</string>
+
+    <string name="topic_book_count">共%1$d本书</string>
+    <string name="topic_book_collection">%1$d人收藏</string>
 </resources>

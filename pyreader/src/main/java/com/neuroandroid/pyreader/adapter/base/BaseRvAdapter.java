@@ -337,6 +337,7 @@ public abstract class BaseRvAdapter<T> extends RecyclerView.Adapter<BaseViewHold
         }
         mDataList.addAll(position - getHeaderCounts(), items);
         notifyItemRangeInserted(position - getHeaderCounts(), items.size());
+        notifyDataSetChanged();
     }
 
     @Override

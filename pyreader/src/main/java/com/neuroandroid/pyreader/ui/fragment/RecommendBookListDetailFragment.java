@@ -17,6 +17,7 @@ import com.neuroandroid.pyreader.mvp.contract.IRecommendBookListDetailContract;
 import com.neuroandroid.pyreader.mvp.presenter.RecommendBookListDetailPresenter;
 import com.neuroandroid.pyreader.utils.ImageLoader;
 import com.neuroandroid.pyreader.utils.NavigationUtils;
+import com.neuroandroid.pyreader.utils.UIUtils;
 import com.neuroandroid.pyreader.widget.NoPaddingTextView;
 
 import butterknife.BindView;
@@ -52,6 +53,7 @@ public class RecommendBookListDetailFragment extends BaseFragment<IRecommendBook
     @Override
     protected void initView() {
         setDisplayHomeAsUpEnabled();
+        setToolbarTitle(UIUtils.getString(R.string.book_list_detail));
         mRvBookList.setLayoutManager(new LinearLayoutManager(mContext));
         mBookListDetailAdapter = new RecommendBookListDetailAdapter(mContext, null, R.layout.item_recommend_booklist_detail);
         mRvBookList.setAdapter(mBookListDetailAdapter);

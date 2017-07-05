@@ -29,7 +29,7 @@ public class BookDetailReviewFragment extends BaseLazyFragment<IBookDetailReview
 
     @BindView(R.id.refresh_layout)
     TwinklingRefreshLayout mRefreshLayout;
-    @BindView(R.id.rv_review_list)
+    @BindView(R.id.rv_list)
     RecyclerView mRvReviewList;
 
     private String mBookId;
@@ -54,7 +54,7 @@ public class BookDetailReviewFragment extends BaseLazyFragment<IBookDetailReview
 
     @Override
     protected int attachLayoutRes() {
-        return R.layout.fragment_book_detail_review;
+        return R.layout.layout_normal_recycler_view;
     }
 
     @Override

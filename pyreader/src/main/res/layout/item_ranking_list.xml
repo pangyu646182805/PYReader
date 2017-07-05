@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/ll_container"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@color/backgroundPanel"
+    android:orientation="vertical"
+    android:paddingBottom="@dimen/y48"
+    android:paddingTop="@dimen/y48">
+
+    <com.neuroandroid.pyreader.widget.NoPaddingTextView
+        android:id="@+id/tv_title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:gravity="center"
+        android:lines="1"
+        android:textColor="@color/colorGray333"
+        android:textSize="14sp"
+        tools:text="最热榜"/>
+</LinearLayout>

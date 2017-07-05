@@ -1,7 +1,9 @@
 package com.neuroandroid.pyreader.model.api;
 
 import com.neuroandroid.pyreader.model.response.BookDetail;
+import com.neuroandroid.pyreader.model.response.BookList;
 import com.neuroandroid.pyreader.model.response.BookListDetail;
+import com.neuroandroid.pyreader.model.response.BookListTags;
 import com.neuroandroid.pyreader.model.response.BooksByCategory;
 import com.neuroandroid.pyreader.model.response.BooksByTag;
 import com.neuroandroid.pyreader.model.response.CategoryList;
@@ -9,6 +11,8 @@ import com.neuroandroid.pyreader.model.response.CategoryListLv2;
 import com.neuroandroid.pyreader.model.response.DiscussionList;
 import com.neuroandroid.pyreader.model.response.HotReview;
 import com.neuroandroid.pyreader.model.response.HotWord;
+import com.neuroandroid.pyreader.model.response.RankingList;
+import com.neuroandroid.pyreader.model.response.Rankings;
 import com.neuroandroid.pyreader.model.response.Recommend;
 import com.neuroandroid.pyreader.model.response.RecommendBookList;
 import com.neuroandroid.pyreader.model.response.SearchBooks;
@@ -131,4 +135,41 @@ public interface ApiService {
     Observable<BooksByCategory> getBooksByCategory(@Query("gender") String gender, @Query("type") String type,
                                                    @Query("major") String major, @Query("minor") String minor,
                                                    @Query("start") int start, @Query("limit") int limit);
+
+    /**
+     * 获取主题书单标签列表
+     */
+    @GET("/book-list/tagType")
+    Observable<BookListTags> getBookListTags();
+
+    /**
+     * 获取主题书单列表
+     * 本周最热：duration=last-seven-days&sort=collectorCount
+     * 最新发布：duration=all&sort=created
+     * 最多收藏：duration=all&sort=collectorCount
+     *
+     * @param tag    都市、古代、架空、重生、玄幻、网游
+     * @param gender male、female
+     * @param limit  20
+     * @return
+     */
+    @GET("/book-list")
+    Observable<BookList> getBookList(@Query("duration") String duration, @Query("sort") String sort,
+                                     @Query("start") String start, @Query("limit") String limit,
+                                     @Query("tag") String tag, @Query("gender") String gender);
+
+    /**
+     * 获取所有排行榜
+     */
+    @GET("/ranking/gender")
+    Observable<RankingList> getRanking();
+
+    /**
+     * 获取单一排行榜
+     * 周榜：rankingId->_id
+     * 月榜：rankingId->monthRank
+     * 总榜：rankingId->totalRank
+     */
+    @GET("/ranking/{rankingId}")
+    Observable<Rankings> getRanking(@Path("rankingId") String rankingId);
 }

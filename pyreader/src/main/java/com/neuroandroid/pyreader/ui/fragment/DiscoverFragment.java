@@ -52,7 +52,7 @@ public class DiscoverFragment extends BaseFragment {
                     mainActivity.openRankingFragment();
                     break;
                 case 1:  // topic
-                    mainActivity.openTopicFragment();
+                    mainActivity.openTopicBookListFragment();
                     break;
                 case 2:  // category
                 default:

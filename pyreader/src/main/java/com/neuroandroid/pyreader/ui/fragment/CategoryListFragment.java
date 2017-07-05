@@ -115,7 +115,7 @@ public class CategoryListFragment extends BaseFragment<ICategoryListContract.Pre
         mMajorAdapter.clearRvAnim(mRvMajor);
         mRvMajor.setAdapter(mMajorAdapter);
 
-        mBooksByCategoryAdapter = new BooksByCategoryAdapter(mContext, null, R.layout.item_books_by_category);
+        mBooksByCategoryAdapter = new BooksByCategoryAdapter(mContext, null, R.layout.item_books);
         mRvBookList.setAdapter(mBooksByCategoryAdapter);
     }
 

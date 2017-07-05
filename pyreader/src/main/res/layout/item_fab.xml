@@ -10,7 +10,7 @@
     app:cardBackgroundColor="@color/backgroundPanel"
     android:layout_margin="@dimen/x16"
     app:cardCornerRadius="@dimen/x8"
-    app:cardElevation="@dimen/x8"
+    app:cardElevation="@dimen/x4"
     app:contentPaddingRight="@dimen/x16"
     app:contentPaddingTop="@dimen/y8"
     app:contentPaddingBottom="@dimen/y8"

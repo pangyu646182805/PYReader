@@ -18,13 +18,30 @@ import java.util.List;
  */
 
 public class BooksByCategoryAdapter extends BaseRvAdapter<BooksByCategory.BooksBean> {
+    private int mBookCoverWidth, mBookCoverHeight;
+
     public BooksByCategoryAdapter(Context context, List<BooksByCategory.BooksBean> dataList, int layoutId) {
         super(context, dataList, layoutId);
+    }
+
+    public void setBookCoverSize(float width, float height) {
+        mBookCoverWidth = (int) width;
+        mBookCoverHeight = (int) height;
     }
 
     @Override
     public void convert(BaseViewHolder holder, BooksByCategory.BooksBean item, int position, int viewType) {
         ImageView ivBookCover = holder.getView(R.id.iv_book_cover);
+        if (mBookCoverWidth != 0) {
+            ivBookCover.getLayoutParams().width = mBookCoverWidth;
+            ivBookCover.getLayoutParams().height = mBookCoverHeight;
+            ivBookCover.requestLayout();
+            holder.setTextSize(R.id.tv_book_title, 12)
+                    .setTextSize(R.id.tv_book_author, 10)
+                    .setTextSize(R.id.tv_book_intro, 10)
+                    .setTextSize(R.id.tv_follower, 11)
+                    .setTextSize(R.id.tv_word_count, 11);
+        }
         ImageLoader.getInstance().displayImage(mContext, Constant.IMG_BASE_URL + item.getCover(), R.mipmap.cover_default, ivBookCover);
         holder.setText(R.id.tv_book_title, item.getTitle())
                 .setText(R.id.tv_book_author, (UIUtils.isEmpty(item.getAuthor()) ? "未知" : item.getAuthor()) + " | " +

@@ -17,7 +17,7 @@ import com.neuroandroid.pyreader.manager.SettingManager;
 import com.neuroandroid.pyreader.ui.fragment.CategoryFragment;
 import com.neuroandroid.pyreader.ui.fragment.RankingFragment;
 import com.neuroandroid.pyreader.ui.fragment.SearchFragment;
-import com.neuroandroid.pyreader.ui.fragment.TopicFragment;
+import com.neuroandroid.pyreader.ui.fragment.TopicBookListFragment;
 import com.neuroandroid.pyreader.utils.FragmentUtils;
 import com.neuroandroid.pyreader.utils.L;
 import com.neuroandroid.pyreader.utils.ShowUtils;
@@ -182,8 +182,8 @@ public class MainActivity extends BaseActivity implements MaterialCabCallBack {
     /**
      * 打开TopicFragment
      */
-    public void openTopicFragment() {
-        setCurrentFragment(new TopicFragment());
+    public void openTopicBookListFragment() {
+        setCurrentFragment(new TopicBookListFragment());
     }
 
     private void setCurrentFragment(Fragment fragment) {

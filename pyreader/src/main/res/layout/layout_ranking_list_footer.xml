@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical">
+
+    <LinearLayout
+        android:id="@+id/ll_other_ranking_list"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/colorTabItem"
+        android:gravity="center"
+        android:orientation="horizontal"
+        android:paddingBottom="@dimen/y48"
+        android:paddingTop="@dimen/y48">
+
+        <com.neuroandroid.pyreader.widget.NoPaddingTextView
+            android:id="@+id/tv_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:text="其他榜"
+            android:textColor="@color/colorGray333"
+            android:textSize="14sp"/>
+
+        <ImageView
+            android:id="@+id/iv_arrow"
+            android:layout_width="@dimen/x24"
+            android:layout_height="@dimen/y24"
+            android:layout_gravity="center_vertical"
+            android:layout_marginLeft="@dimen/x4"
+            android:rotation="90"
+            app:srcCompat="@drawable/ic_arrow_right"/>
+    </LinearLayout>
+
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/rv_other_ranking_list"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:overScrollMode="never"/>
+</LinearLayout>
