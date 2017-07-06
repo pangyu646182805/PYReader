@@ -3,6 +3,7 @@ package com.neuroandroid.pyreader.ui.fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 
+import com.lcodecore.tkrefreshlayout.RefreshListenerAdapter;
 import com.lcodecore.tkrefreshlayout.TwinklingRefreshLayout;
 import com.neuroandroid.pyreader.R;
 import com.neuroandroid.pyreader.adapter.BooksByCategoryAdapter;
@@ -11,6 +12,7 @@ import com.neuroandroid.pyreader.model.response.BooksByCategory;
 import com.neuroandroid.pyreader.mvp.contract.IRankingBookListContract;
 import com.neuroandroid.pyreader.mvp.presenter.RankingBookListPresenter;
 import com.neuroandroid.pyreader.utils.DividerUtils;
+import com.neuroandroid.pyreader.utils.NavigationUtils;
 import com.neuroandroid.pyreader.utils.UIUtils;
 import com.neuroandroid.pyreader.widget.CustomRefreshHeader;
 
@@ -27,6 +29,13 @@ public class RankingBookListFragment extends BaseFragment<IRankingBookListContra
     @BindView(R.id.rv_book_list)
     RecyclerView mRvBookList;
     private BooksByCategoryAdapter mBooksByCategoryAdapter;
+
+    private String mRankingId;
+
+    public void setRankingIdAndRequestRanking(String rankingId) {
+        this.mRankingId = rankingId;
+        mRefreshLayout.startRefresh();
+    }
 
     @Override
     protected void initPresenter() {
@@ -51,12 +60,29 @@ public class RankingBookListFragment extends BaseFragment<IRankingBookListContra
     }
 
     @Override
-    protected void initData() {
-        mPresenter.getRanking("54d43437d47d13ff21cad58b");
+    protected void initListener() {
+        mBooksByCategoryAdapter.setOnItemClickListener((holder, position, item) -> NavigationUtils.goToBookDetailPage(mActivity, item.getBookId()));
+        mRefreshLayout.setOnRefreshListener(new RefreshListenerAdapter() {
+            @Override
+            public void onRefresh(TwinklingRefreshLayout refreshLayout) {
+                getRanking(mRankingId);
+            }
+        });
+    }
+
+    private void getRanking(String rankingId) {
+        mPresenter.getRanking(rankingId);
     }
 
     @Override
     public void showRanking(BooksByCategory booksByCategory) {
         mBooksByCategoryAdapter.replaceAll(booksByCategory.getBooks());
+        hideLoading();
+    }
+
+    @Override
+    public void hideLoading() {
+        super.hideLoading();
+        if (mRefreshLayout != null) mRefreshLayout.finishRefreshing();
     }
 }

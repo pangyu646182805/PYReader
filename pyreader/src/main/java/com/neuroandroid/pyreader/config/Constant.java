@@ -33,6 +33,12 @@ public class Constant {
 
     public static final String FEMALE_TEXT = "女生";
 
+    public static final String WEEK_RANKING = "周榜";
+
+    public static final String MONTH_RANKING = "月榜";
+
+    public static final String TOTAL_RANKING = "总榜";
+
     public static final String RECOMMEND = "recommend";
 
     public static final String CATEGORY_NAME = "category_name";

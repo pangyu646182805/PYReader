@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_margin="@dimen/x16"
-    app:cardBackgroundColor="@color/white_a"
+    app:cardBackgroundColor="@color/white_6"
     app:cardCornerRadius="@dimen/x12"
     app:cardElevation="0dp">
 
@@ -23,7 +23,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="大家都在看"
-                android:textColor="@color/colorGray666"
+                android:textColor="@color/colorGray333"
                 android:textSize="12sp"/>
 
             <LinearLayout
@@ -46,7 +46,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="@dimen/x4"
                     android:text="大家都在看"
-                    android:textColor="@color/colorGray666"
+                    android:textColor="@color/colorGray333"
                     android:textSize="12sp"/>
             </LinearLayout>
         </RelativeLayout>
@@ -54,7 +54,7 @@
         <View
             android:layout_width="match_parent"
             android:layout_height="1px"
-            android:background="@color/black_3"/>
+            android:background="@color/black_6"/>
 
         <com.nex3z.flowlayout.FlowLayout
             android:id="@+id/tag_layout"

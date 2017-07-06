@@ -27,21 +27,28 @@
             android:background="?attr/colorPrimary"
             app:popupTheme="@style/ThemeOverlay.AppCompat.Light"/>
 
-        <android.support.v7.widget.RecyclerView
-            android:id="@+id/rv_male"
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:overScrollMode="never"
-            android:paddingBottom="@dimen/y16"
-            android:paddingLeft="@dimen/x32"/>
+            android:gravity="center_horizontal"
+            android:orientation="horizontal">
 
-        <android.support.v7.widget.RecyclerView
-            android:id="@+id/rv_ranking"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:overScrollMode="never"
-            android:paddingBottom="@dimen/y16"
-            android:paddingLeft="@dimen/x32"/>
+            <android.support.v7.widget.RecyclerView
+                android:id="@+id/rv_male"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:overScrollMode="never"
+                android:paddingBottom="@dimen/y16"
+                android:paddingLeft="@dimen/x32"/>
+
+            <android.support.v7.widget.RecyclerView
+                android:id="@+id/rv_ranking"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:overScrollMode="never"
+                android:paddingBottom="@dimen/y16"
+                android:paddingLeft="@dimen/x32"/>
+        </LinearLayout>
     </android.support.design.widget.AppBarLayout>
 
     <LinearLayout

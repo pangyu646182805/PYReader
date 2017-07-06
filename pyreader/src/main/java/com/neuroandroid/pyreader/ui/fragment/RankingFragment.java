@@ -1,5 +1,6 @@
 package com.neuroandroid.pyreader.ui.fragment;
 
+import android.animation.ValueAnimator;
 import android.content.Context;
 import android.support.v4.view.ViewCompat;
 import android.support.v7.widget.LinearLayoutManager;
@@ -36,6 +37,10 @@ import butterknife.BindView;
 
 public class RankingFragment extends BaseFragment<IRankingContract.Presenter>
         implements MainActivity.MainActivityFragmentCallbacks, IRankingContract.View {
+    private static final int WEEK_RANKING = 10;
+    private static final int MONTH_RANKING = 11;
+    private static final int TOTAL_RANKING = 12;
+
     @BindView(R.id.rv_male)
     RecyclerView mRvMale;
     @BindView(R.id.rv_ranking)
@@ -59,6 +64,9 @@ public class RankingFragment extends BaseFragment<IRankingContract.Presenter>
     private RankingListAdapter mOtherRankingListAdapter;
 
     private RankingBookListFragment mBookListFragment;
+
+    private int mRvRankingWidth;
+    private int mCurrentRanking = WEEK_RANKING;
 
     @Override
     protected void initPresenter() {
@@ -113,6 +121,14 @@ public class RankingFragment extends BaseFragment<IRankingContract.Presenter>
                     } else {
                         mCurrentGender = Constant.FEMALE_INT;
                     }
+                    replaceRankingList();
+                    // 其他榜已经展开了才去模拟其他榜按钮点击事件
+                    if (mOtherRankingListAdapter.getItemCount() != 0) {
+                        mOtherRankingListAdapter.clearSelected();
+                        mLlOtherRankingList.performClick();
+                    }
+                    requestRanking(isMale() ? mMaleBeanList.get(0).getRankingId() : mFemaleBeanList.get(0).getRankingId());
+                    hideOrShowRvRanking(true);
                 }
             }
 
@@ -125,7 +141,25 @@ public class RankingFragment extends BaseFragment<IRankingContract.Presenter>
             @Override
             public void onItemSelected(BaseViewHolder viewHolder, int position, boolean isSelected, TextSelectBean textSelectBean) {
                 if (isSelected) {
-                    ShowUtils.showToast(textSelectBean.getText());
+                    if (Constant.WEEK_RANKING.equals(textSelectBean.getText())) {
+                        mCurrentRanking = WEEK_RANKING;
+                    } else if (Constant.MONTH_RANKING.equals(textSelectBean.getText())) {
+                        mCurrentRanking = MONTH_RANKING;
+                    } else {
+                        mCurrentRanking = TOTAL_RANKING;
+                    }
+                    int checkedPos = mRankingListAdapter.getCheckedPos();
+                    RankingList.MaleBean maleBean = isMale() ? mMaleBeanList.get(checkedPos) : mFemaleBeanList.get(checkedPos);
+                    String rankingId = maleBean.getRankingId();
+                    switch (mCurrentRanking) {
+                        case MONTH_RANKING:
+                            rankingId = maleBean.getMonthRank();
+                            break;
+                        case TOTAL_RANKING:
+                            rankingId = maleBean.getTotalRank();
+                            break;
+                    }
+                    requestRanking(rankingId);
                 }
             }
 
@@ -142,6 +176,17 @@ public class RankingFragment extends BaseFragment<IRankingContract.Presenter>
                         mOtherRankingListAdapter.clearSelected();
                         mOtherRankingListAdapter.notifyDataSetChanged();
                     }
+                    String rankingId = maleBean.getRankingId();
+                    switch (mCurrentRanking) {
+                        case MONTH_RANKING:
+                            rankingId = maleBean.getMonthRank();
+                            break;
+                        case TOTAL_RANKING:
+                            rankingId = maleBean.getTotalRank();
+                            break;
+                    }
+                    requestRanking(rankingId);
+                    hideOrShowRvRanking(true);
                 }
             }
 
@@ -166,8 +211,10 @@ public class RankingFragment extends BaseFragment<IRankingContract.Presenter>
             @Override
             public void onItemSelected(BaseViewHolder viewHolder, int position, boolean isSelected, RankingList.MaleBean maleBean) {
                 if (isSelected) {
+                    requestRanking(maleBean.getRankingId());
                     mRankingListAdapter.clearSelected();
                     mRankingListAdapter.notifyDataSetChanged();
+                    hideOrShowRvRanking(false);
                 }
             }
 
@@ -209,9 +256,23 @@ public class RankingFragment extends BaseFragment<IRankingContract.Presenter>
         rankingList = RankingUtils.replaceRankingWord(rankingList);
         mMaleBeanList = rankingList.getMale();
         mFemaleBeanList = rankingList.getFemale();
-        mMaleBeanList.get(0).setSelected(true);
-        mFemaleBeanList.get(0).setSelected(true);
-        mRankingListAdapter.replaceAll(mCurrentGender == Constant.MALE_INT ?
+        replaceRankingList();
+        if (isMale())
+            requestRanking(mMaleBeanList.get(0).getRankingId());
+        else
+            requestRanking(mFemaleBeanList.get(0).getRankingId());
+    }
+
+    /**
+     * 截取MaleBeanList
+     */
+    private void replaceRankingList() {
+        for (int i = 0; i < 5; i++) {
+            mMaleBeanList.get(i).setSelected(i == 0);
+            mFemaleBeanList.get(i).setSelected(i == 0);
+        }
+        mRankingListAdapter.setCheckedPos(0);
+        mRankingListAdapter.replaceAll(isMale() ?
                 mMaleBeanList.subList(0, 5) : mFemaleBeanList.subList(0, 5));
     }
 
@@ -219,7 +280,7 @@ public class RankingFragment extends BaseFragment<IRankingContract.Presenter>
      * 替换其他榜的数据
      */
     private void replaceOtherRankingList() {
-        mOtherRankingListAdapter.replaceAll(mCurrentGender == Constant.MALE_INT ?
+        mOtherRankingListAdapter.replaceAll(isMale() ?
                 mMaleBeanList.subList(5, mMaleBeanList.size()) : mFemaleBeanList.subList(5, mFemaleBeanList.size()));
     }
 
@@ -228,6 +289,40 @@ public class RankingFragment extends BaseFragment<IRankingContract.Presenter>
      */
     private void clearOtherRankingList() {
         mOtherRankingListAdapter.clear();
+    }
+
+    /**
+     * 当前选项是否是男生
+     */
+    private boolean isMale() {
+        return mCurrentGender == Constant.MALE_INT;
+    }
+
+    /**
+     * 请求排行榜书籍列表
+     */
+    private void requestRanking(String rankingId) {
+        mBookListFragment.setRankingIdAndRequestRanking(rankingId);
+    }
+
+    /**
+     * 隐藏或显示周/月/总榜
+     */
+    private void hideOrShowRvRanking(boolean show) {
+        if (mRvRankingWidth == 0) mRvRankingWidth = mRvRanking.getWidth();
+        if (show) {  // 如果已经显示则不执行显示动画
+            if (mRvRanking.getAlpha() == 1) return;
+        } else {  // 如果已经隐藏则不执行隐藏动画
+            if (mRvRanking.getAlpha() == 0) return;
+        }
+        ValueAnimator animator = ValueAnimator.ofFloat(show ? 0 : 1.0f, show ? 1.0f : 0);
+        animator.addUpdateListener(valueAnimator -> {
+            float percent = (float) valueAnimator.getAnimatedValue();
+            mRvRanking.setAlpha(percent);
+            mRvRanking.getLayoutParams().width = (int) (mRvRankingWidth * percent);
+            mRvRanking.requestLayout();
+        });
+        animator.setDuration(400).start();
     }
 
     @Override

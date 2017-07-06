@@ -23,6 +23,6 @@
         android:lines="1"
         android:maxEms="20"
         android:text="大主宰"
-        android:textColor="@color/colorGray666"
+        android:textColor="@color/colorGray333"
         android:textSize="13sp"/>
 </LinearLayout>

@@ -12,7 +12,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         app:realtimeBlurRadius="0dp"
-        app:realtimeOverlayColor="@color/white_6"/>
+        app:realtimeOverlayColor="@color/black_3"/>
 
     <LinearLayout
         android:layout_width="match_parent"

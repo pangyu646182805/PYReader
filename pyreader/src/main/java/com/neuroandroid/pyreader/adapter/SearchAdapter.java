@@ -128,7 +128,7 @@ public class SearchAdapter extends BaseRvAdapter<BaseResponse> {
         NoPaddingTextView tvTag = new NoPaddingTextView(mContext);
         tvTag.setText(tag);
         tvTag.setTextSize(12);
-        tvTag.setTextColor(UIUtils.getColor(R.color.colorGray666));
+        tvTag.setTextColor(UIUtils.getColor(R.color.colorGray333));
         tvTag.setBackgroundResource(R.drawable.shape_book_detail_tag_selector);
         int padding = (int) UIUtils.getDimen(R.dimen.x8);
         tvTag.setPadding(padding * 2, padding, padding * 2, padding);

@@ -43,6 +43,10 @@ public abstract class SelectAdapter<T extends ISelect> extends BaseRvAdapter<T> 
         mPrePos = prePos;
     }
 
+    public int getCheckedPos() {
+        return mPrePos;
+    }
+
     @Override
     public void addHeaderView(View... headerViews) {
         super.addHeaderView(headerViews);
