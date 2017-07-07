@@ -4,10 +4,12 @@ import com.neuroandroid.pyreader.model.response.BookDetail;
 import com.neuroandroid.pyreader.model.response.BookList;
 import com.neuroandroid.pyreader.model.response.BookListDetail;
 import com.neuroandroid.pyreader.model.response.BookListTags;
+import com.neuroandroid.pyreader.model.response.BookMixAToc;
 import com.neuroandroid.pyreader.model.response.BooksByCategory;
 import com.neuroandroid.pyreader.model.response.BooksByTag;
 import com.neuroandroid.pyreader.model.response.CategoryList;
 import com.neuroandroid.pyreader.model.response.CategoryListLv2;
+import com.neuroandroid.pyreader.model.response.ChapterRead;
 import com.neuroandroid.pyreader.model.response.DiscussionList;
 import com.neuroandroid.pyreader.model.response.HotReview;
 import com.neuroandroid.pyreader.model.response.HotWord;
@@ -172,4 +174,10 @@ public interface ApiService {
      */
     @GET("/ranking/{rankingId}")
     Observable<Rankings> getRanking(@Path("rankingId") String rankingId);
+
+    @GET("/mix-atoc/{bookId}")
+    Observable<BookMixAToc> getBookMixAToc(@Path("bookId") String bookId, @Query("view") String view);
+
+    @GET("http://chapter2.zhuishushenqi.com/chapter/{url}")
+    Observable<ChapterRead> getChapterRead(@Path("url") String url);
 }

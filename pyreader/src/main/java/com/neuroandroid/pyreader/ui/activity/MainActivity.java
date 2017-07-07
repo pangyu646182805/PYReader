@@ -1,5 +1,8 @@
 package com.neuroandroid.pyreader.ui.activity;
 
+import android.content.ComponentName;
+import android.content.Context;
+import android.content.Intent;
 import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewPager;
@@ -29,6 +32,9 @@ import org.greenrobot.eventbus.EventBus;
 
 import butterknife.BindView;
 
+/**
+ *
+ */
 public class MainActivity extends BaseActivity implements MaterialCabCallBack {
     @BindView(R.id.tabs)
     SlidingTabLayout mTabs;
@@ -45,12 +51,29 @@ public class MainActivity extends BaseActivity implements MaterialCabCallBack {
 
     @Override
     protected void initView() {
+        // 不允许用户截屏当前页面
+        // getWindow().addFlags(WindowManager.LayoutParams.FLAG_SECURE);
         PYReaderPagerAdapter pyReaderPagerAdapter = new PYReaderPagerAdapter(getSupportFragmentManager(), this);
         mVpContent.setAdapter(pyReaderPagerAdapter);
         mVpContent.setOffscreenPageLimit(pyReaderPagerAdapter.getCount() - 1);
         mTabs.setViewPager(mVpContent);
 
         UIUtils.getHandler().postDelayed(() -> showChooseSexDialog(), 500);
+    }
+
+    /**
+     * 跳转到微信扫一扫界面
+     */
+    public static void toWeChatScanDirect(Context context) {
+        try {
+            Intent intent = new Intent();
+            intent.setComponent(new ComponentName("com.tencent.mm", "com.tencent.mm.ui.LauncherUI"));
+            intent.putExtra("LauncherUI.From.Scaner.Shortcut", true);
+            intent.setFlags(335544320);
+            intent.setAction("android.intent.action.VIEW");
+            context.startActivity(intent);
+        } catch (Exception e) {
+        }
     }
 
     /**

@@ -49,6 +49,10 @@ public class Constant {
 
     public static final String INTENT_BOOK_ID = "intent_book_id";
 
+    public static final String INTENT_BOOK_BEAN = "intent_book_bean";
+
+    public static final String INTENT_FROM_SD= "intent_from_sd";
+
     public static final String BOOK_TAG = "book_tag";
 
     public static final String BOOK_ID = "book_ID";
@@ -88,4 +92,10 @@ public class Constant {
     public static final String REPUTATION = "好评";
 
     public static final String OVER = "完结";
+
+    /**
+     * 段落标记
+     * 每一个段落之前的\n替换为PYPY
+     */
+    public static final String PARAGRAPH_MARK = "PYPY";
 }

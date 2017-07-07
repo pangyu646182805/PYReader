@@ -150,6 +150,8 @@ public class RecommendFragment extends BaseLazyFragment<IRecommendContract.Prese
                 closeMaterialCab();
             }
         });
+        mRecommendAdapter.setOnItemClickListener((holder, position, item) ->
+                NavigationUtils.goToBookReadPage(mActivity, item));
     }
 
     @Override

@@ -117,6 +117,14 @@ public class CategoryListFragment extends BaseFragment<ICategoryListContract.Pre
 
         mBooksByCategoryAdapter = new BooksByCategoryAdapter(mContext, null, R.layout.item_books);
         mRvBookList.setAdapter(mBooksByCategoryAdapter);
+
+        mBtnFilter.getViewTreeObserver().addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
+            @Override
+            public void onGlobalLayout() {
+                mBtnFilter.getViewTreeObserver().removeOnGlobalLayoutListener(this);
+                mBtnFilter.setTranslationY(mBtnFilter.getHeight() + UIUtils.getDimen(R.dimen.y32));
+            }
+        });
     }
 
     @Override
@@ -253,7 +261,7 @@ public class CategoryListFragment extends BaseFragment<ICategoryListContract.Pre
 
     @Override
     public boolean handleBackPress() {
-        if (mFabOpen)  {
+        if (mFabOpen) {
             openOrCloseFab();
             return true;
         }
@@ -319,6 +327,7 @@ public class CategoryListFragment extends BaseFragment<ICategoryListContract.Pre
     @Override
     public void showBooks(BooksByCategory booksByCategory) {
         L.e("json : " + new Gson().toJson(booksByCategory));
+        ViewCompat.animate(mBtnFilter).translationY(0).setDuration(200).start();
         hideLoading();
         if (isRefresh) {
             mBooksByCategoryAdapter.replaceAll(booksByCategory.getBooks());

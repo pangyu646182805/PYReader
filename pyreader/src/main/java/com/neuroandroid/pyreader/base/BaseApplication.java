@@ -5,6 +5,7 @@ import android.content.Context;
 import android.os.Handler;
 
 import com.neuroandroid.pyreader.utils.L;
+import com.neuroandroid.pyreader.widget.reader.BookReadFactory;
 
 /**
  * Created by NeuroAndroid on 2017/6/14.
@@ -31,5 +32,6 @@ public class BaseApplication extends Application {
         L.setGlobalToggle(true);
         sContext = getApplicationContext();
         sHandler = new Handler();
+        BookReadFactory.createBookReadFactory(this);
     }
 }
