@@ -11,12 +11,13 @@ import com.neuroandroid.pyreader.R;
 import com.neuroandroid.pyreader.adapter.BookReadAdapter;
 import com.neuroandroid.pyreader.config.Constant;
 import com.neuroandroid.pyreader.model.response.ChapterRead;
-import com.neuroandroid.pyreader.utils.L;
 import com.neuroandroid.pyreader.utils.UIUtils;
 
 import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
+import java.util.TreeMap;
 
 /**
  * Created by NeuroAndroid on 2017/7/7.
@@ -30,25 +31,32 @@ public class BookReadFactory {
      */
     private ChapterRead.Chapter mChapter;
     private List<BookReadBean> mBookReadBeanList;
+    private List<BookReadBean> mDataList = new ArrayList<>();
+    private Map<Integer, List<BookReadBean>> mBookReadMap;
     private BookReadAdapter mBookReadAdapter;
 
-    public void setChapterContent(BookReadAdapter bookReadAdapter, ChapterRead.Chapter chapter) {
-        mChapter = chapter;
-        mBookReadAdapter = bookReadAdapter;
-        transformChapterContent(chapter);
+    public void initBookReadMap() {
+        mBookReadMap = new TreeMap<>();
     }
 
-    private void transformChapterContent(ChapterRead.Chapter chapter) {
+    public void setChapterContent(BookReadAdapter bookReadAdapter,
+                                  ChapterRead.Chapter chapter, final int currentChapter) {
+        mChapter = chapter;
+        mBookReadAdapter = bookReadAdapter;
+        transformChapterContent(chapter, currentChapter);
+    }
+
+    private void transformChapterContent(ChapterRead.Chapter chapter, final int currentChapter) {
         String body = Constant.PARAGRAPH_MARK + chapter.getBody();
         body = body.replaceAll("\n", "\n" + Constant.PARAGRAPH_MARK);
         char[] block = body.toCharArray();
         int blockLength = block.length;
 
+        mBookReadBeanList = new ArrayList<>();
         List<String> lines = new ArrayList<>();
         String line = "";
         float lineWordWidth = 0;
         int currentLineCount = 0;
-        mBookReadBeanList = new ArrayList<>();
         BookReadBean bookReadBean;
         for (int i = 0; i < blockLength; i++) {
             String word = charToString(block[i]);
@@ -63,7 +71,6 @@ public class BookReadFactory {
                 lineWordWidth = 0;
                 line = "";
                 if (currentLineCount >= mLineCount || i == blockLength - 1) {
-                    L.e("blockLength - 1 : " + (i == blockLength - 1));
                     // 如果当前累加的行数超过了总行数
                     currentLineCount = 0;
                     bookReadBean = new BookReadBean();
@@ -73,14 +80,15 @@ public class BookReadFactory {
                 }
             }
         }
-        L.e("page size : " + mBookReadBeanList.size());
-        for (BookReadBean readBean : mBookReadBeanList) {
-            for (String str : readBean.getLines()) {
-                System.out.println(str);
-            }
-            System.out.println("------------------------------------------------------------");
+        mBookReadMap.put(currentChapter, mBookReadBeanList);
+        mDataList.clear();
+        for (List<BookReadBean> list : mBookReadMap.values()) {
+            mDataList.addAll(list);
         }
-        mBookReadAdapter.replaceAll(mBookReadBeanList);
+        mBookReadAdapter.replaceAll(mDataList);
+        /*for (Map.Entry<Integer, List<BookReadBean>> entry : mBookReadMap.entrySet()) {
+            System.out.println("Key = " + entry.getKey() + ", Value = " + entry.getValue().size());
+        }*/
     }
 
     private String charToString(char word) {

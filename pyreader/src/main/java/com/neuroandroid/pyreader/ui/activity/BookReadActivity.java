@@ -14,7 +14,6 @@ import com.neuroandroid.pyreader.mvp.presenter.BookReadPresenter;
 import com.neuroandroid.pyreader.widget.reader.BookReadFactory;
 import com.neuroandroid.pyreader.widget.recyclerviewpager.RecyclerViewPager;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.BindView;
@@ -39,10 +38,6 @@ public class BookReadActivity extends BaseActivity<IBookReadContract.Presenter> 
      * 章节列表
      */
     private List<BookMixAToc.MixToc.Chapters> mChapterList;
-    /**
-     * 每一章的内容列表
-     */
-    private List<ChapterRead.Chapter> mReadContentDataList = new ArrayList<>();
 
     private BookReadFactory mBookReadFactory;
     private BookReadAdapter mBookReadAdapter;
@@ -70,6 +65,7 @@ public class BookReadActivity extends BaseActivity<IBookReadContract.Presenter> 
     @Override
     protected void initData() {
         mBookReadFactory = BookReadFactory.getInstance();
+        mBookReadFactory.initBookReadMap();
         mFromSD = getIntent().getBooleanExtra(Constant.INTENT_FROM_SD, false);
         mBooksBean = (Recommend.BooksBean) getIntent().getSerializableExtra(Constant.INTENT_BOOK_BEAN);
         mBookId = mBooksBean.getBookId();
@@ -79,13 +75,14 @@ public class BookReadActivity extends BaseActivity<IBookReadContract.Presenter> 
     @Override
     public void showBookToc(List<BookMixAToc.MixToc.Chapters> list) {
         mChapterList = list;
-        for (int i = 0; i < list.size(); i++) mReadContentDataList.add(null);
         mPresenter.getChapterRead(mChapterList.get(0).getLink(), 0);
+        mPresenter.getChapterRead(mChapterList.get(1).getLink(), 1);
+        mPresenter.getChapterRead(mChapterList.get(2).getLink(), 2);
+        mPresenter.getChapterRead(mChapterList.get(3).getLink(), 3);
     }
 
     @Override
     public void showChapterRead(ChapterRead.Chapter data, int chapter) {
-        mReadContentDataList.set(chapter, data);
-        mBookReadFactory.setChapterContent(mBookReadAdapter, data);
+        mBookReadFactory.setChapterContent(mBookReadAdapter, data, chapter);
     }
 }

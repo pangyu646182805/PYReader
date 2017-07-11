@@ -16,6 +16,7 @@
             android:id="@+id/rv_book_read"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
+            android:overScrollMode="never"
             app:rvp_singlePageFling="true"/>
     </com.lcodecore.tkrefreshlayout.TwinklingRefreshLayout>
 
