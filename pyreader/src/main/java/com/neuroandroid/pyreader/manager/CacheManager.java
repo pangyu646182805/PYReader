@@ -4,6 +4,8 @@ import android.content.Context;
 
 import com.neuroandroid.pyreader.bean.SearchHistoryBean;
 import com.neuroandroid.pyreader.config.Constant;
+import com.neuroandroid.pyreader.model.response.BookMixAToc;
+import com.neuroandroid.pyreader.utils.CacheUtils;
 import com.neuroandroid.pyreader.utils.SPUtils;
 import com.neuroandroid.pyreader.utils.UIUtils;
 
@@ -78,5 +80,58 @@ public class CacheManager {
             return true;
         }
         return false;
+    }
+
+    private static String getChapterListKey(String bookId) {
+        return bookId + "_chapter_list";
+    }
+
+    /**
+     * 保存章节列表
+     */
+    public static void saveChapterList(Context context, String bookId, List<BookMixAToc.MixToc.Chapters> list) {
+        CacheUtils.get(context).put(getChapterListKey(bookId), (ArrayList) list);
+    }
+
+    public static List<BookMixAToc.MixToc.Chapters> getChapterList(Context context, String bookId) {
+        Object object = CacheUtils.get(context).getAsObject(getChapterListKey(bookId));
+        if (object != null) {
+            try {
+                List<BookMixAToc.MixToc.Chapters> list = (List<BookMixAToc.MixToc.Chapters>) object;
+                return list;
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+        return null;
+    }
+
+    private static String getReadPositionKey(String bookId) {
+        return bookId + "_read_position";
+    }
+
+    private static String getReadPositionValue(int currentChapter, int currentPage) {
+        return currentChapter + "-" + currentPage;
+    }
+
+    /**
+     * 存储阅读位置
+     *
+     * @param currentChapter 当前阅读到了第几章
+     * @param currentPage    当前阅读到了第几章的第几页
+     */
+    public static void saveReadPosition(Context context, String bookId, int currentChapter, int currentPage) {
+        SPUtils.putString(context, getReadPositionKey(bookId), getReadPositionValue(currentChapter, currentPage));
+    }
+
+    /**
+     * 返回阅读位置
+     */
+    public static int[] getReadPosition(Context context, String bookId) {
+        int[] readPosition = new int[2];
+        String[] split = SPUtils.getString(context, getReadPositionKey(bookId), "0-1").split("-");
+        readPosition[0] = Integer.parseInt(split[0]);
+        readPosition[1] = Integer.parseInt(split[1]);
+        return readPosition;
     }
 }

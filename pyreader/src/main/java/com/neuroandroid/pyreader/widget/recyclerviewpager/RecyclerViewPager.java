@@ -430,13 +430,15 @@ public class RecyclerViewPager extends RecyclerView {
     @Override
     public boolean onTouchEvent(MotionEvent e) {
         // recording the max/min value in touch track
-        if (e.getAction() == MotionEvent.ACTION_MOVE) {
-            if (mCurView != null) {
-                mMaxLeftWhenDragging = Math.max(mCurView.getLeft(), mMaxLeftWhenDragging);
-                mMaxTopWhenDragging = Math.max(mCurView.getTop(), mMaxTopWhenDragging);
-                mMinLeftWhenDragging = Math.min(mCurView.getLeft(), mMinLeftWhenDragging);
-                mMinTopWhenDragging = Math.min(mCurView.getTop(), mMinTopWhenDragging);
-            }
+        switch (e.getAction()) {
+            case MotionEvent.ACTION_MOVE:
+                if (mCurView != null) {
+                    mMaxLeftWhenDragging = Math.max(mCurView.getLeft(), mMaxLeftWhenDragging);
+                    mMaxTopWhenDragging = Math.max(mCurView.getTop(), mMaxTopWhenDragging);
+                    mMinLeftWhenDragging = Math.min(mCurView.getLeft(), mMinLeftWhenDragging);
+                    mMinTopWhenDragging = Math.min(mCurView.getTop(), mMinTopWhenDragging);
+                }
+                break;
         }
         return super.onTouchEvent(e);
     }
@@ -453,8 +455,8 @@ public class RecyclerViewPager extends RecyclerView {
                     touchStartPoint.set(x, y);
                     break;
                 case MotionEvent.ACTION_MOVE:
-                    float tempDistance = (float) Math.sqrt(x*x+ y*y);
-                    float lastDistance = (float) Math.sqrt(touchStartPoint.x*touchStartPoint.x + touchStartPoint.y*touchStartPoint.y);
+                    float tempDistance = (float) Math.sqrt(x * x + y * y);
+                    float lastDistance = (float) Math.sqrt(touchStartPoint.x * touchStartPoint.x + touchStartPoint.y * touchStartPoint.y);
 
                     if (Math.abs(lastDistance - tempDistance) > minSlideDistance) {
                         float k = Math.abs((touchStartPoint.y - y) / (touchStartPoint.x - x));

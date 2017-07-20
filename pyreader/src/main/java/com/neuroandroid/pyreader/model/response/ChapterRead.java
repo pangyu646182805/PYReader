@@ -89,6 +89,9 @@ public class ChapterRead extends BaseResponse {
         private String body;
         private String cpContent;
 
+        public Chapter() {
+        }
+
         public Chapter(String title, String body) {
             this.title = title;
             this.body = body;

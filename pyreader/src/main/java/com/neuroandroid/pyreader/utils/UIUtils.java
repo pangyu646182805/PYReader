@@ -1,5 +1,6 @@
 package com.neuroandroid.pyreader.utils;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.content.res.Resources;
@@ -8,6 +9,8 @@ import android.graphics.Rect;
 import android.os.Handler;
 import android.text.TextUtils;
 import android.util.TypedValue;
+import android.view.Window;
+import android.view.WindowManager;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -119,5 +122,22 @@ public class UIUtils {
             resources = context.getResources();
         }
         return TypedValue.applyDimension(unit, size, resources.getDisplayMetrics());
+    }
+
+    /**
+     * @param enable true : 全屏
+     */
+    public static void fullScreen(Activity activity, boolean enable) {
+        Window window = activity.getWindow();
+        if (enable) {
+            WindowManager.LayoutParams lp = window.getAttributes();
+            lp.flags |= WindowManager.LayoutParams.FLAG_FULLSCREEN;
+            window.setAttributes(lp);
+            // getWindow().addFlags(WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS);
+        } else {
+            WindowManager.LayoutParams attr = window.getAttributes();
+            attr.flags &= (~WindowManager.LayoutParams.FLAG_FULLSCREEN);
+            window.setAttributes(attr);
+        }
     }
 }

@@ -269,7 +269,6 @@ public abstract class PYDialog<T extends PYDialog<T>> extends Dialog {
         void onClick(T dialog, View view);
     }
 
-
     public interface OnDialogItemClickListener<T, ITEM> {
         void onDialogItemClick(T dialog, BaseViewHolder holder, int position, ITEM item);
     }

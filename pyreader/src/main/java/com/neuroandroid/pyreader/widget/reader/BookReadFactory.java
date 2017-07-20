@@ -2,6 +2,7 @@ package com.neuroandroid.pyreader.widget.reader;
 
 import android.content.Context;
 import android.graphics.Paint;
+import android.graphics.Path;
 import android.graphics.Typeface;
 import android.util.DisplayMetrics;
 import android.util.TypedValue;
@@ -39,14 +40,15 @@ public class BookReadFactory {
         mBookReadMap = new TreeMap<>();
     }
 
-    public void setChapterContent(BookReadAdapter bookReadAdapter,
-                                  ChapterRead.Chapter chapter, final int currentChapter) {
+    public void setChapterContent(BookReadAdapter bookReadAdapter, ChapterRead.Chapter chapter,
+                                  final int currentChapter, final String chapterTitle, final String bookTitle) {
         mChapter = chapter;
         mBookReadAdapter = bookReadAdapter;
-        transformChapterContent(chapter, currentChapter);
+        transformChapterContent(chapter, currentChapter, chapterTitle, bookTitle);
     }
 
-    private void transformChapterContent(ChapterRead.Chapter chapter, final int currentChapter) {
+    private void transformChapterContent(ChapterRead.Chapter chapter, final int currentChapter,
+                                         final String chapterTitle, final String bookTitle) {
         String body = Constant.PARAGRAPH_MARK + chapter.getBody();
         body = body.replaceAll("\n", "\n" + Constant.PARAGRAPH_MARK);
         char[] block = body.toCharArray();
@@ -57,13 +59,15 @@ public class BookReadFactory {
         String line = "";
         float lineWordWidth = 0;
         int currentLineCount = 0;
+        int currentPage = 0;
         BookReadBean bookReadBean;
         for (int i = 0; i < blockLength; i++) {
             String word = charToString(block[i]);
             float wordWidth = mFontPaint.measureText(word);
             lineWordWidth += wordWidth;
             line += word;
-            if (lineWordWidth > mVisibleWidth - wordWidth * 0.85f || "\n".equals(word) || i == blockLength - 1) {
+            if (lineWordWidth > mVisibleWidth - wordWidth * 0.9f || "\n".equals(word) || i == blockLength - 1) {
+                if ("\n".equals(line)) continue;
                 currentLineCount++;
                 // 如果累加值超过绘制区域的宽度
                 // 则添加当前文本到lines，lineWordWidth清零，重新计算
@@ -72,13 +76,21 @@ public class BookReadFactory {
                 line = "";
                 if (currentLineCount >= mLineCount || i == blockLength - 1) {
                     // 如果当前累加的行数超过了总行数
+                    currentPage++;
                     currentLineCount = 0;
                     bookReadBean = new BookReadBean();
+                    bookReadBean.setTitle(bookTitle);
+                    bookReadBean.setChapterTitle(chapterTitle);
+                    bookReadBean.setCurrentChapter(currentChapter);
+                    bookReadBean.setCurrentPage(currentPage);
                     bookReadBean.setLines(lines);
                     mBookReadBeanList.add(bookReadBean);
                     lines = new ArrayList<>();
                 }
             }
+        }
+        for (BookReadBean bookBean : mBookReadBeanList) {
+            bookBean.setTotalPage(mBookReadBeanList.size());
         }
         mBookReadMap.put(currentChapter, mBookReadBeanList);
         mDataList.clear();
@@ -86,9 +98,6 @@ public class BookReadFactory {
             mDataList.addAll(list);
         }
         mBookReadAdapter.replaceAll(mDataList);
-        /*for (Map.Entry<Integer, List<BookReadBean>> entry : mBookReadMap.entrySet()) {
-            System.out.println("Key = " + entry.getKey() + ", Value = " + entry.getValue().size());
-        }*/
     }
 
     private String charToString(char word) {
@@ -98,9 +107,11 @@ public class BookReadFactory {
     /**
      * 默认阅读界面背景
      */
-    private int mReadBackgroungColor = UIUtils.getColor(R.color.defaultReadBackgroundColor);
+    private int mReadBackgroundColor = UIUtils.getColor(R.color.black);
 
-    private int mFontColor = UIUtils.getColor(R.color.backgroundPanel);
+    private int mFontColor = UIUtils.getColor(R.color.white);
+
+    private int mOtherFontColor = UIUtils.getColor(R.color.white_c);
 
     /**
      * 屏幕宽度和高度
@@ -111,6 +122,11 @@ public class BookReadFactory {
      * 文本字体大小
      */
     private float mFontSize;
+
+    /**
+     * 正文以外的字体大小
+     */
+    private float mOtherFontSize;
 
     /**
      * 小数格式化
@@ -167,6 +183,28 @@ public class BookReadFactory {
      */
     private Paint mFontPaint;
 
+    /**
+     * 绘制正文以外字体的画笔
+     */
+    private Paint mOtherFontPaint;
+
+    /**
+     * 电池图标的path
+     */
+    private Path mBatteryIconPath;
+
+    /**
+     * 电池图标的宽度，高度是宽度的2/3
+     */
+    private float mBatteryIconWidth;
+
+    private Paint mBatteryIconPaint;
+
+    /**
+     * 电池图标的背景颜色
+     */
+    private int mBatteryIconBackgroundColor = UIUtils.getColor(R.color.white_c);
+
     public static synchronized BookReadFactory getInstance() {
         return sReadFactory;
     }
@@ -188,25 +226,40 @@ public class BookReadFactory {
         mFormat = new DecimalFormat("#0.0");
         mLeftAndRightMarginWidth = UIUtils.getDimen(R.dimen.x30);
         mTopAndBottomMarginWidth = UIUtils.getDimen(R.dimen.x60);
-        mLineSpace = UIUtils.getDimen(R.dimen.y24);
+        mLineSpace = UIUtils.getDimen(R.dimen.y16);
         mParagraphSpace = UIUtils.getDimen(R.dimen.y32);
+        mBatteryIconWidth = UIUtils.getDimen(R.dimen.y30);
         mVisibleWidth = mScreenWidth - mLeftAndRightMarginWidth * 2;
         mVisibleHeight = mScreenHeight - mTopAndBottomMarginWidth * 2;
         mFontSize = UIUtils.getRawSize(context, TypedValue.COMPLEX_UNIT_SP, 18);
-        mLineCount = (int) (mVisibleHeight / (mFontSize + mLineSpace));
+        mOtherFontSize = UIUtils.getRawSize(context, TypedValue.COMPLEX_UNIT_SP, 11);
+        mLineCount = Math.round(mVisibleHeight / (mFontSize + mLineSpace));
 
         mFontPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
         mFontPaint.setTextAlign(Paint.Align.LEFT);
         mFontPaint.setTextSize(mFontSize);
         mFontPaint.setColor(mFontColor);
         mFontPaint.setSubpixelText(true);  // 有助于文本在LCD屏幕上的显示效果
+
+        mOtherFontPaint = new Paint(mFontPaint);
+        mOtherFontPaint.setTextSize(mOtherFontSize);
+        mOtherFontPaint.setColor(mOtherFontColor);
+
+        mBatteryIconPaint = new Paint();
+        mBatteryIconPaint.setDither(true);
+        mBatteryIconPaint.setColor(mBatteryIconBackgroundColor);
+        mBatteryIconPaint.setStyle(Paint.Style.STROKE);
+        mBatteryIconPaint.setStrokeWidth(UIUtils.getDimen(R.dimen.x1));
+        mBatteryIconPaint.setAntiAlias(true);
+
+        mBatteryIconPath = new Path();
     }
 
     /**
      * Setter and Getter
      */
-    public int getReadBackgroungColor() {
-        return mReadBackgroungColor;
+    public int getReadBackgroundColor() {
+        return mReadBackgroundColor;
     }
 
     public int getFontColor() {
@@ -271,5 +324,25 @@ public class BookReadFactory {
 
     public Paint getFontPaint() {
         return mFontPaint;
+    }
+
+    public Paint getOtherFontPaint() {
+        return mOtherFontPaint;
+    }
+
+    public Path getBatteryIconPath() {
+        return mBatteryIconPath;
+    }
+
+    public float getBatteryIconWidth() {
+        return mBatteryIconWidth;
+    }
+
+    public Paint getBatteryIconPaint() {
+        return mBatteryIconPaint;
+    }
+
+    public int getBatteryIconBackgroundColor() {
+        return mBatteryIconBackgroundColor;
     }
 }

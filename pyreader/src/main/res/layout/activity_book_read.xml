@@ -1,14 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout
+<android.support.v4.widget.DrawerLayout
+    android:id="@+id/drawer_layout"
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/backgroundColor"
-    android:orientation="vertical">
+    android:background="@color/backgroundColor">
 
-    <com.lcodecore.tkrefreshlayout.TwinklingRefreshLayout
-        android:id="@+id/refresh_layout"
+    <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
@@ -17,14 +16,23 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:overScrollMode="never"
+            app:rvp_millisecondsPerInch="50"
             app:rvp_singlePageFling="true"/>
-    </com.lcodecore.tkrefreshlayout.TwinklingRefreshLayout>
 
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:visibility="gone">
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:visibility="gone">
 
-        <include layout="@layout/layout_toolbar"/>
-    </LinearLayout>
-</RelativeLayout>
+            <include layout="@layout/layout_toolbar"/>
+        </LinearLayout>
+    </RelativeLayout>
+
+    <fragment
+        android:id="@+id/left_menu"
+        android:name="com.neuroandroid.pyreader.ui.fragment.ChapterListFragment"
+        android:layout_width="@dimen/x480"
+        android:layout_height="match_parent"
+        android:layout_gravity="left"
+        android:tag="LEFT"/>
+</android.support.v4.widget.DrawerLayout>
