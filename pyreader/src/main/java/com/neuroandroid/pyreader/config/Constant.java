@@ -49,6 +49,8 @@ public class Constant {
 
     public static final String INTENT_BOOK_ID = "intent_book_id";
 
+    public static final String FROM_BOOK_READ = "from_book_read";
+
     public static final String INTENT_BOOK_BEAN = "intent_book_bean";
 
     public static final String INTENT_FROM_SD= "intent_from_sd";

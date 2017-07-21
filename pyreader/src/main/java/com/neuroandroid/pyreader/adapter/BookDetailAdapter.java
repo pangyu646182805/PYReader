@@ -120,7 +120,14 @@ public class BookDetailAdapter extends BaseRvAdapter<BaseResponse> {
                         }
                     });
                     holder.setOnClickListener(R.id.tv_read, view -> {
-
+                        BookDetailActivity bookDetailActivity = getActivity(BookDetailActivity.class);
+                        boolean fromBookRead = bookDetailActivity.isFromBookRead();
+                        if (fromBookRead) {
+                            // 如果是从书籍阅读界面跳转而来则直接finish掉当前界面
+                            bookDetailActivity.finish();
+                        } else {
+                            // NavigationUtils.goToBookReadPage();
+                        }
                     });
                 }
                 break;

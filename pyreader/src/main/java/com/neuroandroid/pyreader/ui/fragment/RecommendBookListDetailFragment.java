@@ -71,7 +71,7 @@ public class RecommendBookListDetailFragment extends BaseFragment<IRecommendBook
 
     @Override
     protected void initListener() {
-        mBookListDetailAdapter.setOnItemClickListener((holder, position, item) -> NavigationUtils.goToBookDetailPage(mActivity, item.getBook().getBookId()));
+        mBookListDetailAdapter.setOnItemClickListener((holder, position, item) -> NavigationUtils.goToBookDetailPage(mActivity, item.getBook().getBookId(), false));
     }
 
     @Override

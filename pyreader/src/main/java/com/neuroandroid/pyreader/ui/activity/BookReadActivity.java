@@ -38,6 +38,7 @@ import com.neuroandroid.pyreader.ui.fragment.BookDetailCommunityFragment;
 import com.neuroandroid.pyreader.ui.fragment.ChapterListFragment;
 import com.neuroandroid.pyreader.utils.FragmentUtils;
 import com.neuroandroid.pyreader.utils.L;
+import com.neuroandroid.pyreader.utils.NavigationUtils;
 import com.neuroandroid.pyreader.utils.TimeUtils;
 import com.neuroandroid.pyreader.utils.UIUtils;
 import com.neuroandroid.pyreader.widget.reader.BookReadFactory;
@@ -430,6 +431,9 @@ public class BookReadActivity extends BaseActivity<IBookReadContract.Presenter>
                 break;
             case R.id.action_community:
                 hideAppBarAndBottomControl(() -> openBookDetailCommunityFragment(0));
+                break;
+            case R.id.action_book_detail:
+                hideAppBarAndBottomControl(() -> NavigationUtils.goToBookDetailPage(this, mBookId, true));
                 break;
         }
         return super.onOptionsItemSelected(item);

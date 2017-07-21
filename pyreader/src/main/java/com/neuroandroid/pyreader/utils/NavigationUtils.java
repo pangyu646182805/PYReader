@@ -16,10 +16,12 @@ import com.neuroandroid.pyreader.ui.activity.BookReadActivity;
 public class NavigationUtils {
     /**
      * 跳转到书籍详情界面
+     * fromBookRead : 是否从书籍阅读界面跳转而来
      */
-    public static void goToBookDetailPage(@NonNull final Activity activity, final String bookId) {
+    public static void goToBookDetailPage(@NonNull final Activity activity, final String bookId, final boolean fromBookRead) {
         final Intent intent = new Intent(activity, BookDetailActivity.class);
         intent.putExtra(Constant.INTENT_BOOK_ID, bookId);
+        intent.putExtra(Constant.FROM_BOOK_READ, fromBookRead);
         activity.startActivity(intent);
     }
 

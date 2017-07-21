@@ -61,7 +61,7 @@ public class RankingBookListFragment extends BaseFragment<IRankingBookListContra
 
     @Override
     protected void initListener() {
-        mBooksByCategoryAdapter.setOnItemClickListener((holder, position, item) -> NavigationUtils.goToBookDetailPage(mActivity, item.getBookId()));
+        mBooksByCategoryAdapter.setOnItemClickListener((holder, position, item) -> NavigationUtils.goToBookDetailPage(mActivity, item.getBookId(), false));
         mRefreshLayout.setOnRefreshListener(new RefreshListenerAdapter() {
             @Override
             public void onRefresh(TwinklingRefreshLayout refreshLayout) {

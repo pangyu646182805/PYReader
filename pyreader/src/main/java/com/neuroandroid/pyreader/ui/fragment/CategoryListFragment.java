@@ -175,7 +175,7 @@ public class CategoryListFragment extends BaseFragment<ICategoryListContract.Pre
                 mPresenter.getBooksByCategory(mCategoryGender, mType, mCategoryName, mMinor, mCurrentPage, PAGE_SIZE);
             }
         });
-        mBooksByCategoryAdapter.setOnItemClickListener((holder, position, item) -> NavigationUtils.goToBookDetailPage(mActivity, item.getBookId()));
+        mBooksByCategoryAdapter.setOnItemClickListener((holder, position, item) -> NavigationUtils.goToBookDetailPage(mActivity, item.getBookId(), false));
         mRlFilter.setOnTouchListener((view, motionEvent) -> {
             switch (motionEvent.getAction()) {
                 case MotionEvent.ACTION_UP:

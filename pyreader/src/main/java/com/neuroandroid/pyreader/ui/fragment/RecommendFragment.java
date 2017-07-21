@@ -118,7 +118,7 @@ public class RecommendFragment extends BaseLazyFragment<IRecommendContract.Prese
                             } else {  // 来自网络的书籍
                                 switch (pos) {
                                     case 0:  // 书籍详情
-                                        NavigationUtils.goToBookDetailPage(mActivity, item.getBookId());
+                                        NavigationUtils.goToBookDetailPage(mActivity, item.getBookId(), false);
                                         break;
                                     case 1:
 

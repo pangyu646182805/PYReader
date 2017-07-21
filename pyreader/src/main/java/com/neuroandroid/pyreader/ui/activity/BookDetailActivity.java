@@ -1,5 +1,6 @@
 package com.neuroandroid.pyreader.ui.activity;
 
+import android.content.Intent;
 import android.graphics.Color;
 import android.os.Build;
 import android.os.Bundle;
@@ -51,6 +52,11 @@ public class BookDetailActivity extends BaseActivity<IBookDetailContract.Present
 
     private int mScrollX;
     private BaseFragment mCurrentFragment;
+    private boolean mFromBookRead;
+
+    public boolean isFromBookRead() {
+        return mFromBookRead;
+    }
 
     public void setBookTitle(String bookTitle) {
         mBookTitle = bookTitle;
@@ -84,7 +90,10 @@ public class BookDetailActivity extends BaseActivity<IBookDetailContract.Present
         mBookDetailDataList.add(null);
         mBookDetailDataList.add(null);
         mBookDetailAdapter.replaceAll(mBookDetailDataList);
-        mBookId = getIntent().getStringExtra(Constant.INTENT_BOOK_ID);
+        Intent intent = getIntent();
+        mBookId = intent.getStringExtra(Constant.INTENT_BOOK_ID);
+        mFromBookRead = intent.getBooleanExtra(Constant.FROM_BOOK_READ, false);
+
         showLoading();
         mPresenter.getBookDetail(mBookId);
         mPresenter.getHotReview(mBookId);

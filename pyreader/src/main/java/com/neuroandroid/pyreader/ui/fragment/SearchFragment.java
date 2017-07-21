@@ -194,7 +194,7 @@ public class SearchFragment extends BaseFragment<ISearchContract.Presenter>
                 }
             }
         });
-        mSearchBooksAdapter.setOnItemClickListener((holder, position, item) -> NavigationUtils.goToBookDetailPage(mActivity, item.getBookId()));
+        mSearchBooksAdapter.setOnItemClickListener((holder, position, item) -> NavigationUtils.goToBookDetailPage(mActivity, item.getBookId(), false));
     }
 
     /**

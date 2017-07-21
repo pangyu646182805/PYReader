@@ -18,4 +18,10 @@
         android:icon="@drawable/ic_community"
         android:title="社区"
         app:showAsAction="always"/>
+
+    <item
+        android:id="@+id/action_book_detail"
+        android:icon="@drawable/ic_description"
+        android:title="书籍详情"
+        app:showAsAction="always"/>
 </menu>

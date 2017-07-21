@@ -81,7 +81,7 @@ public class BooksByTagFragment extends BaseFragment<IBooksByTagContract.Present
                 mPresenter.getBooksByTag(mBookTag, getStringPage(mCurrentPage), getStringPage(PAGE_SIZE));
             }
         });
-        mBooksByTagAdapter.setOnItemClickListener((holder, position, item) -> NavigationUtils.goToBookDetailPage(mActivity, item.getBookId()));
+        mBooksByTagAdapter.setOnItemClickListener((holder, position, item) -> NavigationUtils.goToBookDetailPage(mActivity, item.getBookId(), false));
     }
 
     @Override
