@@ -64,6 +64,8 @@ ext {
             "flowlayout"              : "com.nex3z:flow-layout:0.1.4",
             "expandableTextView"      : "com.ms-square:expandableTextView:0.1.4",
             "material-cab"            : "com.afollestad:material-cab:0.1.12@aar",
+            "fastscroll"              : "com.simplecityapps:recyclerview-fastscroll:1.0.16",
+            "bubbleseekbar"              : "com.xw.repo:bubbleseekbar:3.5-lite",
 
             // test
             "junit"                   : "junit:junit:4.12",

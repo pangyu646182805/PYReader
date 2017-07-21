@@ -129,6 +129,10 @@ public abstract class BaseFragment<P extends IPresenter> extends RxFragment impl
         return mToolbar;
     }
 
+    protected View getStatusBar() {
+        return mStatusBar;
+    }
+
     /**
      * 设置返回按钮
      */

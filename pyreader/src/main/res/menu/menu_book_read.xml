@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+      xmlns:app="http://schemas.android.com/apk/res-auto">
+    <item
+        android:id="@+id/action_download"
+        android:icon="@drawable/ic_file_download"
+        android:title="导出"
+        app:showAsAction="always"/>
+
+    <item
+        android:id="@+id/action_bookmark"
+        android:icon="@drawable/ic_bookmark"
+        android:title="收藏"
+        app:showAsAction="always"/>
+
+    <item
+        android:id="@+id/action_community"
+        android:icon="@drawable/ic_community"
+        android:title="社区"
+        app:showAsAction="always"/>
+</menu>

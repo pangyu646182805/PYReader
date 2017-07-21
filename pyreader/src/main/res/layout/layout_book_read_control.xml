@@ -1,0 +1,146 @@
+<?xml version="1.0" encoding="utf-8"?>
+<merge
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/y88"
+        android:background="@color/backgroundColor"
+        android:orientation="horizontal">
+
+        <com.neuroandroid.pyreader.widget.NoPaddingTextView
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:clickable="true"
+            android:foreground="@drawable/rect_selector_strong"
+            android:gravity="center"
+            android:paddingLeft="@dimen/x32"
+            android:paddingRight="@dimen/x24"
+            android:text="上一章"/>
+
+        <com.xw.repo.BubbleSeekBar
+            android:id="@+id/sb_progress"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:layout_weight="1"
+            app:bsb_bubble_color="@color/colorPrimary"
+            app:bsb_bubble_text_color="@color/white"
+            app:bsb_progress="0"
+            app:bsb_second_track_color="@color/colorPrimary"
+            app:bsb_track_color="@color/black_6"
+            app:bsb_show_progress_in_float="true"
+            app:bsb_track_size="@dimen/y6"/>
+
+        <com.neuroandroid.pyreader.widget.NoPaddingTextView
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:clickable="true"
+            android:foreground="@drawable/rect_selector_strong"
+            android:gravity="center"
+            android:paddingLeft="@dimen/x24"
+            android:paddingRight="@dimen/x32"
+            android:text="下一章"/>
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/y128"
+        android:orientation="horizontal"
+        android:visibility="visible">
+
+        <LinearLayout
+            android:id="@+id/ll_catalog"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:clickable="true"
+            android:foreground="@drawable/rect_selector_strong"
+            android:gravity="center"
+            android:orientation="vertical">
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:srcCompat="@drawable/ic_catalog"/>
+
+            <com.neuroandroid.pyreader.widget.NoPaddingTextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/y8"
+                android:text="目录"
+                android:textColor="@color/colorGray333"
+                android:textSize="14sp"/>
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:clickable="true"
+            android:foreground="@drawable/rect_selector_strong"
+            android:gravity="center"
+            android:orientation="vertical">
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:srcCompat="@drawable/ic_file_download"/>
+
+            <com.neuroandroid.pyreader.widget.NoPaddingTextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/y8"
+                android:text="缓存"
+                android:textColor="@color/colorGray333"
+                android:textSize="14sp"/>
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:clickable="true"
+            android:foreground="@drawable/rect_selector_strong"
+            android:gravity="center"
+            android:orientation="vertical">
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:srcCompat="@drawable/ic_settings"/>
+
+            <com.neuroandroid.pyreader.widget.NoPaddingTextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/y8"
+                android:text="设置"
+                android:textColor="@color/colorGray333"
+                android:textSize="14sp"/>
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:clickable="true"
+            android:foreground="@drawable/rect_selector_strong"
+            android:gravity="center"
+            android:orientation="vertical">
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:srcCompat="@drawable/ic_night_mode"/>
+
+            <com.neuroandroid.pyreader.widget.NoPaddingTextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/y8"
+                android:text="夜间模式"
+                android:textColor="@color/colorGray333"
+                android:textSize="14sp"/>
+        </LinearLayout>
+    </LinearLayout>
+</merge>

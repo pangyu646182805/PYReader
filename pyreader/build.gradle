@@ -129,6 +129,8 @@ dependencies {
     compile rootProject.ext.dependencies["flowlayout"]
     compile rootProject.ext.dependencies["expandableTextView"]
     compile rootProject.ext.dependencies["material-cab"]
+    compile rootProject.ext.dependencies["fastscroll"]
+    compile rootProject.ext.dependencies["bubbleseekbar"]
 
     // TwinklingRefreshLayout
     compile(rootProject.ext.dependencies["tkrefreshlayout"]) {

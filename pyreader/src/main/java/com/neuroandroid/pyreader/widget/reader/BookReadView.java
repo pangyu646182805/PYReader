@@ -163,7 +163,7 @@ public class BookReadView extends View {
         mBookReadFactory.getBatteryIconPaint().setStyle(Paint.Style.STROKE);
         float batteryIconHeight = mBookReadFactory.getBatteryIconWidth() / 2;
         float batteryProminentHeight = batteryIconHeight / 3;
-        float batteryProminentWidth = mBookReadFactory.getBatteryIconWidth() / 6;
+        float batteryProminentWidth = mBookReadFactory.getBatteryIconWidth() / 7;
 
         float startX = mBookReadFactory.getLeftAndRightMarginWidth() + batteryProminentWidth;
         float startY = mBookReadFactory.getScreenHeight() - (mBookReadFactory.getTopAndBottomMarginWidth() + batteryIconHeight) / 2;
@@ -193,6 +193,11 @@ public class BookReadView extends View {
         batteryIconPath.lineTo(startX - batteryProgressWidth, startY);
         batteryIconPath.close();
         canvas.drawPath(batteryIconPath, mBookReadFactory.getBatteryIconPaint());
+
+        // 绘制电池电量
+        startX += UIUtils.getDimen(R.dimen.x8);
+        startY += batteryIconHeight;
+        canvas.drawText(String.valueOf(mCurrentBatteryLevel), startX, startY, mBookReadFactory.getOtherFontPaint());
     }
 
     @Override

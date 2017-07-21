@@ -1,6 +1,7 @@
 package com.neuroandroid.pyreader.model.response;
 
 import com.google.gson.annotations.SerializedName;
+import com.neuroandroid.pyreader.adapter.base.ISelect;
 import com.neuroandroid.pyreader.base.BaseResponse;
 
 import java.io.Serializable;
@@ -73,13 +74,14 @@ public class BookMixAToc extends BaseResponse {
             this.chapters = chapters;
         }
 
-        public static class Chapters implements Serializable {
+        public static class Chapters implements Serializable, ISelect {
             private String title;
             private String link;
             private String id;
             private int currency;
             private boolean unreadble;
             private boolean isVip;
+            private boolean isSelected;
 
             public Chapters() {
             }
@@ -135,6 +137,16 @@ public class BookMixAToc extends BaseResponse {
 
             public void setVip(boolean vip) {
                 isVip = vip;
+            }
+
+            @Override
+            public boolean isSelected() {
+                return isSelected;
+            }
+
+            @Override
+            public void setSelected(boolean selected) {
+                this.isSelected = selected;
             }
         }
     }

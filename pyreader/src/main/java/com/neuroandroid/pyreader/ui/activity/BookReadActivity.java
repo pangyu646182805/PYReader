@@ -6,9 +6,19 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.os.Handler;
 import android.os.Message;
+import android.support.design.widget.AppBarLayout;
+import android.support.v4.view.GravityCompat;
+import android.support.v4.view.ViewCompat;
+import android.support.v4.view.ViewPropertyAnimatorListenerAdapter;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.widget.LinearLayoutManager;
+import android.view.Menu;
+import android.view.MenuItem;
+import android.view.MotionEvent;
 import android.view.View;
+import android.view.ViewTreeObserver;
+import android.view.animation.DecelerateInterpolator;
+import android.widget.LinearLayout;
 
 import com.google.gson.Gson;
 import com.neuroandroid.pyreader.R;
@@ -22,12 +32,14 @@ import com.neuroandroid.pyreader.model.response.Recommend;
 import com.neuroandroid.pyreader.mvp.contract.IBookReadContract;
 import com.neuroandroid.pyreader.mvp.presenter.BookReadPresenter;
 import com.neuroandroid.pyreader.provider.PYReaderStore;
+import com.neuroandroid.pyreader.ui.fragment.ChapterListFragment;
 import com.neuroandroid.pyreader.utils.L;
 import com.neuroandroid.pyreader.utils.TimeUtils;
 import com.neuroandroid.pyreader.utils.UIUtils;
 import com.neuroandroid.pyreader.widget.reader.BookReadFactory;
 import com.neuroandroid.pyreader.widget.reader.BookReadView;
 import com.neuroandroid.pyreader.widget.recyclerviewpager.RecyclerViewPager;
+import com.xw.repo.BubbleSeekBar;
 
 import java.lang.ref.WeakReference;
 import java.util.List;
@@ -47,7 +59,8 @@ import butterknife.BindView;
  * 保存的阅读位置：[3, 11]
  * 表示阅读到了第3章的第11页
  */
-public class BookReadActivity extends BaseActivity<IBookReadContract.Presenter> implements IBookReadContract.View {
+public class BookReadActivity extends BaseActivity<IBookReadContract.Presenter>
+        implements IBookReadContract.View, ChapterListFragment.OnDrawerPageChangeListener {
     private static final int MSG_UPDATE_SYSTEM_TIME = 34;
 
     /**
@@ -55,10 +68,18 @@ public class BookReadActivity extends BaseActivity<IBookReadContract.Presenter> 
      */
     public static final int ONE_TIME_LOAD_CHAPTER = 3;
 
+    @BindView(R.id.app_bar)
+    AppBarLayout mAppBarLayout;
     @BindView(R.id.rv_book_read)
     RecyclerViewPager mRvBookRead;
     @BindView(R.id.drawer_layout)
     DrawerLayout mDrawerLayout;
+    @BindView(R.id.ll_bottom_control)
+    LinearLayout mLlBottomControl;
+    @BindView(R.id.ll_catalog)
+    LinearLayout mLlCatalog;
+    @BindView(R.id.sb_progress)
+    BubbleSeekBar mSbPregress;
 
     // 书籍是否来自SD卡
     private boolean mFromSD;
@@ -80,6 +101,22 @@ public class BookReadActivity extends BaseActivity<IBookReadContract.Presenter> 
     private BookReadHandler mBookReadHandler;
     private String mPreUpdateTime;
     private BatteryBroadcastReceiver mBatteryReceiver;
+    private ChapterListFragment mChapterListFragment;
+
+    private int mAppBarHeight, mBottomControlHeight;
+    /**
+     * ToolBar和底部控制台是否显示
+     */
+    private boolean mShowAppBarAndBottomControl;
+
+    @Override
+    public void onPageSelected(boolean isLast) {
+        if (isLast) {
+            mDrawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_UNLOCKED);
+        } else if (mDrawerLayout.getDrawerLockMode(GravityCompat.START) == DrawerLayout.LOCK_MODE_UNLOCKED) {
+            mDrawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_OPEN);
+        }
+    }
 
     private static class BookReadHandler extends Handler {
         private WeakReference<BookReadActivity> mActivity;
@@ -114,15 +151,19 @@ public class BookReadActivity extends BaseActivity<IBookReadContract.Presenter> 
 
     @Override
     protected void initView() {
-        UIUtils.fullScreen(this, true);
         setDisplayHomeAsUpEnabled();
         setToolbarTitle("");
+        UIUtils.fullScreen(this, true);
 
         mRvBookRead.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false));
         mBookReadAdapter = new BookReadAdapter(this, null, null);
         mBookReadAdapter.clearRvAnim(mRvBookRead);
         mBookReadAdapter.setRvBookRead(mRvBookRead);
         mRvBookRead.setAdapter(mBookReadAdapter);
+
+        mChapterListFragment = (ChapterListFragment) getSupportFragmentManager().findFragmentById(R.id.left_menu);
+        mChapterListFragment.setImmersive(mImmersive);
+        mDrawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED);
     }
 
     @Override
@@ -142,6 +183,7 @@ public class BookReadActivity extends BaseActivity<IBookReadContract.Presenter> 
             mPresenter.getBookMixAToc(mBookId);
         } else {
             L.e("从缓存加载章节列表");
+            mChapterListFragment.setChaptersList(chapterList);
             String json = new Gson().toJson(chapterList);
             L.e("章节列表 : " + json);
             mChapterList = chapterList;
@@ -166,6 +208,12 @@ public class BookReadActivity extends BaseActivity<IBookReadContract.Presenter> 
             @Override
             public void onCenterClick() {
                 L.e("点击了中心区域");
+                if (!mShowAppBarAndBottomControl) {
+                    // 如果没有显示则显示
+                    showAppBarAndBottomControl();
+                } else {
+                    hideAppBarAndBottomControl();
+                }
             }
 
             @Override
@@ -189,13 +237,38 @@ public class BookReadActivity extends BaseActivity<IBookReadContract.Presenter> 
             public void onDrawerClosed(View drawerView) {
                 super.onDrawerClosed(drawerView);
                 UIUtils.fullScreen(BookReadActivity.this, true);
+                mDrawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED);
             }
         });
+        mDrawerLayout.setOnTouchListener((view, motionEvent) -> {
+            switch (motionEvent.getAction()) {
+                case MotionEvent.ACTION_DOWN:
+                    mDrawerLayout.closeDrawers();
+                    break;
+            }
+            return false;
+        });
+        mAppBarLayout.getViewTreeObserver().addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
+            @Override
+            public void onGlobalLayout() {
+                mAppBarLayout.getViewTreeObserver().removeOnGlobalLayoutListener(this);
+                mAppBarHeight = mAppBarLayout.getHeight();
+                mBottomControlHeight = mLlBottomControl.getHeight();
+                mAppBarLayout.setTranslationY(-mAppBarHeight);
+                mLlBottomControl.setTranslationY(mBottomControlHeight);
+            }
+        });
+        mLlCatalog.setOnClickListener(view ->
+                hideAppBarAndBottomControl(() -> {
+                    mChapterListFragment.setCurrentItem(ChapterListFragment.CATALOG_POSITION);
+                    mDrawerLayout.openDrawer(GravityCompat.START);
+                }));
     }
 
     @Override
     public void showBookToc(List<BookMixAToc.MixToc.Chapters> list) {
         mChapterList = list;
+        mChapterListFragment.setChaptersList(list);
         CacheManager.saveChapterList(this, mBookId, mChapterList);
         loadChapterLogic();
     }
@@ -252,6 +325,53 @@ public class BookReadActivity extends BaseActivity<IBookReadContract.Presenter> 
                 chapter, mChapterList.get(chapter).getTitle(), mBookTitle);
     }
 
+    /**
+     * 显示ToolBar和底部控制栏
+     */
+    private void showAppBarAndBottomControl() {
+        ViewCompat.animate(mAppBarLayout).translationY(0).setDuration(200)
+                .setInterpolator(new DecelerateInterpolator())
+                .setListener(new ViewPropertyAnimatorListenerAdapter() {
+                    @Override
+                    public void onAnimationStart(View view) {
+                        super.onAnimationStart(view);
+                        mShowAppBarAndBottomControl = true;
+                        UIUtils.fullScreen(BookReadActivity.this, false);
+                    }
+                }).start();
+        ViewCompat.animate(mLlBottomControl).translationY(0).setDuration(200)
+                .setInterpolator(new DecelerateInterpolator())
+                .setUpdateListener(view -> mSbPregress.correctOffsetWhenContainerOnScrolling()).start();
+    }
+
+    private void hideAppBarAndBottomControl() {
+        hideAppBarAndBottomControl(null);
+    }
+
+    private void hideAppBarAndBottomControl(OnAppBarAndBottomControlActivityListener appBarAndBottomControlActivityListener) {
+        ViewCompat.animate(mAppBarLayout).translationY(-mAppBarHeight).setDuration(200)
+                .setInterpolator(new DecelerateInterpolator())
+                .setListener(new ViewPropertyAnimatorListenerAdapter() {
+                    @Override
+                    public void onAnimationStart(View view) {
+                        super.onAnimationStart(view);
+                        mShowAppBarAndBottomControl = false;
+                        UIUtils.fullScreen(BookReadActivity.this, true);
+                    }
+
+                    @Override
+                    public void onAnimationEnd(View view) {
+                        super.onAnimationEnd(view);
+                        if (appBarAndBottomControlActivityListener != null) {
+                            appBarAndBottomControlActivityListener.onAppBarAndBottomControlClosed();
+                        }
+                    }
+                }).start();
+        ViewCompat.animate(mLlBottomControl).translationY(mBottomControlHeight).setDuration(200)
+                .setInterpolator(new DecelerateInterpolator())
+                .setUpdateListener(view -> mSbPregress.correctOffsetWhenContainerOnScrolling()).start();
+    }
+
     private void updateSystemTime() {
         String updateTime = TimeUtils.millis2String(System.currentTimeMillis(), "HH:mm");
         if (UIUtils.isEmpty(mPreUpdateTime)) {
@@ -263,6 +383,28 @@ public class BookReadActivity extends BaseActivity<IBookReadContract.Presenter> 
         }
         mPreUpdateTime = updateTime;
         mBookReadHandler.sendEmptyMessageDelayed(MSG_UPDATE_SYSTEM_TIME, 1000);
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.menu_book_read, menu);
+        return super.onCreateOptionsMenu(menu);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.action_download:
+
+                break;
+            case R.id.action_bookmark:
+
+                break;
+            case R.id.action_community:
+
+                break;
+        }
+        return super.onOptionsItemSelected(item);
     }
 
     /**
@@ -290,6 +432,15 @@ public class BookReadActivity extends BaseActivity<IBookReadContract.Presenter> 
     }
 
     @Override
+    public void onBackPressed() {
+        if (mDrawerLayout.isDrawerOpen(GravityCompat.START)) {
+            mDrawerLayout.closeDrawers();
+        } else {
+            super.onBackPressed();
+        }
+    }
+
+    @Override
     protected void onDestroy() {
         super.onDestroy();
         mBookReadHandler.removeCallbacksAndMessages(null);
@@ -298,5 +449,9 @@ public class BookReadActivity extends BaseActivity<IBookReadContract.Presenter> 
             unregisterReceiver(mBatteryReceiver);
             mBatteryReceiver = null;
         }
+    }
+
+    public interface OnAppBarAndBottomControlActivityListener {
+        void onAppBarAndBottomControlClosed();
     }
 }
