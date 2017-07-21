@@ -52,7 +52,7 @@ import butterknife.BindView;
 
 public class CategoryListFragment extends BaseFragment<ICategoryListContract.Presenter>
         implements ICategoryListContract.View, MainActivity.MainActivityFragmentCallbacks {
-    private static final int PAGE_SIZE = 8;
+    private static final int PAGE_SIZE = 16;
 
     private List<MajorBean> mMajorDataList;
     private List<TextSelectBean> mCategoryDataList = new ArrayList<>();

@@ -4,6 +4,7 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.support.design.widget.AppBarLayout;
@@ -24,6 +25,7 @@ import com.google.gson.Gson;
 import com.neuroandroid.pyreader.R;
 import com.neuroandroid.pyreader.adapter.BookReadAdapter;
 import com.neuroandroid.pyreader.base.BaseActivity;
+import com.neuroandroid.pyreader.base.BaseFragment;
 import com.neuroandroid.pyreader.config.Constant;
 import com.neuroandroid.pyreader.manager.CacheManager;
 import com.neuroandroid.pyreader.model.response.BookMixAToc;
@@ -32,7 +34,9 @@ import com.neuroandroid.pyreader.model.response.Recommend;
 import com.neuroandroid.pyreader.mvp.contract.IBookReadContract;
 import com.neuroandroid.pyreader.mvp.presenter.BookReadPresenter;
 import com.neuroandroid.pyreader.provider.PYReaderStore;
+import com.neuroandroid.pyreader.ui.fragment.BookDetailCommunityFragment;
 import com.neuroandroid.pyreader.ui.fragment.ChapterListFragment;
+import com.neuroandroid.pyreader.utils.FragmentUtils;
 import com.neuroandroid.pyreader.utils.L;
 import com.neuroandroid.pyreader.utils.TimeUtils;
 import com.neuroandroid.pyreader.utils.UIUtils;
@@ -108,6 +112,8 @@ public class BookReadActivity extends BaseActivity<IBookReadContract.Presenter>
      * ToolBar和底部控制台是否显示
      */
     private boolean mShowAppBarAndBottomControl;
+
+    private BaseFragment mCurrentFragment;
 
     @Override
     public void onPageSelected(boolean isLast) {
@@ -372,6 +378,21 @@ public class BookReadActivity extends BaseActivity<IBookReadContract.Presenter>
                 .setUpdateListener(view -> mSbPregress.correctOffsetWhenContainerOnScrolling()).start();
     }
 
+    /**
+     * 打开BookDetailCommunityFragment
+     * index : (0 : 讨论  1 : 书评)
+     */
+    public void openBookDetailCommunityFragment(int index) {
+        UIUtils.fullScreen(this, false);
+        mCurrentFragment = new BookDetailCommunityFragment();
+        Bundle bundle = new Bundle();
+        bundle.putString(Constant.BOOK_ID, mBookId);
+        bundle.putString(Constant.BOOK_TITLE, mBookTitle);
+        bundle.putInt(Constant.BOOK_DETAIL_COMMUNITY_INDEX, index);
+        mCurrentFragment.setArguments(bundle);
+        FragmentUtils.replaceFragment(getSupportFragmentManager(), mCurrentFragment, R.id.fl_container, false);
+    }
+
     private void updateSystemTime() {
         String updateTime = TimeUtils.millis2String(System.currentTimeMillis(), "HH:mm");
         if (UIUtils.isEmpty(mPreUpdateTime)) {
@@ -401,7 +422,7 @@ public class BookReadActivity extends BaseActivity<IBookReadContract.Presenter>
 
                 break;
             case R.id.action_community:
-
+                hideAppBarAndBottomControl(() -> openBookDetailCommunityFragment(0));
                 break;
         }
         return super.onOptionsItemSelected(item);
@@ -433,6 +454,12 @@ public class BookReadActivity extends BaseActivity<IBookReadContract.Presenter>
 
     @Override
     public void onBackPressed() {
+        if (mCurrentFragment != null) {
+            UIUtils.fullScreen(this, true);
+            FragmentUtils.removeFragment(mCurrentFragment);
+            mCurrentFragment = null;
+            return;
+        }
         if (mDrawerLayout.isDrawerOpen(GravityCompat.START)) {
             mDrawerLayout.closeDrawers();
         } else {

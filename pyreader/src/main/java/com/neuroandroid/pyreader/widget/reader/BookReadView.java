@@ -130,6 +130,7 @@ public class BookReadView extends View {
             canvas.drawText(chapterTitle, verticalX,
                     horizontalY, mBookReadFactory.getOtherFontPaint());
 
+            // 绘制正文
             List<String> lines = mBookReadBean.getLines();
             int lineCount = lines.size();
             float lineTextY = mBookReadFactory.getTopAndBottomMarginWidth() + mBookReadFactory.getFontSize();

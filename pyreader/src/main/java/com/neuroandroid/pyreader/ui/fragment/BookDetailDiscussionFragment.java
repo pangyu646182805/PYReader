@@ -25,7 +25,7 @@ import butterknife.BindView;
 
 public class BookDetailDiscussionFragment extends BaseLazyFragment<IBookDetailDiscussionContract.Presenter>
         implements IBookDetailDiscussionContract.View {
-    private static final int PAGE_SIZE = 8;
+    private static final int PAGE_SIZE = 16;
 
     @BindView(R.id.refresh_layout)
     TwinklingRefreshLayout mRefreshLayout;

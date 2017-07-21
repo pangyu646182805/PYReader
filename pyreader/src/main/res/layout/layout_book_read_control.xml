@@ -7,6 +7,7 @@
         android:layout_width="match_parent"
         android:layout_height="@dimen/y88"
         android:background="@color/backgroundColor"
+        android:clickable="true"
         android:orientation="horizontal">
 
         <com.neuroandroid.pyreader.widget.NoPaddingTextView

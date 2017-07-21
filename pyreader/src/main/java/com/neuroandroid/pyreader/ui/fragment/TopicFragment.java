@@ -23,7 +23,7 @@ import butterknife.BindView;
  */
 
 public class TopicFragment extends BaseLazyFragment<ITopicContract.Presenter> implements ITopicContract.View {
-    private static final int PAGE_SIZE = 8;
+    private static final int PAGE_SIZE = 16;
 
     @BindView(R.id.refresh_layout)
     TwinklingRefreshLayout mRefreshLayout;
