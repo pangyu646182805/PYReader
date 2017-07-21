@@ -83,7 +83,9 @@ public class BookReadActivity extends BaseActivity<IBookReadContract.Presenter>
     @BindView(R.id.ll_catalog)
     LinearLayout mLlCatalog;
     @BindView(R.id.sb_progress)
-    BubbleSeekBar mSbPregress;
+    BubbleSeekBar mSbProgress;
+    @BindView(R.id.view_cover)
+    View mViewCover;
 
     // 书籍是否来自SD卡
     private boolean mFromSD;
@@ -160,6 +162,8 @@ public class BookReadActivity extends BaseActivity<IBookReadContract.Presenter>
         setDisplayHomeAsUpEnabled();
         setToolbarTitle("");
         UIUtils.fullScreen(this, true);
+
+        mViewCover.setVisibility(View.GONE);
 
         mRvBookRead.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false));
         mBookReadAdapter = new BookReadAdapter(this, null, null);
@@ -269,6 +273,7 @@ public class BookReadActivity extends BaseActivity<IBookReadContract.Presenter>
                     mChapterListFragment.setCurrentItem(ChapterListFragment.CATALOG_POSITION);
                     mDrawerLayout.openDrawer(GravityCompat.START);
                 }));
+        mViewCover.setOnClickListener(view -> hideAppBarAndBottomControl());
     }
 
     @Override
@@ -335,6 +340,7 @@ public class BookReadActivity extends BaseActivity<IBookReadContract.Presenter>
      * 显示ToolBar和底部控制栏
      */
     private void showAppBarAndBottomControl() {
+        mViewCover.setVisibility(View.VISIBLE);
         ViewCompat.animate(mAppBarLayout).translationY(0).setDuration(200)
                 .setInterpolator(new DecelerateInterpolator())
                 .setListener(new ViewPropertyAnimatorListenerAdapter() {
@@ -347,7 +353,7 @@ public class BookReadActivity extends BaseActivity<IBookReadContract.Presenter>
                 }).start();
         ViewCompat.animate(mLlBottomControl).translationY(0).setDuration(200)
                 .setInterpolator(new DecelerateInterpolator())
-                .setUpdateListener(view -> mSbPregress.correctOffsetWhenContainerOnScrolling()).start();
+                .setUpdateListener(view -> mSbProgress.correctOffsetWhenContainerOnScrolling()).start();
     }
 
     private void hideAppBarAndBottomControl() {
@@ -355,6 +361,7 @@ public class BookReadActivity extends BaseActivity<IBookReadContract.Presenter>
     }
 
     private void hideAppBarAndBottomControl(OnAppBarAndBottomControlActivityListener appBarAndBottomControlActivityListener) {
+        mViewCover.setVisibility(View.GONE);
         ViewCompat.animate(mAppBarLayout).translationY(-mAppBarHeight).setDuration(200)
                 .setInterpolator(new DecelerateInterpolator())
                 .setListener(new ViewPropertyAnimatorListenerAdapter() {
@@ -375,7 +382,7 @@ public class BookReadActivity extends BaseActivity<IBookReadContract.Presenter>
                 }).start();
         ViewCompat.animate(mLlBottomControl).translationY(mBottomControlHeight).setDuration(200)
                 .setInterpolator(new DecelerateInterpolator())
-                .setUpdateListener(view -> mSbPregress.correctOffsetWhenContainerOnScrolling()).start();
+                .setUpdateListener(view -> mSbProgress.correctOffsetWhenContainerOnScrolling()).start();
     }
 
     /**

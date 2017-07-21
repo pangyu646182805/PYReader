@@ -35,6 +35,11 @@ public class CatalogFragment extends BaseFragment {
 
     public void setChaptersList(List<BookMixAToc.MixToc.Chapters> chaptersList) {
         mChaptersList = chaptersList;
+        if (mCatalogAdapter != null) {
+            if (mCatalogAdapter.getItemCount() <= 0) {
+                mCatalogAdapter.replaceAll(mChaptersList);
+            }
+        }
     }
 
     @Override
