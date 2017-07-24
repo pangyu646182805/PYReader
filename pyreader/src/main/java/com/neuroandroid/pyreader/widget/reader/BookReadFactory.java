@@ -12,6 +12,8 @@ import com.neuroandroid.pyreader.R;
 import com.neuroandroid.pyreader.adapter.BookReadAdapter;
 import com.neuroandroid.pyreader.config.Constant;
 import com.neuroandroid.pyreader.model.response.ChapterRead;
+import com.neuroandroid.pyreader.ui.activity.BookReadActivity;
+import com.neuroandroid.pyreader.utils.L;
 import com.neuroandroid.pyreader.utils.UIUtils;
 
 import java.text.DecimalFormat;
@@ -40,15 +42,15 @@ public class BookReadFactory {
         mBookReadMap = new TreeMap<>();
     }
 
-    public void setChapterContent(BookReadAdapter bookReadAdapter, ChapterRead.Chapter chapter,
-                                  final int currentChapter, final String chapterTitle, final String bookTitle) {
+    public void setChapterContent(BookReadAdapter bookReadAdapter, ChapterRead.Chapter chapter, final int currentChapter,
+                                  final String chapterTitle, final String bookTitle, ReadPositionCallBack readPositionCallBack) {
         mChapter = chapter;
         mBookReadAdapter = bookReadAdapter;
-        transformChapterContent(chapter, currentChapter, chapterTitle, bookTitle);
+        transformChapterContent(chapter, currentChapter, chapterTitle, bookTitle, readPositionCallBack);
     }
 
-    private void transformChapterContent(ChapterRead.Chapter chapter, final int currentChapter,
-                                         final String chapterTitle, final String bookTitle) {
+    private void transformChapterContent(ChapterRead.Chapter chapter, final int currentChapter, final String chapterTitle,
+                                         final String bookTitle, ReadPositionCallBack readPositionCallBack) {
         String body = Constant.PARAGRAPH_MARK + chapter.getBody();
         body = body.replaceAll("\n", "\n" + Constant.PARAGRAPH_MARK);
         char[] block = body.toCharArray();
@@ -56,7 +58,7 @@ public class BookReadFactory {
 
         mBookReadBeanList = new ArrayList<>();
         List<String> lines = new ArrayList<>();
-        String line = "";
+        StringBuffer sb = new StringBuffer();
         float lineWordWidth = 0;
         int currentLineCount = 0;
         int currentPage = 0;
@@ -65,15 +67,15 @@ public class BookReadFactory {
             String word = charToString(block[i]);
             float wordWidth = mFontPaint.measureText(word);
             lineWordWidth += wordWidth;
-            line += word;
+            sb.append(word);
             if (lineWordWidth > mVisibleWidth - wordWidth * 0.9f || "\n".equals(word) || i == blockLength - 1) {
-                if ("\n".equals(line)) continue;
+                if ("\n".equals(sb)) continue;
                 currentLineCount++;
                 // 如果累加值超过绘制区域的宽度
                 // 则添加当前文本到lines，lineWordWidth清零，重新计算
-                lines.add(line);
+                lines.add(sb.toString());
                 lineWordWidth = 0;
-                line = "";
+                sb.setLength(0);
                 if (currentLineCount >= mLineCount || i == blockLength - 1) {
                     // 如果当前累加的行数超过了总行数
                     currentPage++;
@@ -96,6 +98,16 @@ public class BookReadFactory {
         mDataList.clear();
         for (List<BookReadBean> list : mBookReadMap.values()) {
             mDataList.addAll(list);
+        }
+        L.e("mBookReadMap size : " + mBookReadMap.size());
+        if (mBookReadMap.size() == 1) {
+            if (readPositionCallBack != null) {
+                readPositionCallBack.callBack(mDataList.size());
+            }
+        }
+        if (mBookReadMap.size() == BookReadActivity.ONE_TIME_LOAD_CHAPTER + 2) {
+            // 如果mBookReadMap缓存大小已满则清除
+            mBookReadMap.clear();
         }
         mBookReadAdapter.replaceAll(mDataList);
     }
@@ -344,5 +356,9 @@ public class BookReadFactory {
 
     public int getBatteryIconBackgroundColor() {
         return mBatteryIconBackgroundColor;
+    }
+
+    public interface ReadPositionCallBack {
+        void callBack(int page);
     }
 }

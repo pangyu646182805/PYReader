@@ -118,6 +118,11 @@ public class BookReadActivity extends BaseActivity<IBookReadContract.Presenter>
 
     private BaseFragment mCurrentFragment;
 
+    // 当前阅读到第几章
+    private int mReadChapter;
+    // 当前阅读到第几章的第几页
+    private int mReadPage;
+
     @Override
     public void onPageSelected(boolean isLast) {
         if (isLast) {
@@ -198,7 +203,7 @@ public class BookReadActivity extends BaseActivity<IBookReadContract.Presenter>
             String json = new Gson().toJson(chapterList);
             L.e("章节列表 : " + json);
             mChapterList = chapterList;
-            loadChapterLogic();
+            loadReadPositionLogic();
         }
     }
 
@@ -208,11 +213,16 @@ public class BookReadActivity extends BaseActivity<IBookReadContract.Presenter>
             @Override
             public void onChapterChanged(int oldChapter, int newChapter) {
                 L.e("oldChapter : " + oldChapter + " newChapter : " + newChapter);
+                // 当章节发生变化的时候去加载附近5章内容
+                mReadChapter = newChapter;
+                mReadPage = 1;
+                loadChapterLogic(mReadChapter);
             }
 
             @Override
             public void onPageChanged(int currentChapter, int page) {
                 L.e("currentChapter : " + currentChapter + " page : " + page);
+                // 页码发生变化的时候保存当前章节和当前页码的值
                 CacheManager.saveReadPosition(BookReadActivity.this, mBookId, currentChapter, page);
             }
 
@@ -230,11 +240,13 @@ public class BookReadActivity extends BaseActivity<IBookReadContract.Presenter>
             @Override
             public void onNextPage() {
                 L.e("下一页");
+                toNextPage();
             }
 
             @Override
             public void onPrePage() {
                 L.e("上一页");
+                toPrePage();
             }
         });
         mDrawerLayout.addDrawerListener(new DrawerLayout.SimpleDrawerListener() {
@@ -282,16 +294,24 @@ public class BookReadActivity extends BaseActivity<IBookReadContract.Presenter>
         mChapterList = list;
         mChapterListFragment.setChaptersList(list);
         CacheManager.saveChapterList(this, mBookId, mChapterList);
-        loadChapterLogic();
+        loadReadPositionLogic();
+    }
+
+    /**
+     * 加载上次阅读位置的逻辑
+     */
+    private void loadReadPositionLogic() {
+        int[] readPosition = CacheManager.getReadPosition(this, mBookId);
+        mReadChapter = readPosition[0];
+        mReadPage = readPosition[1];
+        L.e("阅读" + mBookTitle + " 第" + (mReadChapter + 1) + "章 第" + mReadPage + "页");
+        loadChapterLogic(mReadChapter);
     }
 
     /**
      * 加载逻辑
      */
-    private void loadChapterLogic() {
-        int[] readPosition = CacheManager.getReadPosition(this, mBookId);
-        int readChapter = readPosition[0];
-        int readPage = readPosition[1];
+    private void loadChapterLogic(int readChapter) {
         for (int i = 0; i < 2 + ONE_TIME_LOAD_CHAPTER; i++) {
             if (readChapter == 0) {
                 loadChapterContent(i);
@@ -325,7 +345,7 @@ public class BookReadActivity extends BaseActivity<IBookReadContract.Presenter>
             mPresenter.getChapterRead(mChapterList.get(chapter).getLink(), chapter);
         } else {
             mBookReadFactory.setChapterContent(mBookReadAdapter, mPYReaderStore.getChapter(chapter, mBookId),
-                    chapter, mChapterList.get(chapter).getTitle(), mBookTitle);
+                    chapter, mChapterList.get(chapter).getTitle(), mBookTitle, mReadPositionCallBack);
         }
     }
 
@@ -334,7 +354,51 @@ public class BookReadActivity extends BaseActivity<IBookReadContract.Presenter>
         // 缓存
         mPYReaderStore.addChapter(chapter, mBookId, data.getBody());
         mBookReadFactory.setChapterContent(mBookReadAdapter, mPYReaderStore.getChapter(chapter, mBookId),
-                chapter, mChapterList.get(chapter).getTitle(), mBookTitle);
+                chapter, mChapterList.get(chapter).getTitle(), mBookTitle, mReadPositionCallBack);
+    }
+
+    private InnerBookReadPositionCallBack mReadPositionCallBack = new InnerBookReadPositionCallBack();
+
+    private class InnerBookReadPositionCallBack implements BookReadFactory.ReadPositionCallBack {
+        @Override
+        public void callBack(int page) {
+            toReadPosition(page);
+        }
+    }
+
+    /**
+     * 跳转到保存的阅读位置
+     *
+     * @param page 上一章的总页数
+     */
+    private void toReadPosition(int page) {
+        int readPosition;
+        if (mReadChapter > 0) {
+            readPosition = page + mReadPage;
+        } else {
+            readPosition = mReadPage;
+        }
+        mRvBookRead.scrollToPosition(readPosition - 1);
+    }
+
+    /**
+     * 跳转到下一页
+     */
+    private void toNextPage() {
+        int nextPosition = mRvBookRead.getCurrentPosition() + 1;
+        if (nextPosition <= mBookReadAdapter.getItemCount()) {
+            mRvBookRead.smoothScrollToPosition(nextPosition);
+        }
+    }
+
+    /**
+     * 跳转到上一页
+     */
+    private void toPrePage() {
+        int prePosition = mRvBookRead.getCurrentPosition() - 1;
+        if (prePosition >= 0) {
+            mRvBookRead.smoothScrollToPosition(prePosition);
+        }
     }
 
     /**
