@@ -96,8 +96,30 @@ public class ChapterListFragment extends BaseFragment {
     /**
      * 设置当前是目录页面还是书签页面
      */
-    public void setCurrentItem(int positoin) {
-        mVpContent.setCurrentItem(positoin, false);
+    public void setCurrentItem(int position) {
+        mVpContent.setCurrentItem(position, false);
+    }
+
+    /**
+     * 设置bookId
+     */
+    public void setBookId(String bookId) {
+        mCatalogFragment.setBookId(bookId);
+    }
+
+    /**
+     * 设置当前阅读到了第几章节
+     */
+    public void setReadChapter(int readChapter) {
+        mCatalogFragment.setReadChapter(readChapter);
+    }
+
+    /**
+     * onDrawerClosed()调用
+     * 当侧滑面板关闭的时候目录重新定义为顺序
+     */
+    public void restoreOrder() {
+        mCatalogFragment.restoreOrder();
     }
 
     /**

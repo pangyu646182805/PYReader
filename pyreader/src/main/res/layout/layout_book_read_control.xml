@@ -30,8 +30,8 @@
             app:bsb_bubble_text_color="@color/white"
             app:bsb_progress="0"
             app:bsb_second_track_color="@color/colorPrimary"
-            app:bsb_track_color="@color/black_6"
             app:bsb_show_progress_in_float="true"
+            app:bsb_track_color="@color/black_6"
             app:bsb_track_size="@dimen/y6"/>
 
         <com.neuroandroid.pyreader.widget.NoPaddingTextView
@@ -99,6 +99,7 @@
         </LinearLayout>
 
         <LinearLayout
+            android:id="@+id/ll_setting"
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="1"

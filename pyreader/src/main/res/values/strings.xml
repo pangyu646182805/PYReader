@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">PYReader</string>
+    <string name="app_name">PP免费小说</string>
 
     <string name="state_error">数据加载失败</string>
     <string name="state_reload">重新加载</string>

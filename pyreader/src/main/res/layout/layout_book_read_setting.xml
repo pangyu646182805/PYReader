@@ -1,0 +1,211 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_gravity="bottom"
+    android:background="@color/backgroundColor"
+    android:orientation="vertical">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:paddingBottom="@dimen/y16"
+        android:paddingLeft="@dimen/x32"
+        android:paddingRight="@dimen/x32"
+        android:paddingTop="@dimen/y16">
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:layout_marginRight="@dimen/x16"
+            android:layout_weight="1"
+            android:gravity="center_vertical"
+            android:orientation="horizontal">
+
+            <ImageView
+                android:layout_width="@dimen/x40"
+                android:layout_height="@dimen/y40"
+                app:srcCompat="@drawable/ic_bulb"/>
+
+            <com.xw.repo.BubbleSeekBar
+                android:id="@+id/sb_progress"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:layout_marginLeft="@dimen/x16"
+                android:layout_marginRight="@dimen/x16"
+                android:layout_weight="1"
+                app:bsb_bubble_color="@color/colorPrimary"
+                app:bsb_bubble_text_color="@color/white"
+                app:bsb_progress="0"
+                app:bsb_second_track_color="@color/colorPrimary"
+                app:bsb_show_progress_in_float="false"
+                app:bsb_track_color="@color/black_6"
+                app:bsb_track_size="@dimen/y6"/>
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:srcCompat="@drawable/ic_bulb_on"/>
+        </LinearLayout>
+
+        <com.neuroandroid.pyreader.widget.NoPaddingTextView
+            android:id="@+id/tv_follow_system"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@drawable/shape_white_color_primary_selector"
+            android:clickable="true"
+            android:paddingBottom="@dimen/y12"
+            android:paddingLeft="@dimen/x32"
+            android:paddingRight="@dimen/x32"
+            android:paddingTop="@dimen/y12"
+            android:text="跟随系统"
+            android:textColor="@color/text_color_selector"/>
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:paddingBottom="@dimen/y16"
+        android:paddingLeft="@dimen/x32"
+        android:paddingRight="@dimen/x32">
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginRight="@dimen/x32"
+            android:layout_weight="1"
+            android:orientation="horizontal">
+
+            <com.neuroandroid.pyreader.widget.NoPaddingTextView
+                android:layout_width="0dp"
+                android:layout_height="@dimen/y64"
+                android:layout_weight="1"
+                android:background="@drawable/shape_white_color_primary_selector"
+                android:clickable="true"
+                android:gravity="center"
+                android:paddingBottom="@dimen/y12"
+                android:paddingTop="@dimen/y12"
+                android:text="Aa-"
+                android:textColor="@color/text_color_selector"
+                android:textSize="16sp"/>
+
+            <com.neuroandroid.pyreader.widget.NoPaddingTextView
+                android:layout_width="0dp"
+                android:layout_height="@dimen/y64"
+                android:layout_marginLeft="@dimen/x32"
+                android:layout_weight="1"
+                android:background="@drawable/shape_white_color_primary_selector"
+                android:clickable="true"
+                android:gravity="center"
+                android:text="Aa+"
+                android:textColor="@color/text_color_selector"
+                android:textSize="16sp"/>
+        </LinearLayout>
+
+        <com.neuroandroid.pyreader.widget.NoPaddingTextView
+            android:layout_width="@dimen/x64"
+            android:layout_height="@dimen/y64"
+            android:background="@drawable/shape_white_color_primary_selector"
+            android:clickable="true"
+            android:gravity="center"
+            android:text="繁"
+            android:textColor="@color/text_color_selector"
+            android:textSize="16sp"/>
+
+        <com.neuroandroid.pyreader.widget.NoPaddingTextView
+            android:layout_width="@dimen/x98"
+            android:layout_height="@dimen/y64"
+            android:layout_marginLeft="@dimen/x32"
+            android:background="@drawable/shape_white_color_primary_selector"
+            android:clickable="true"
+            android:gravity="center"
+            android:text="排版"
+            android:textColor="@color/text_color_selector"
+            android:textSize="16sp"/>
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:paddingBottom="@dimen/y16"
+        android:paddingLeft="@dimen/x32"
+        android:paddingRight="@dimen/x32">
+
+        <com.neuroandroid.pyreader.widget.NoPaddingTextView
+            android:id="@+id/noPaddingTextView2"
+            android:layout_width="0dp"
+            android:layout_height="@dimen/y64"
+            android:layout_weight="1"
+            android:background="@drawable/shape_white_color_primary_selector"
+            android:clickable="true"
+            android:gravity="center"
+            android:text="仿真"
+            android:textColor="@color/text_color_selector"
+            android:textSize="16sp"/>
+
+        <com.neuroandroid.pyreader.widget.NoPaddingTextView
+            android:layout_width="0dp"
+            android:layout_height="@dimen/y64"
+            android:layout_marginLeft="@dimen/x32"
+            android:layout_weight="1"
+            android:background="@drawable/shape_white_color_primary_selector"
+            android:clickable="true"
+            android:gravity="center"
+            android:text="覆盖"
+            android:textColor="@color/text_color_selector"
+            android:textSize="16sp"/>
+
+        <com.neuroandroid.pyreader.widget.NoPaddingTextView
+            android:layout_width="0dp"
+            android:layout_height="@dimen/y64"
+            android:layout_marginLeft="@dimen/x32"
+            android:layout_weight="1"
+            android:background="@drawable/shape_white_color_primary_selector"
+            android:clickable="true"
+            android:gravity="center"
+            android:text="滑动"
+            android:textColor="@color/text_color_selector"
+            android:textSize="16sp"/>
+
+        <com.neuroandroid.pyreader.widget.NoPaddingTextView
+            android:id="@+id/noPaddingTextView"
+            android:layout_width="0dp"
+            android:layout_height="@dimen/y64"
+            android:layout_marginLeft="@dimen/x32"
+            android:layout_weight="1"
+            android:background="@drawable/shape_white_color_primary_selector"
+            android:clickable="true"
+            android:gravity="center"
+            android:text="无"
+            android:textColor="@color/text_color_selector"
+            android:textSize="16sp"/>
+
+        <com.neuroandroid.pyreader.widget.NoPaddingTextView
+            android:layout_width="0dp"
+            android:layout_height="@dimen/y64"
+            android:layout_marginLeft="@dimen/x32"
+            android:layout_weight="1"
+            android:background="@drawable/shape_white_color_primary_selector"
+            android:clickable="true"
+            android:gravity="center"
+            android:text="横屏"
+            android:textColor="@color/text_color_selector"
+            android:textSize="16sp"/>
+    </LinearLayout>
+
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/rv_book_read_theme"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="@dimen/x32"
+        android:layout_marginRight="@dimen/x32"
+        android:paddingBottom="@dimen/y16"
+        android:paddingTop="@dimen/y16"/>
+</LinearLayout>

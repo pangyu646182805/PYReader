@@ -7,6 +7,8 @@ package com.neuroandroid.pyreader.event;
 public class BaseEvent {
     public static final int EVENT_CHOOSE_SEX = 200;
     public static final int EVENT_RECOMMEND = 300;
+    public static final int EVENT_JUMP_TO_TARGET_CHAPTER = 400;
+    public static final int EVENT_BOOK_READ_SETTING = 500;
     private int eventFlag;
 
     public int getEventFlag() {

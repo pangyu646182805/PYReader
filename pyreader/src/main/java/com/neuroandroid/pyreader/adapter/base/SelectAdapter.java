@@ -110,12 +110,20 @@ public abstract class SelectAdapter<T extends ISelect> extends BaseRvAdapter<T> 
     public void updateSelectMode(boolean isSelect, int position) {
         if (isSelectMode != isSelect) {
             isSelectMode = isSelect;
-            clearSelected();
-            if (position != -1) {
-                getItem(position).setSelected(true);
-            }
-            notifyDataSetChanged();
+            select(position);
         }
+    }
+
+    /**
+     * 勾选position
+     */
+    public void select(int position) {
+        clearSelected();
+        if (position != -1) {
+            setCheckedPos(position);
+            getItem(position).setSelected(true);
+        }
+        notifyDataSetChanged();
     }
 
     @Override

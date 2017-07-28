@@ -7,6 +7,7 @@ import android.content.res.Resources;
 import android.graphics.Paint;
 import android.graphics.Rect;
 import android.os.Handler;
+import android.provider.Settings;
 import android.text.TextUtils;
 import android.util.TypedValue;
 import android.view.Window;
@@ -92,8 +93,8 @@ public class UIUtils {
 
     /**
      * @param tv
-     * @param str  要设置的文本
-     * @param emptyStr  要设置的文本为空时需要设置的文本
+     * @param str      要设置的文本
+     * @param emptyStr 要设置的文本为空时需要设置的文本
      */
     public static void setText(TextView tv, String str, String emptyStr) {
         tv.setText(isEmpty(str) ? emptyStr : str);
@@ -139,5 +140,29 @@ public class UIUtils {
             attr.flags &= (~WindowManager.LayoutParams.FLAG_FULLSCREEN);
             window.setAttributes(attr);
         }
+    }
+
+    /**
+     * 设置当前界面的屏幕亮度
+     *
+     * @param brightness 0-255
+     */
+    public static void setScreenBrightness(Activity activity, int brightness) {
+        WindowManager.LayoutParams lp = activity.getWindow().getAttributes();
+        lp.screenBrightness = Float.valueOf(brightness) * (1f / 255f);
+        activity.getWindow().setAttributes(lp);
+    }
+
+    /**
+     * 获得当前屏幕亮度值 0--255
+     */
+    public static int getScreenBrightness(Context context) {
+        int screenBrightness = 255;
+        try {
+            screenBrightness = Settings.System.getInt(context.getContentResolver(), Settings.System.SCREEN_BRIGHTNESS);
+        } catch (Exception localException) {
+
+        }
+        return screenBrightness;
     }
 }

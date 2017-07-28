@@ -26,7 +26,11 @@ import com.neuroandroid.pyreader.R;
 import com.neuroandroid.pyreader.adapter.BookReadAdapter;
 import com.neuroandroid.pyreader.base.BaseActivity;
 import com.neuroandroid.pyreader.base.BaseFragment;
+import com.neuroandroid.pyreader.bean.BookReadThemeBean;
 import com.neuroandroid.pyreader.config.Constant;
+import com.neuroandroid.pyreader.event.BaseEvent;
+import com.neuroandroid.pyreader.event.BookReadSettingEvent;
+import com.neuroandroid.pyreader.event.JumpToTargetChapterEvent;
 import com.neuroandroid.pyreader.manager.CacheManager;
 import com.neuroandroid.pyreader.model.response.BookMixAToc;
 import com.neuroandroid.pyreader.model.response.ChapterRead;
@@ -36,15 +40,21 @@ import com.neuroandroid.pyreader.mvp.presenter.BookReadPresenter;
 import com.neuroandroid.pyreader.provider.PYReaderStore;
 import com.neuroandroid.pyreader.ui.fragment.BookDetailCommunityFragment;
 import com.neuroandroid.pyreader.ui.fragment.ChapterListFragment;
+import com.neuroandroid.pyreader.utils.BookReadSettingUtils;
 import com.neuroandroid.pyreader.utils.FragmentUtils;
 import com.neuroandroid.pyreader.utils.L;
 import com.neuroandroid.pyreader.utils.NavigationUtils;
+import com.neuroandroid.pyreader.utils.ShowUtils;
 import com.neuroandroid.pyreader.utils.TimeUtils;
 import com.neuroandroid.pyreader.utils.UIUtils;
+import com.neuroandroid.pyreader.widget.dialog.BookReadSettingDialog;
 import com.neuroandroid.pyreader.widget.reader.BookReadFactory;
 import com.neuroandroid.pyreader.widget.reader.BookReadView;
 import com.neuroandroid.pyreader.widget.recyclerviewpager.RecyclerViewPager;
 import com.xw.repo.BubbleSeekBar;
+
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
 
 import java.lang.ref.WeakReference;
 import java.util.List;
@@ -66,6 +76,7 @@ import butterknife.BindView;
  */
 public class BookReadActivity extends BaseActivity<IBookReadContract.Presenter>
         implements IBookReadContract.View, ChapterListFragment.OnDrawerPageChangeListener {
+    private static final int ANIM_DURATION = 100;
     private static final int MSG_UPDATE_SYSTEM_TIME = 34;
 
     /**
@@ -87,6 +98,8 @@ public class BookReadActivity extends BaseActivity<IBookReadContract.Presenter>
     BubbleSeekBar mSbProgress;
     @BindView(R.id.view_cover)
     View mViewCover;
+    @BindView(R.id.ll_setting)
+    LinearLayout mLlSetting;
 
     // 书籍是否来自SD卡
     private boolean mFromSD;
@@ -122,6 +135,10 @@ public class BookReadActivity extends BaseActivity<IBookReadContract.Presenter>
     private int mReadChapter;
     // 当前阅读到第几章的第几页
     private int mReadPage;
+
+    // 跳转到指定章节
+    private int mTargetChapter = -1;
+    private LinearLayoutManager mLayoutManager;
 
     @Override
     public void onPageSelected(boolean isLast) {
@@ -171,7 +188,8 @@ public class BookReadActivity extends BaseActivity<IBookReadContract.Presenter>
 
         mViewCover.setVisibility(View.GONE);
 
-        mRvBookRead.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false));
+        mLayoutManager = new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false);
+        mRvBookRead.setLayoutManager(mLayoutManager);
         mBookReadAdapter = new BookReadAdapter(this, null, null);
         mBookReadAdapter.clearRvAnim(mRvBookRead);
         mBookReadAdapter.setRvBookRead(mRvBookRead);
@@ -180,6 +198,22 @@ public class BookReadActivity extends BaseActivity<IBookReadContract.Presenter>
         mChapterListFragment = (ChapterListFragment) getSupportFragmentManager().findFragmentById(R.id.left_menu);
         mChapterListFragment.setImmersive(mImmersive);
         mDrawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED);
+
+        setScreenBrightness();
+    }
+
+    /**
+     * 设置屏幕亮度
+     * 只在当前界面有效
+     */
+    private void setScreenBrightness() {
+        int screenBrightness = BookReadSettingUtils.getScreenBrightness(this);
+        if (screenBrightness != BookReadSettingUtils.FOLLOW_SYSTEM) {
+            // 不是跟随系统才去设置屏幕亮度
+            UIUtils.setScreenBrightness(this, screenBrightness);
+        } else {
+
+        }
     }
 
     @Override
@@ -194,6 +228,7 @@ public class BookReadActivity extends BaseActivity<IBookReadContract.Presenter>
         mBooksBean = (Recommend.BooksBean) getIntent().getSerializableExtra(Constant.INTENT_BOOK_BEAN);
         mBookTitle = mBooksBean.getTitle();
         mBookId = mBooksBean.getBookId();
+        mChapterListFragment.setBookId(mBookId);
         List<BookMixAToc.MixToc.Chapters> chapterList = CacheManager.getChapterList(this, mBookId);
         if (chapterList == null) {
             mPresenter.getBookMixAToc(mBookId);
@@ -214,8 +249,9 @@ public class BookReadActivity extends BaseActivity<IBookReadContract.Presenter>
             public void onChapterChanged(int oldChapter, int newChapter) {
                 L.e("oldChapter : " + oldChapter + " newChapter : " + newChapter);
                 // 当章节发生变化的时候去加载附近5章内容
+                if (mTargetChapter != -1) mTargetChapter = -1;
+                setNullReadPositionCallBack();
                 mReadChapter = newChapter;
-                mReadPage = 1;
                 loadChapterLogic(mReadChapter);
             }
 
@@ -223,7 +259,7 @@ public class BookReadActivity extends BaseActivity<IBookReadContract.Presenter>
             public void onPageChanged(int currentChapter, int page) {
                 L.e("currentChapter : " + currentChapter + " page : " + page);
                 // 页码发生变化的时候保存当前章节和当前页码的值
-                CacheManager.saveReadPosition(BookReadActivity.this, mBookId, currentChapter, page);
+                saveReadPosition(currentChapter, page);
             }
 
             @Override
@@ -261,12 +297,13 @@ public class BookReadActivity extends BaseActivity<IBookReadContract.Presenter>
                 super.onDrawerClosed(drawerView);
                 UIUtils.fullScreen(BookReadActivity.this, true);
                 mDrawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED);
+                mChapterListFragment.restoreOrder();
             }
         });
         mDrawerLayout.setOnTouchListener((view, motionEvent) -> {
             switch (motionEvent.getAction()) {
                 case MotionEvent.ACTION_DOWN:
-                    mDrawerLayout.closeDrawers();
+                    closeDrawer();
                     break;
             }
             return false;
@@ -284,9 +321,41 @@ public class BookReadActivity extends BaseActivity<IBookReadContract.Presenter>
         mLlCatalog.setOnClickListener(view ->
                 hideAppBarAndBottomControl(() -> {
                     mChapterListFragment.setCurrentItem(ChapterListFragment.CATALOG_POSITION);
+                    mChapterListFragment.setReadChapter(mReadChapter);
                     mDrawerLayout.openDrawer(GravityCompat.START);
                 }));
         mViewCover.setOnClickListener(view -> hideAppBarAndBottomControl());
+        mSbProgress.setOnProgressChangedListener(new BubbleSeekBar.OnProgressChangedListenerAdapter() {
+            @Override  // 手指抬起时候回调
+            public void getProgressOnActionUp(int progress, float progressFloat) {
+                super.getProgressOnActionUp(progress, progressFloat);
+            }
+        });
+        mLlSetting.setOnClickListener(view -> {
+            hideAppBarAndBottomControl();
+            new BookReadSettingDialog(BookReadActivity.this)
+                    .setFullWidth()
+                    .setFromBottom()
+                    .setDimAmount(0f)
+                    .showDialog();
+        });
+    }
+
+    /**
+     * 保存当前阅读位置
+     *
+     * @param currentChapter 当前阅读位置
+     * @param page 当前章节的第几页
+     */
+    private void saveReadPosition(int currentChapter, int page) {
+        CacheManager.saveReadPosition(BookReadActivity.this, mBookId, currentChapter, page);
+    }
+
+    /**
+     * 关闭抽屉
+     */
+    public void closeDrawer() {
+        mDrawerLayout.closeDrawers();
     }
 
     @Override
@@ -301,10 +370,13 @@ public class BookReadActivity extends BaseActivity<IBookReadContract.Presenter>
      * 加载上次阅读位置的逻辑
      */
     private void loadReadPositionLogic() {
+        setReadPositionCallBack();
         int[] readPosition = CacheManager.getReadPosition(this, mBookId);
         mReadChapter = readPosition[0];
         mReadPage = readPosition[1];
         L.e("阅读" + mBookTitle + " 第" + (mReadChapter + 1) + "章 第" + mReadPage + "页");
+        float percent = (mReadChapter + 1) * 1.0f / mChapterList.size();
+        mSbProgress.setProgress(percent);
         loadChapterLogic(mReadChapter);
     }
 
@@ -345,7 +417,7 @@ public class BookReadActivity extends BaseActivity<IBookReadContract.Presenter>
             mPresenter.getChapterRead(mChapterList.get(chapter).getLink(), chapter);
         } else {
             mBookReadFactory.setChapterContent(mBookReadAdapter, mPYReaderStore.getChapter(chapter, mBookId),
-                    chapter, mChapterList.get(chapter).getTitle(), mBookTitle, mReadPositionCallBack);
+                    chapter, mChapterList.get(chapter).getTitle(), mBookTitle, mReadPositionCallBack, mTargetChapter);
         }
     }
 
@@ -354,10 +426,61 @@ public class BookReadActivity extends BaseActivity<IBookReadContract.Presenter>
         // 缓存
         mPYReaderStore.addChapter(chapter, mBookId, data.getBody());
         mBookReadFactory.setChapterContent(mBookReadAdapter, mPYReaderStore.getChapter(chapter, mBookId),
-                chapter, mChapterList.get(chapter).getTitle(), mBookTitle, mReadPositionCallBack);
+                chapter, mChapterList.get(chapter).getTitle(), mBookTitle, mReadPositionCallBack, mTargetChapter);
     }
 
-    private InnerBookReadPositionCallBack mReadPositionCallBack = new InnerBookReadPositionCallBack();
+    @Override
+    protected boolean useEventBus() {
+        return true;
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onEvent(BaseEvent baseEvent) {
+        switch (baseEvent.getEventFlag()) {
+            case BaseEvent.EVENT_JUMP_TO_TARGET_CHAPTER:
+                handleChapterJumpLogic(baseEvent);
+                break;
+            case BaseEvent.EVENT_BOOK_READ_SETTING:
+                handleBookReadSetting(baseEvent);
+                break;
+        }
+    }
+
+    /**
+     * 处理章节跳转逻辑
+     */
+    private void handleChapterJumpLogic(BaseEvent baseEvent) {
+        JumpToTargetChapterEvent toTargetChapterEvent = (JumpToTargetChapterEvent) baseEvent;
+        int page = toTargetChapterEvent.getPage();
+        L.e("收到章节跳转的事件啦 -- 将要跳转到第" + page + "页");
+        mLayoutManager.scrollToPosition(page);
+    }
+
+    /**
+     * 处理设置dialog里面的事件
+     */
+    private void handleBookReadSetting(BaseEvent baseEvent) {
+        BookReadSettingEvent readSettingEvent = (BookReadSettingEvent) baseEvent;
+        BookReadThemeBean bookReadThemeBean = readSettingEvent.getBookReadThemeBean();
+        BookReadSettingUtils.saveBookReadTheme(this, bookReadThemeBean);
+        mBookReadAdapter.notifyItemChanged(mRvBookRead.getCurrentPosition());
+    }
+
+    private InnerBookReadPositionCallBack mReadPositionCallBack;
+
+    /**
+     * mReadPositionCallBack赋值
+     */
+    public void setReadPositionCallBack() {
+        mReadPositionCallBack = new InnerBookReadPositionCallBack();
+    }
+
+    /**
+     * mReadPositionCallBack置为空
+     */
+    public void setNullReadPositionCallBack() {
+        if (mReadPositionCallBack != null) mReadPositionCallBack = null;
+    }
 
     private class InnerBookReadPositionCallBack implements BookReadFactory.ReadPositionCallBack {
         @Override
@@ -368,8 +491,6 @@ public class BookReadActivity extends BaseActivity<IBookReadContract.Presenter>
 
     /**
      * 跳转到保存的阅读位置
-     *
-     * @param page 上一章的总页数
      */
     private void toReadPosition(int page) {
         int readPosition;
@@ -388,6 +509,8 @@ public class BookReadActivity extends BaseActivity<IBookReadContract.Presenter>
         int nextPosition = mRvBookRead.getCurrentPosition() + 1;
         if (nextPosition <= mBookReadAdapter.getItemCount()) {
             mRvBookRead.smoothScrollToPosition(nextPosition);
+        } else {
+            ShowUtils.showToast("已经是最后一页了");
         }
     }
 
@@ -398,6 +521,8 @@ public class BookReadActivity extends BaseActivity<IBookReadContract.Presenter>
         int prePosition = mRvBookRead.getCurrentPosition() - 1;
         if (prePosition >= 0) {
             mRvBookRead.smoothScrollToPosition(prePosition);
+        } else {
+            ShowUtils.showToast("已经是第一页了");
         }
     }
 
@@ -406,7 +531,7 @@ public class BookReadActivity extends BaseActivity<IBookReadContract.Presenter>
      */
     private void showAppBarAndBottomControl() {
         mViewCover.setVisibility(View.VISIBLE);
-        ViewCompat.animate(mAppBarLayout).translationY(0).setDuration(200)
+        ViewCompat.animate(mAppBarLayout).translationY(0).setDuration(ANIM_DURATION)
                 .setInterpolator(new DecelerateInterpolator())
                 .setListener(new ViewPropertyAnimatorListenerAdapter() {
                     @Override
@@ -416,7 +541,7 @@ public class BookReadActivity extends BaseActivity<IBookReadContract.Presenter>
                         UIUtils.fullScreen(BookReadActivity.this, false);
                     }
                 }).start();
-        ViewCompat.animate(mLlBottomControl).translationY(0).setDuration(200)
+        ViewCompat.animate(mLlBottomControl).translationY(0).setDuration(ANIM_DURATION)
                 .setInterpolator(new DecelerateInterpolator())
                 .setUpdateListener(view -> mSbProgress.correctOffsetWhenContainerOnScrolling()).start();
     }
@@ -427,7 +552,7 @@ public class BookReadActivity extends BaseActivity<IBookReadContract.Presenter>
 
     private void hideAppBarAndBottomControl(OnAppBarAndBottomControlActivityListener appBarAndBottomControlActivityListener) {
         mViewCover.setVisibility(View.GONE);
-        ViewCompat.animate(mAppBarLayout).translationY(-mAppBarHeight).setDuration(200)
+        ViewCompat.animate(mAppBarLayout).translationY(-mAppBarHeight).setDuration(ANIM_DURATION)
                 .setInterpolator(new DecelerateInterpolator())
                 .setListener(new ViewPropertyAnimatorListenerAdapter() {
                     @Override
@@ -445,7 +570,7 @@ public class BookReadActivity extends BaseActivity<IBookReadContract.Presenter>
                         }
                     }
                 }).start();
-        ViewCompat.animate(mLlBottomControl).translationY(mBottomControlHeight).setDuration(200)
+        ViewCompat.animate(mLlBottomControl).translationY(mBottomControlHeight).setDuration(ANIM_DURATION)
                 .setInterpolator(new DecelerateInterpolator())
                 .setUpdateListener(view -> mSbProgress.correctOffsetWhenContainerOnScrolling()).start();
     }
@@ -463,6 +588,18 @@ public class BookReadActivity extends BaseActivity<IBookReadContract.Presenter>
         bundle.putInt(Constant.BOOK_DETAIL_COMMUNITY_INDEX, index);
         mCurrentFragment.setArguments(bundle);
         FragmentUtils.replaceFragment(getSupportFragmentManager(), mCurrentFragment, R.id.fl_container, false);
+    }
+
+    /**
+     * 跳转到指定章节
+     *
+     * @param targetChapter 目标章节
+     */
+    public void jumpToTargetChapter(int targetChapter) {
+        this.mReadChapter = targetChapter;
+        this.mTargetChapter = targetChapter;
+        loadChapterLogic(targetChapter);
+        saveReadPosition(targetChapter, 1);
     }
 
     private void updateSystemTime() {

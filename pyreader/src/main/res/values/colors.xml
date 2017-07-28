@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="colorPrimary">#c52828</color>
-    <color name="colorPrimaryDark">#B61C1C</color>
-    <color name="colorAccent">#c52828</color>
+    <color name="colorPrimary">#4695e4</color>
+    <color name="colorPrimaryDark">#4695e4</color>
+    <color name="colorAccent">#4695e4</color>
 
     <color name="btnStrokeColor">#FF4081</color>
 
@@ -44,4 +44,11 @@
 
     <color name="colorTabItem">#eae8ea</color>
     <color name="defaultReadBackgroundColor">#3c3f41</color>
+
+    <color name="eye_protection_green">#e6f1de</color>
+    <color name="girl_dream">#fdf9e5</color>
+    <color name="cherry_powder">#f7e1e5</color>
+    <color name="scholarly">#e7e1ef</color>
+    <color name="asahi_fade_out">#dfe5ef</color>
+    <color name="star_blue">#3a648c</color>
 </resources>

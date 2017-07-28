@@ -10,11 +10,16 @@ import android.view.WindowManager;
 
 import com.neuroandroid.pyreader.R;
 import com.neuroandroid.pyreader.adapter.BookReadAdapter;
+import com.neuroandroid.pyreader.bean.BookReadThemeBean;
 import com.neuroandroid.pyreader.config.Constant;
+import com.neuroandroid.pyreader.event.JumpToTargetChapterEvent;
 import com.neuroandroid.pyreader.model.response.ChapterRead;
-import com.neuroandroid.pyreader.ui.activity.BookReadActivity;
+import com.neuroandroid.pyreader.utils.BookReadSettingUtils;
+import com.neuroandroid.pyreader.utils.ColorUtils;
 import com.neuroandroid.pyreader.utils.L;
 import com.neuroandroid.pyreader.utils.UIUtils;
+
+import org.greenrobot.eventbus.EventBus;
 
 import java.text.DecimalFormat;
 import java.util.ArrayList;
@@ -39,18 +44,31 @@ public class BookReadFactory {
     private BookReadAdapter mBookReadAdapter;
 
     public void initBookReadMap() {
-        mBookReadMap = new TreeMap<>();
+        if (mBookReadMap == null) {
+            mBookReadMap = new TreeMap<>();
+        } else {
+            mBookReadMap.clear();
+        }
     }
 
+    /**
+     * @param bookReadAdapter      正文阅读器RecyclerView适配器
+     * @param chapter              章节实体类
+     * @param currentChapter       当前加载的章节
+     * @param chapterTitle         章节标题
+     * @param bookTitle            书籍标题
+     * @param readPositionCallBack 阅读位置跳转的回调
+     */
     public void setChapterContent(BookReadAdapter bookReadAdapter, ChapterRead.Chapter chapter, final int currentChapter,
-                                  final String chapterTitle, final String bookTitle, ReadPositionCallBack readPositionCallBack) {
+                                  final String chapterTitle, final String bookTitle,
+                                  ReadPositionCallBack readPositionCallBack, int targetChapter) {
         mChapter = chapter;
         mBookReadAdapter = bookReadAdapter;
-        transformChapterContent(chapter, currentChapter, chapterTitle, bookTitle, readPositionCallBack);
+        transformChapterContent(chapter, currentChapter, chapterTitle, bookTitle, readPositionCallBack, targetChapter);
     }
 
     private void transformChapterContent(ChapterRead.Chapter chapter, final int currentChapter, final String chapterTitle,
-                                         final String bookTitle, ReadPositionCallBack readPositionCallBack) {
+                                         final String bookTitle, ReadPositionCallBack readPositionCallBack, int targetChapter) {
         String body = Constant.PARAGRAPH_MARK + chapter.getBody();
         body = body.replaceAll("\n", "\n" + Constant.PARAGRAPH_MARK);
         char[] block = body.toCharArray();
@@ -96,18 +114,31 @@ public class BookReadFactory {
         }
         mBookReadMap.put(currentChapter, mBookReadBeanList);
         mDataList.clear();
-        for (List<BookReadBean> list : mBookReadMap.values()) {
-            mDataList.addAll(list);
-        }
-        L.e("mBookReadMap size : " + mBookReadMap.size());
-        if (mBookReadMap.size() == 1) {
-            if (readPositionCallBack != null) {
-                readPositionCallBack.callBack(mDataList.size());
+
+        if (targetChapter == -1) {  // 如果targetChapter为-1则使用mBookReadMap.values()遍历 (更加高效)
+            for (List<BookReadBean> list : mBookReadMap.values()) {
+                mDataList.addAll(list);
+            }
+        } else {
+            int page = 0;
+            for (Map.Entry<Integer, List<BookReadBean>> entry : mBookReadMap.entrySet()) {
+                int tempCurrentChapter = entry.getKey();
+                List<BookReadBean> list = entry.getValue();
+                mDataList.addAll(list);
+                if (tempCurrentChapter == targetChapter) {
+                    // 已经下载好了的章节内容
+                    // 当前章节与目标章节相等
+                    EventBus.getDefault().post(new JumpToTargetChapterEvent().setPage(page));
+                }
+                page += list.size();
             }
         }
-        if (mBookReadMap.size() == BookReadActivity.ONE_TIME_LOAD_CHAPTER + 2) {
-            // 如果mBookReadMap缓存大小已满则清除
-            mBookReadMap.clear();
+
+        L.e("mBookReadMap size : " + mBookReadMap.size());
+        if (readPositionCallBack != null) {
+            if (mBookReadMap.size() == 1) {
+                readPositionCallBack.callBack(mDataList.size());
+            }
         }
         mBookReadAdapter.replaceAll(mDataList);
     }
@@ -119,11 +150,11 @@ public class BookReadFactory {
     /**
      * 默认阅读界面背景
      */
-    private int mReadBackgroundColor = UIUtils.getColor(R.color.black);
+    private int mReadBackgroundColor;
 
-    private int mFontColor = UIUtils.getColor(R.color.white);
+    private int mFontColor;
 
-    private int mOtherFontColor = UIUtils.getColor(R.color.white_c);
+    private int mOtherFontColor;
 
     /**
      * 屏幕宽度和高度
@@ -215,7 +246,7 @@ public class BookReadFactory {
     /**
      * 电池图标的背景颜色
      */
-    private int mBatteryIconBackgroundColor = UIUtils.getColor(R.color.white_c);
+    private int mBatteryIconBackgroundColor;
 
     public static synchronized BookReadFactory getInstance() {
         return sReadFactory;
@@ -234,6 +265,12 @@ public class BookReadFactory {
         wm.getDefaultDisplay().getMetrics(metric);
         mScreenWidth = metric.widthPixels;
         mScreenHeight = metric.heightPixels;
+
+        BookReadThemeBean bookReadTheme = BookReadSettingUtils.getBookReadTheme(context);
+        mFontColor = bookReadTheme.getBookReadFontColor();
+        mOtherFontColor = ColorUtils.adjustAlpha(mFontColor, 0.7f);
+        mBatteryIconBackgroundColor = mOtherFontColor;
+        mReadBackgroundColor = bookReadTheme.getBookReadInterfaceBackgroundColor();
 
         mFormat = new DecimalFormat("#0.0");
         mLeftAndRightMarginWidth = UIUtils.getDimen(R.dimen.x30);
@@ -272,6 +309,10 @@ public class BookReadFactory {
      */
     public int getReadBackgroundColor() {
         return mReadBackgroundColor;
+    }
+
+    public void setReadBackgroundColor(int readBackgroundColor) {
+        this.mReadBackgroundColor = readBackgroundColor;
     }
 
     public int getFontColor() {

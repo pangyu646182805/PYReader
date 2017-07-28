@@ -12,7 +12,10 @@ import android.view.MotionEvent;
 import android.view.View;
 
 import com.neuroandroid.pyreader.R;
+import com.neuroandroid.pyreader.bean.BookReadThemeBean;
 import com.neuroandroid.pyreader.config.Constant;
+import com.neuroandroid.pyreader.utils.BookReadSettingUtils;
+import com.neuroandroid.pyreader.utils.ColorUtils;
 import com.neuroandroid.pyreader.utils.UIUtils;
 
 import java.util.List;
@@ -22,9 +25,9 @@ import java.util.List;
  */
 
 public class BookReadView extends View {
-    private final Context mContext;
     private static final String TWO_SPACE = "空格";
 
+    private final Context mContext;
     private BookReadBean mBookReadBean;
     private float mTwoSpaceWidth;
 
@@ -60,7 +63,20 @@ public class BookReadView extends View {
         mBookReadBean = bookReadBean;
         this.mCurrentTime = updateTime;
         this.mCurrentBatteryLevel = batteryLevel;
+        invalidateBookReadView();
         invalidate();
+    }
+
+    /**
+     * 重新设置一些颜色和画笔
+     */
+    private void invalidateBookReadView() {
+        BookReadThemeBean bookReadTheme = BookReadSettingUtils.getBookReadTheme(mContext);
+        int fontColor = bookReadTheme.getBookReadFontColor();
+        mBookReadFactory.getFontPaint().setColor(fontColor);
+        mBookReadFactory.getOtherFontPaint().setColor(ColorUtils.adjustAlpha(fontColor, 0.7f));
+        mBookReadFactory.getBatteryIconPaint().setColor(ColorUtils.adjustAlpha(fontColor, 0.7f));
+        mBookReadFactory.setReadBackgroundColor(bookReadTheme.getBookReadInterfaceBackgroundColor());
     }
 
     private BookReadFactory mBookReadFactory;
