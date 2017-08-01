@@ -53,8 +53,22 @@ public class BookReadSettingUtils {
         SPUtils.putString(context, getBookReadThemeKey(), saveData);
     }
 
+    /**
+     * 保存自定义主题
+     */
+    public static void saveCustomBookReadTheme(Context context, BookReadThemeBean bookReadThemeBean) {
+        String saveData = bookReadThemeBean.getBookReadThemeName() + ","
+                + bookReadThemeBean.getBookReadInterfaceBackgroundColor() + ","
+                + bookReadThemeBean.getBookReadFontColor();
+        SPUtils.putString(context, getCustomBookReadThemeKey(), saveData);
+    }
+
     private static String getBookReadThemeKey() {
         return "book_read_theme";
+    }
+
+    private static String getCustomBookReadThemeKey() {
+        return "custom_book_read_theme";
     }
 
     /**
@@ -73,6 +87,29 @@ public class BookReadSettingUtils {
                     .setBookReadFontColor(Integer.parseInt(split[2]));
         }
         return bookReadThemeBean;
+    }
+
+    /**
+     * 获取自定义主题
+     */
+    public static BookReadThemeBean getCustomBookReadTheme(Context context) {
+        String saveData = SPUtils.getString(context, getCustomBookReadThemeKey(), null);
+        BookReadThemeBean bookReadThemeBean;
+        if (UIUtils.isEmpty(saveData)) {
+            bookReadThemeBean = getDefaultCustomBookReadThemeBean();
+        } else {
+            bookReadThemeBean = new BookReadThemeBean();
+            String[] split = saveData.split(",");
+            bookReadThemeBean.setBookReadThemeName(split[0])
+                    .setBookReadInterfaceBackgroundColor(Integer.parseInt(split[1]))
+                    .setBookReadFontColor(Integer.parseInt(split[2]));
+        }
+        return bookReadThemeBean;
+    }
+
+    private static BookReadThemeBean getDefaultCustomBookReadThemeBean() {
+        return new BookReadThemeBean(
+                UIUtils.getColor(R.color.colorPrimary), UIUtils.getColor(R.color.white), "自定义");
     }
 
     private static String getScreenBrightnessKey() {

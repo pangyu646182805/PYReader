@@ -11,6 +11,7 @@
         android:orientation="horizontal">
 
         <com.neuroandroid.pyreader.widget.NoPaddingTextView
+            android:id="@+id/tv_pre_chapter"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:clickable="true"
@@ -35,6 +36,7 @@
             app:bsb_track_size="@dimen/y6"/>
 
         <com.neuroandroid.pyreader.widget.NoPaddingTextView
+            android:id="@+id/tv_next_chapter"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:clickable="true"
@@ -111,7 +113,7 @@
             <ImageView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                app:srcCompat="@drawable/ic_settings"/>
+                app:srcCompat="@drawable/ic_aa"/>
 
             <com.neuroandroid.pyreader.widget.NoPaddingTextView
                 android:layout_width="wrap_content"

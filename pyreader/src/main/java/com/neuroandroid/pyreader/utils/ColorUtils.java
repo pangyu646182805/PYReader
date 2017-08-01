@@ -88,4 +88,22 @@ public class ColorUtils {
     public static int getSecondaryTextColor(Context context, boolean dark) {
         return dark ? ContextCompat.getColor(context, R.color.colorGray666) : ContextCompat.getColor(context, R.color.white_a);
     }
+
+    /**
+     * color转RGB
+     */
+    public static int[] colorToRGB(int color) {
+        int[] rgb = new int[3];
+        rgb[0] = (color & 0xff0000) >> 16;
+        rgb[1] = (color & 0x00ff00) >> 8;
+        rgb[2] = color & 0x0000ff;
+        return rgb;
+    }
+
+    /**
+     * RGB转color
+     */
+    public static int rgbToColor(int r, int g, int b) {
+        return Color.rgb(r, g, b);
+    }
 }

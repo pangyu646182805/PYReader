@@ -47,7 +47,9 @@ import com.neuroandroid.pyreader.utils.NavigationUtils;
 import com.neuroandroid.pyreader.utils.ShowUtils;
 import com.neuroandroid.pyreader.utils.TimeUtils;
 import com.neuroandroid.pyreader.utils.UIUtils;
+import com.neuroandroid.pyreader.widget.NoPaddingTextView;
 import com.neuroandroid.pyreader.widget.dialog.BookReadSettingDialog;
+import com.neuroandroid.pyreader.widget.dialog.ColorPickerDialog;
 import com.neuroandroid.pyreader.widget.reader.BookReadFactory;
 import com.neuroandroid.pyreader.widget.reader.BookReadView;
 import com.neuroandroid.pyreader.widget.recyclerviewpager.RecyclerViewPager;
@@ -100,6 +102,10 @@ public class BookReadActivity extends BaseActivity<IBookReadContract.Presenter>
     View mViewCover;
     @BindView(R.id.ll_setting)
     LinearLayout mLlSetting;
+    @BindView(R.id.tv_pre_chapter)
+    NoPaddingTextView mTvPreChapter;
+    @BindView(R.id.tv_next_chapter)
+    NoPaddingTextView mTvNextChapter;
 
     // 书籍是否来自SD卡
     private boolean mFromSD;
@@ -139,6 +145,8 @@ public class BookReadActivity extends BaseActivity<IBookReadContract.Presenter>
     // 跳转到指定章节
     private int mTargetChapter = -1;
     private LinearLayoutManager mLayoutManager;
+    private int mSystemScreenBrightness;
+    private BookReadSettingDialog mBookReadSettingDialog;
 
     @Override
     public void onPageSelected(boolean isLast) {
@@ -207,6 +215,7 @@ public class BookReadActivity extends BaseActivity<IBookReadContract.Presenter>
      * 只在当前界面有效
      */
     private void setScreenBrightness() {
+        mSystemScreenBrightness = UIUtils.getScreenBrightness(this);
         int screenBrightness = BookReadSettingUtils.getScreenBrightness(this);
         if (screenBrightness != BookReadSettingUtils.FOLLOW_SYSTEM) {
             // 不是跟随系统才去设置屏幕亮度
@@ -329,15 +338,34 @@ public class BookReadActivity extends BaseActivity<IBookReadContract.Presenter>
             @Override  // 手指抬起时候回调
             public void getProgressOnActionUp(int progress, float progressFloat) {
                 super.getProgressOnActionUp(progress, progressFloat);
+                int chapter = (int) ((progressFloat / 100) * (mChapterList.size() - 1));
+                jumpToTargetChapter(chapter);
             }
         });
         mLlSetting.setOnClickListener(view -> {
             hideAppBarAndBottomControl();
-            new BookReadSettingDialog(BookReadActivity.this)
+            mBookReadSettingDialog = new BookReadSettingDialog(BookReadActivity.this)
+                    .setSystemScreenBrightness(mSystemScreenBrightness)
                     .setFullWidth()
                     .setFromBottom()
                     .setDimAmount(0f)
                     .showDialog();
+        });
+        mTvPreChapter.setOnClickListener(view -> {
+            if (mReadChapter <= 0) {
+                ShowUtils.showToast("已经是第一章了");
+                return;
+            }
+            mReadChapter--;
+            jumpToTargetChapter(mReadChapter);
+        });
+        mTvNextChapter.setOnClickListener(view -> {
+            if (mReadChapter >= mChapterList.size() - 1) {
+                ShowUtils.showToast("已经是最后一章了");
+                return;
+            }
+            mReadChapter++;
+            jumpToTargetChapter(mReadChapter);
         });
     }
 
@@ -345,7 +373,7 @@ public class BookReadActivity extends BaseActivity<IBookReadContract.Presenter>
      * 保存当前阅读位置
      *
      * @param currentChapter 当前阅读位置
-     * @param page 当前章节的第几页
+     * @param page           当前章节的第几页
      */
     private void saveReadPosition(int currentChapter, int page) {
         CacheManager.saveReadPosition(BookReadActivity.this, mBookId, currentChapter, page);
@@ -375,7 +403,7 @@ public class BookReadActivity extends BaseActivity<IBookReadContract.Presenter>
         mReadChapter = readPosition[0];
         mReadPage = readPosition[1];
         L.e("阅读" + mBookTitle + " 第" + (mReadChapter + 1) + "章 第" + mReadPage + "页");
-        float percent = (mReadChapter + 1) * 1.0f / mChapterList.size();
+        float percent = (mReadChapter + 1) * 100f / mChapterList.size();
         mSbProgress.setProgress(percent);
         loadChapterLogic(mReadChapter);
     }
@@ -395,7 +423,7 @@ public class BookReadActivity extends BaseActivity<IBookReadContract.Presenter>
                     // 当前阅读到第14章, 加载13, 14, 15章  diff = 2
                     // 当前阅读到第15章, 加载14, 15章  diff = 3
                     if (i >= diff) {
-                        loadChapterContent(readChapter + (i - 2));
+                        loadChapterContent(readChapter + (i - (diff + 1)));
                     }
                 } else {
                     // 当前阅读到n(1-12)章, 加载n-1, n, 后面3章
@@ -413,6 +441,7 @@ public class BookReadActivity extends BaseActivity<IBookReadContract.Presenter>
      * @param chapter 加载第几章节
      */
     private void loadChapterContent(int chapter) {
+        L.e("加载第" + chapter + "章, 总章节数: " + mChapterList.size());
         if (mPYReaderStore.findChapterByBookId(chapter, mBookId)) {
             mPresenter.getChapterRead(mChapterList.get(chapter).getLink(), chapter);
         } else {
@@ -462,6 +491,21 @@ public class BookReadActivity extends BaseActivity<IBookReadContract.Presenter>
     private void handleBookReadSetting(BaseEvent baseEvent) {
         BookReadSettingEvent readSettingEvent = (BookReadSettingEvent) baseEvent;
         BookReadThemeBean bookReadThemeBean = readSettingEvent.getBookReadThemeBean();
+        String bookReadThemeName = bookReadThemeBean.getBookReadThemeName();
+        if (!readSettingEvent.isFromColorPickerDialog() && "自定义".equals(bookReadThemeName)) {
+            BookReadThemeBean bookReadTheme = BookReadSettingUtils.getBookReadTheme(this);
+            if ("自定义".equals(bookReadTheme.getBookReadThemeName())) {
+                mBookReadSettingDialog.dismissDialog();
+                new ColorPickerDialog(this)
+                        .setDimAmount(0f)
+                        .showDialog();
+                return;
+            }
+        }
+        if (readSettingEvent.isFromColorPickerDialog()) {
+            // 保存自定义主题
+            BookReadSettingUtils.saveCustomBookReadTheme(this, bookReadThemeBean);
+        }
         BookReadSettingUtils.saveBookReadTheme(this, bookReadThemeBean);
         mBookReadAdapter.notifyItemChanged(mRvBookRead.getCurrentPosition());
     }

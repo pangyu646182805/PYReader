@@ -9,6 +9,8 @@ import com.neuroandroid.pyreader.bean.BookReadThemeBean;
 public class BookReadSettingEvent extends BaseEvent {
     private BookReadThemeBean bookReadThemeBean;
 
+    private boolean fromColorPickerDialog;
+
     public BookReadSettingEvent() {
         setEventFlag(EVENT_BOOK_READ_SETTING);
     }
@@ -19,6 +21,15 @@ public class BookReadSettingEvent extends BaseEvent {
 
     public BookReadSettingEvent setBookReadThemeBean(BookReadThemeBean bookReadThemeBean) {
         this.bookReadThemeBean = bookReadThemeBean;
+        return this;
+    }
+
+    public boolean isFromColorPickerDialog() {
+        return fromColorPickerDialog;
+    }
+
+    public BookReadSettingEvent setFromColorPickerDialog(boolean fromColorPickerDialog) {
+        this.fromColorPickerDialog = fromColorPickerDialog;
         return this;
     }
 }

@@ -1,0 +1,125 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:layout_gravity="center_horizontal"
+    android:orientation="vertical">
+
+    <LinearLayout
+        android:layout_width="@dimen/x592"
+        android:layout_height="wrap_content"
+        android:background="@color/color_picker_background"
+        android:orientation="vertical">
+
+        <com.neuroandroid.pyreader.widget.ColorPickerView
+            android:id="@+id/picker_view"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/y360"/>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:paddingBottom="@dimen/y16"
+            android:paddingLeft="@dimen/x32"
+            android:paddingRight="@dimen/x32"
+            android:paddingTop="@dimen/x16">
+
+            <com.neuroandroid.pyreader.widget.NoPaddingTextView
+                android:id="@+id/tv_text"
+                android:layout_width="0dp"
+                android:layout_height="@dimen/y64"
+                android:layout_marginRight="@dimen/x16"
+                android:layout_weight="1"
+                android:background="@drawable/shape_white_color_selector"
+                android:clickable="true"
+                android:gravity="center"
+                android:text="正文"
+                android:textColor="@color/colorPrimary"
+                android:textSize="16sp"/>
+
+            <com.neuroandroid.pyreader.widget.NoPaddingTextView
+                android:id="@+id/tv_background"
+                android:layout_width="0dp"
+                android:layout_height="@dimen/y64"
+                android:layout_marginLeft="@dimen/x16"
+                android:layout_weight="1"
+                android:background="@drawable/shape_white_color_selector"
+                android:clickable="true"
+                android:gravity="center"
+                android:text="背景"
+                android:textColor="@color/white"
+                android:textSize="16sp"/>
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:focusable="true"
+            android:focusableInTouchMode="true"
+            android:orientation="horizontal"
+            android:paddingBottom="@dimen/y16"
+            android:paddingLeft="@dimen/x32"
+            android:paddingRight="@dimen/x32"
+            android:paddingTop="@dimen/x16">
+
+            <com.neuroandroid.pyreader.widget.NoPaddingTextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="R"
+                android:textColor="@color/white"
+                android:textSize="16sp"/>
+
+            <EditText
+                android:id="@+id/et_r"
+                android:layout_width="@dimen/x96"
+                android:layout_height="@dimen/y64"
+                android:layout_marginLeft="@dimen/x4"
+                android:background="@drawable/border_dialog_background"
+                android:inputType="number"
+                android:paddingLeft="@dimen/x8"
+                android:selectAllOnFocus="true"
+                android:text="255"/>
+
+            <com.neuroandroid.pyreader.widget.NoPaddingTextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/x24"
+                android:text="G"
+                android:textColor="@color/white"
+                android:textSize="16sp"/>
+
+            <EditText
+                android:id="@+id/et_g"
+                android:layout_width="@dimen/x96"
+                android:layout_height="@dimen/y64"
+                android:layout_marginLeft="@dimen/x4"
+                android:background="@drawable/border_dialog_background"
+                android:inputType="number"
+                android:paddingLeft="@dimen/x8"
+                android:selectAllOnFocus="true"
+                android:text="255"/>
+
+            <com.neuroandroid.pyreader.widget.NoPaddingTextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/x24"
+                android:text="B"
+                android:textColor="@color/white"
+                android:textSize="16sp"/>
+
+            <EditText
+                android:id="@+id/et_b"
+                android:layout_width="@dimen/x96"
+                android:layout_height="@dimen/y64"
+                android:layout_marginLeft="@dimen/x4"
+                android:background="@drawable/border_dialog_background"
+                android:inputType="number"
+                android:paddingLeft="@dimen/x8"
+                android:selectAllOnFocus="true"
+                android:text="255"/>
+        </LinearLayout>
+    </LinearLayout>
+</LinearLayout>
