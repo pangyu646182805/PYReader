@@ -104,6 +104,15 @@ public class ColorUtils {
      * RGB转color
      */
     public static int rgbToColor(int r, int g, int b) {
+        r = judgeRGB(r);
+        g = judgeRGB(g);
+        b = judgeRGB(b);
         return Color.rgb(r, g, b);
+    }
+
+    private static int judgeRGB(int colorValue) {
+        if (colorValue > 255) colorValue = 255;
+        if (colorValue < 0) colorValue = 0;
+        return colorValue;
     }
 }

@@ -78,7 +78,9 @@
                 android:layout_height="@dimen/y64"
                 android:layout_marginLeft="@dimen/x4"
                 android:background="@drawable/border_dialog_background"
+                android:cursorVisible="false"
                 android:inputType="number"
+                android:lines="1"
                 android:paddingLeft="@dimen/x8"
                 android:selectAllOnFocus="true"
                 android:text="255"/>
@@ -97,7 +99,9 @@
                 android:layout_height="@dimen/y64"
                 android:layout_marginLeft="@dimen/x4"
                 android:background="@drawable/border_dialog_background"
+                android:cursorVisible="false"
                 android:inputType="number"
+                android:lines="1"
                 android:paddingLeft="@dimen/x8"
                 android:selectAllOnFocus="true"
                 android:text="255"/>
@@ -116,7 +120,9 @@
                 android:layout_height="@dimen/y64"
                 android:layout_marginLeft="@dimen/x4"
                 android:background="@drawable/border_dialog_background"
+                android:cursorVisible="false"
                 android:inputType="number"
+                android:lines="1"
                 android:paddingLeft="@dimen/x8"
                 android:selectAllOnFocus="true"
                 android:text="255"/>
