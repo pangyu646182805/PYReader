@@ -7,6 +7,7 @@ import android.os.Bundle;
 import android.support.design.widget.AppBarLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.TypedValue;
 import android.view.ViewTreeObserver;
 
 import com.google.gson.Gson;
@@ -53,6 +54,7 @@ public class BookDetailActivity extends BaseActivity<IBookDetailContract.Present
     private int mScrollX;
     private BaseFragment mCurrentFragment;
     private boolean mFromBookRead;
+    private TypedValue mTypedValue;
 
     public boolean isFromBookRead() {
         return mFromBookRead;
@@ -85,6 +87,9 @@ public class BookDetailActivity extends BaseActivity<IBookDetailContract.Present
 
     @Override
     protected void initData() {
+        mTypedValue = new TypedValue();
+        getTheme().resolveAttribute(R.attr.colorPrimary, mTypedValue, true);
+
         mBookDetailDataList.add(null);
         mBookDetailDataList.add(null);
         mBookDetailDataList.add(null);
@@ -124,12 +129,12 @@ public class BookDetailActivity extends BaseActivity<IBookDetailContract.Present
                     } else if (mScrollX > 0 && mScrollX <= mBookDetailAdapter.getBookDetailHeaderHeight()) {
                         // 滑动距离小于banner图的高度时，设置背景和字体颜色颜色透明度渐变
                         float scale = (float) mScrollX / mBookDetailAdapter.getBookDetailHeaderHeight();
-                        mAppBarLayout.setBackgroundColor(ColorUtils.adjustAlpha(UIUtils.getColor(R.color.colorPrimary), scale));
+                        mAppBarLayout.setBackgroundColor(ColorUtils.adjustAlpha(mTypedValue.data, scale));
                         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
                             mAppBarLayout.setTranslationZ(scale * UIUtils.getDimen(R.dimen.y8));
                         }
                     } else {
-                        mAppBarLayout.setBackgroundColor(UIUtils.getColor(R.color.colorPrimary));
+                        mAppBarLayout.setBackgroundColor(mTypedValue.data);
                         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
                             mAppBarLayout.setTranslationZ(UIUtils.getDimen(R.dimen.y8));
                         }

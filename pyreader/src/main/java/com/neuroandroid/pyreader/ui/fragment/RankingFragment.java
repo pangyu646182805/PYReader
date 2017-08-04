@@ -5,6 +5,7 @@ import android.content.Context;
 import android.support.v4.view.ViewCompat;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.ImageView;
@@ -366,13 +367,17 @@ public class RankingFragment extends BaseFragment<IRankingContract.Presenter>
     }
 
     private class RankingListAdapter extends SelectAdapter<RankingList.MaleBean> {
+        private final TypedValue mTypedValue;
+
         public RankingListAdapter(Context context, List<RankingList.MaleBean> dataList, int layoutId) {
             super(context, dataList, layoutId);
+            mTypedValue = new TypedValue();
+            mContext.getTheme().resolveAttribute(R.attr.colorPrimary, mTypedValue, true);
         }
 
         @Override
         public void convert(BaseViewHolder holder, RankingList.MaleBean item, int position, int viewType) {
-            holder.setTextColor(R.id.tv_title, item.isSelected() ? UIUtils.getColor(R.color.colorPrimary) :
+            holder.setTextColor(R.id.tv_title, item.isSelected() ? mTypedValue.data :
                     UIUtils.getColor(R.color.colorGray333))
                     .setBackgroundColor(R.id.ll_container, item.isSelected() ? UIUtils.getColor(R.color.backgroundPanel) :
                             UIUtils.getColor(R.color.colorTabItem))

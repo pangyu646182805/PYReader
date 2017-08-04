@@ -8,6 +8,7 @@ import android.support.design.widget.FloatingActionButton;
 import android.support.v4.view.ViewCompat;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.TypedValue;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewTreeObserver;
@@ -353,26 +354,34 @@ public class CategoryListFragment extends BaseFragment<ICategoryListContract.Pre
     }
 
     private class MajorAdapter extends SelectAdapter<MajorBean> {
+        private final TypedValue mTypedValue;
+
         public MajorAdapter(Context context, List<MajorBean> dataList, int layoutId) {
             super(context, dataList, layoutId);
+            mTypedValue = new TypedValue();
+            mContext.getTheme().resolveAttribute(R.attr.colorPrimary, mTypedValue, true);
         }
 
         @Override
         public void convert(BaseViewHolder holder, MajorBean item, int position, int viewType) {
-            holder.setTextColor(R.id.tv_fab, item.isSelected() ? UIUtils.getColor(R.color.colorPrimary) :
+            holder.setTextColor(R.id.tv_fab, item.isSelected() ? mTypedValue.data :
                     UIUtils.getColor(R.color.colorGray333))
                     .setText(R.id.tv_fab, item.getCategoryName());
         }
     }
 
     private class CategoryListAdapter extends SelectAdapter<TextSelectBean> {
+        private final TypedValue mTypedValue;
+
         public CategoryListAdapter(Context context, List<TextSelectBean> dataList, int layoutId) {
             super(context, dataList, layoutId);
+            mTypedValue = new TypedValue();
+            mContext.getTheme().resolveAttribute(R.attr.colorPrimary, mTypedValue, true);
         }
 
         @Override
         public void convert(BaseViewHolder holder, TextSelectBean item, int position, int viewType) {
-            holder.setTextColor(R.id.tv_fab, item.isSelected() ? UIUtils.getColor(R.color.colorPrimary) :
+            holder.setTextColor(R.id.tv_fab, item.isSelected() ? mTypedValue.data :
                     UIUtils.getColor(R.color.colorGray333))
                     .setText(R.id.tv_fab, item.getText());
         }

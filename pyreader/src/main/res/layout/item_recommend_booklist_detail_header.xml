@@ -79,7 +79,7 @@
                 android:paddingRight="@dimen/y16"
                 android:paddingTop="@dimen/x8"
                 android:text="分享"
-                android:textColor="@color/colorPrimary"
+                android:textColor="?attr/colorPrimary"
                 android:textSize="13sp"/>
         </LinearLayout>
     </LinearLayout>

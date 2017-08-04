@@ -34,10 +34,11 @@
 
             <android.support.v4.widget.ContentLoadingProgressBar
                 android:id="@+id/pb"
-                style="?android:attr/progressBarStyle"
+                style="@style/Widget.AppCompat.ProgressBar"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_gravity="center"/>
+                android:layout_gravity="center"
+                android:indeterminateTint="?attr/colorPrimary"/>
         </FrameLayout>
     </LinearLayout>
 

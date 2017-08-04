@@ -13,7 +13,7 @@
         app:showAsAction="never"/>
 
     <item
-        android:id="@+id/action_settings"
-        android:title="设置"
+        android:id="@+id/action_theme"
+        android:title="主题"
         app:showAsAction="never"/>
 </menu>

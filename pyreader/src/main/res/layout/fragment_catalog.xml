@@ -18,15 +18,15 @@
             android:id="@+id/rv_catalog"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
+            android:overScrollMode="never"
             android:scrollbars="none"
-            app:fastScrollTrackColor="@color/transparent"
-            android:overScrollMode="never"/>
+            app:fastScrollTrackColor="@color/transparent"/>
     </com.lcodecore.tkrefreshlayout.TwinklingRefreshLayout>
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="@dimen/y72"
-        android:background="@color/colorPrimary"
+        android:background="?attr/colorPrimary"
         android:orientation="horizontal">
 
         <FrameLayout

@@ -2,6 +2,7 @@ package com.neuroandroid.pyreader.utils;
 
 import android.content.Context;
 
+import com.afollestad.materialcab.Util;
 import com.neuroandroid.pyreader.R;
 import com.neuroandroid.pyreader.bean.BookReadThemeBean;
 
@@ -96,7 +97,7 @@ public class BookReadSettingUtils {
         String saveData = SPUtils.getString(context, getCustomBookReadThemeKey(), null);
         BookReadThemeBean bookReadThemeBean;
         if (UIUtils.isEmpty(saveData)) {
-            bookReadThemeBean = getDefaultCustomBookReadThemeBean();
+            bookReadThemeBean = getDefaultCustomBookReadThemeBean(context);
         } else {
             bookReadThemeBean = new BookReadThemeBean();
             String[] split = saveData.split(",");
@@ -107,9 +108,9 @@ public class BookReadSettingUtils {
         return bookReadThemeBean;
     }
 
-    private static BookReadThemeBean getDefaultCustomBookReadThemeBean() {
+    private static BookReadThemeBean getDefaultCustomBookReadThemeBean(Context context) {
         return new BookReadThemeBean(
-                UIUtils.getColor(R.color.colorPrimary), UIUtils.getColor(R.color.white), "自定义");
+                Util.resolveColor(context, R.attr.colorPrimary, 0), UIUtils.getColor(R.color.white), "自定义");
     }
 
     private static String getScreenBrightnessKey() {

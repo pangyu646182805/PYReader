@@ -121,13 +121,12 @@ public class RecommendFragment extends BaseLazyFragment<IRecommendContract.Prese
                                         NavigationUtils.goToBookDetailPage(mActivity, item.getBookId(), false);
                                         break;
                                     case 1:
-
                                         break;
                                     case 2:
-
                                         break;
                                     case 3:  // 批量管理
                                         mCab = getActivity(MainActivity.class).openCab(R.menu.menu_book_manage, this);
+                                        mRecommendAdapter.longTouchSelectModeEnable(true);
                                         break;
                                 }
                             }
@@ -264,6 +263,7 @@ public class RecommendFragment extends BaseLazyFragment<IRecommendContract.Prese
 
     @Override
     public boolean onCabFinished(MaterialCab cab) {
+        mRecommendAdapter.longTouchSelectModeEnable(false);
         mRefreshLayout.setEnableRefresh(true);
         mRecommendAdapter.updateSelectMode(false);
         mSelectedBooks.clear();

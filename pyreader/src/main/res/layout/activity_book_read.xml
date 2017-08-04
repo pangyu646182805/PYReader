@@ -27,11 +27,10 @@
             android:layout_height="wrap_content"
             android:background="@color/white">
 
-            <View
+            <com.neuroandroid.pyreader.widget.LinearGradientView
                 android:id="@+id/status_bar"
                 android:layout_width="match_parent"
-                android:layout_height="0dp"
-                android:background="@drawable/shape_gradient"/>
+                android:layout_height="0dp"/>
 
             <android.support.v7.widget.Toolbar
                 android:id="@+id/tool_bar"

@@ -57,7 +57,7 @@
             xmlns:app="http://schemas.android.com/apk/res-auto"
             android:layout_width="@dimen/x64"
             android:layout_height="@dimen/y64"
-            app:matProg_barColor="@color/colorPrimary"
+            app:matProg_barColor="?attr/colorPrimary"
             app:matProg_progressIndeterminate="true"
             app:matProg_rimColor="@color/black_3"/>
 

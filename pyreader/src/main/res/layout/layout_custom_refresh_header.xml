@@ -7,7 +7,7 @@
         android:layout_width="@dimen/x24"
         android:layout_height="@dimen/y34"
         android:layout_gravity="center"
-        android:tint="@color/colorPrimary"
+        android:tint="?attr/colorPrimary"
         android:src="@mipmap/ic_refresh_arrow"/>
 
     <ImageView

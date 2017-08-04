@@ -1,6 +1,7 @@
 package com.neuroandroid.pyreader.adapter;
 
 import android.content.Context;
+import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.View;
 
@@ -23,6 +24,7 @@ public class TopicTagsAdapter extends BaseRvAdapter<BookListTags.DataBean> {
     private TopicTagsDialog mTopicTagsDialog;
     private TopicTagsDialog.OnTagClickListener mOnTagClickListener;
     private String mCurrentTag;
+    private final TypedValue mTypedValue;
 
     public void setCurrentTag(String currentTag) {
         mCurrentTag = currentTag;
@@ -35,6 +37,8 @@ public class TopicTagsAdapter extends BaseRvAdapter<BookListTags.DataBean> {
 
     public TopicTagsAdapter(Context context, List<BookListTags.DataBean> dataList, int layoutId) {
         super(context, dataList, layoutId);
+        mTypedValue = new TypedValue();
+        mContext.getTheme().resolveAttribute(R.attr.colorPrimary, mTypedValue, true);
     }
 
     @Override
@@ -52,7 +56,7 @@ public class TopicTagsAdapter extends BaseRvAdapter<BookListTags.DataBean> {
         tvTag.setText(tag);
         tagView.setOnClickListener(new TagClickListener(tag));
         if (!UIUtils.isEmpty(mCurrentTag) && mCurrentTag.equals(tag)) {
-            tvTag.setTextColor(UIUtils.getColor(R.color.colorPrimary));
+            tvTag.setTextColor(mTypedValue.data);
         } else {
             tvTag.setTextColor(UIUtils.getColor(R.color.colorGray333));
         }

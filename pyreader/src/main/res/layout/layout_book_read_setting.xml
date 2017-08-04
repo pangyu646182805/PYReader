@@ -39,10 +39,10 @@
                 android:layout_marginLeft="@dimen/x16"
                 android:layout_marginRight="@dimen/x16"
                 android:layout_weight="1"
-                app:bsb_bubble_color="@color/colorPrimary"
+                app:bsb_bubble_color="?attr/colorPrimary"
                 app:bsb_bubble_text_color="@color/white"
                 app:bsb_progress="0"
-                app:bsb_second_track_color="@color/colorPrimary"
+                app:bsb_second_track_color="?attr/colorPrimary"
                 app:bsb_show_progress_in_float="false"
                 app:bsb_track_color="@color/black_6"
                 app:bsb_track_size="@dimen/y6"/>

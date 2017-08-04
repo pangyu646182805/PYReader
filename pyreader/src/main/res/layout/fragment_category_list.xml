@@ -51,6 +51,7 @@
             android:layout_margin="@dimen/x32"
             android:clickable="true"
             android:src="@mipmap/ic_action_add"
+            app:backgroundTint="?attr/colorPrimary"
             app:borderWidth="0dp"
             app:elevation="@dimen/x8"
             app:fabSize="normal"

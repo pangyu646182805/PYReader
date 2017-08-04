@@ -4,6 +4,7 @@ import android.content.Context;
 import android.support.v7.widget.LinearLayoutManager;
 import android.widget.FrameLayout;
 
+import com.afollestad.materialcab.Util;
 import com.neuroandroid.pyreader.R;
 import com.neuroandroid.pyreader.adapter.base.BaseViewHolder;
 import com.neuroandroid.pyreader.adapter.base.SelectAdapter;
@@ -179,7 +180,7 @@ public class CatalogFragment extends BaseFragment {
             }
             holder.setText(R.id.tv_catalog, item.getTitle())
                     .setTextColor(R.id.tv_catalog, item.isSelected() ?
-                            UIUtils.getColor(R.color.colorPrimary) : noCached ?
+                            Util.resolveColor(this.mContext, R.attr.colorPrimary, 0) : noCached ?
                             UIUtils.getColor(R.color.colorGray999) : UIUtils.getColor(R.color.black));
         }
     }

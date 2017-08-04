@@ -22,5 +22,6 @@
         android:layout_height="wrap_content"
         android:layout_gravity="center_vertical"
         android:layout_marginLeft="@dimen/x32"
-        android:text="添加你喜欢的小说"/>
+        android:text="添加你喜欢的小说"
+        android:textColor="@color/colorGray333"/>
 </LinearLayout>

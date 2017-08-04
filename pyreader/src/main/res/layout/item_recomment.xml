@@ -56,8 +56,9 @@
 
         <android.support.v7.widget.AppCompatCheckBox
             android:id="@+id/cb_recommend"
-            android:clickable="false"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"/>
+            android:layout_height="wrap_content"
+            android:checked="true"
+            android:clickable="false"/>
     </FrameLayout>
 </LinearLayout>

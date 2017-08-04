@@ -1,10 +1,13 @@
 package com.neuroandroid.pyreader.base;
 
+import android.app.ActivityManager;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.LayoutRes;
 import android.support.annotation.Nullable;
 import android.support.annotation.StringRes;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 
@@ -14,6 +17,7 @@ import com.neuroandroid.pyreader.widget.StateLayout;
 import com.trello.rxlifecycle2.components.support.RxAppCompatActivity;
 
 import org.greenrobot.eventbus.EventBus;
+import org.polaric.colorful.Colorful;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -50,9 +54,23 @@ public abstract class BaseActivity<P extends IPresenter> extends RxAppCompatActi
      */
     protected int mStatusBarHeight;
 
+    private String mThemeString;
+
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        this.mThemeString = Colorful.getThemeString();
+        this.setTheme(Colorful.getThemeDelegate().getStyle());
+        if (Build.VERSION.SDK_INT >= 21) {
+            if (Colorful.getThemeDelegate().isTranslucent()) {
+                this.getWindow().addFlags(67108864);
+            }
+
+            ActivityManager.TaskDescription tDesc =
+                    new ActivityManager.TaskDescription(null, null, this.getResources().getColor(Colorful.getThemeDelegate().getPrimaryColor().getColorRes()));
+            this.setTaskDescription(tDesc);
+        }
+
         setContentView(attachLayoutRes());
         if (useEventBus()) EventBus.getDefault().register(this);
         mUnBinder = ButterKnife.bind(this);
@@ -116,7 +134,8 @@ public abstract class BaseActivity<P extends IPresenter> extends RxAppCompatActi
     protected void initPresenter() {
     }
 
-    protected void initView() {}
+    protected void initView() {
+    }
 
     protected void initData() {
     }
@@ -171,6 +190,19 @@ public abstract class BaseActivity<P extends IPresenter> extends RxAppCompatActi
         if (mStatusBar != null) {
             mStatusBar.getLayoutParams().height = statusBarHeight;
             mStatusBar.requestLayout();
+        }
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        changeTheme();
+    }
+
+    public void changeTheme() {
+        if (!Colorful.getThemeString().equals(this.mThemeString)) {
+            Log.d("Colorful", "Theme change detected, restarting activity");
+            this.recreate();
         }
     }
 

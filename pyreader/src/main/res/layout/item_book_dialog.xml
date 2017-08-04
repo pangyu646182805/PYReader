@@ -16,5 +16,6 @@
         android:layout_marginLeft="@dimen/x32"
         android:layout_marginRight="@dimen/x32"
         android:lines="1"
+        android:textColor="@color/colorGray333"
         android:textSize="16sp"/>
 </RelativeLayout>

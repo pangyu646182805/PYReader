@@ -7,6 +7,8 @@ import android.os.Handler;
 import com.neuroandroid.pyreader.utils.L;
 import com.neuroandroid.pyreader.widget.reader.BookReadFactory;
 
+import org.polaric.colorful.Colorful;
+
 /**
  * Created by NeuroAndroid on 2017/6/14.
  */
@@ -33,5 +35,12 @@ public class BaseApplication extends Application {
         sContext = getApplicationContext();
         sHandler = new Handler();
         BookReadFactory.createBookReadFactory(this);
+
+        Colorful.defaults()
+                .primaryColor(Colorful.ThemeColor.BLUE)
+                .accentColor(Colorful.ThemeColor.BLUE)
+                .translucent(true)
+                .dark(false);
+        Colorful.init(this);
     }
 }

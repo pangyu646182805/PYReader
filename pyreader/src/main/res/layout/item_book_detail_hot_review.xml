@@ -39,5 +39,5 @@
         android:paddingBottom="@dimen/y12"
         android:paddingTop="@dimen/y12"
         android:text="@string/book_detail_all_review_count"
-        android:textColor="@color/colorPrimary"/>
+        android:textColor="?attr/colorPrimary"/>
 </LinearLayout>

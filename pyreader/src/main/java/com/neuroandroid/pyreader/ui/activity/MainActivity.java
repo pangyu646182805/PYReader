@@ -29,6 +29,8 @@ import com.neuroandroid.pyreader.widget.dialog.ChooseSexDialog;
 import com.neuroandroid.pyreader.widget.tablayout.SlidingTabLayout;
 
 import org.greenrobot.eventbus.EventBus;
+import org.polaric.colorful.ColorPickerDialog;
+import org.polaric.colorful.Colorful;
 
 import butterknife.BindView;
 
@@ -59,6 +61,7 @@ public class MainActivity extends BaseActivity implements MaterialCabCallBack {
         mTabs.setViewPager(mVpContent);
 
         UIUtils.getHandler().postDelayed(() -> showChooseSexDialog(), 500);
+        // Util.resolveColor(this.mContext, R.attr.colorPrimary, 0)
     }
 
     /**
@@ -110,8 +113,18 @@ public class MainActivity extends BaseActivity implements MaterialCabCallBack {
             case R.id.action_scan_book:
                 ShowUtils.showToast("扫描书籍");
                 break;
-            case R.id.action_settings:
-                ShowUtils.showToast("设置");
+            case R.id.action_theme:
+                ColorPickerDialog colorPickerDialog = new ColorPickerDialog(this);
+                colorPickerDialog.setOnColorSelectedListener(themeColor -> {
+                    Colorful.config(this)
+                            .primaryColor(themeColor)
+                            .accentColor(themeColor)
+                            .translucent(false)
+                            .dark(false)
+                            .apply();
+                    changeTheme();
+                });
+                colorPickerDialog.show();
                 break;
         }
         return super.onOptionsItemSelected(item);
@@ -158,7 +171,7 @@ public class MainActivity extends BaseActivity implements MaterialCabCallBack {
                 .setMenu(menuRes)
                 .setPopupMenuTheme(R.style.ThemeOverlay_AppCompat_Light)
                 .setCloseDrawableRes(R.drawable.ic_close_white)
-                .setBackgroundColorRes(R.color.colorPrimary)
+                .setBackgroundColorAttr(R.attr.colorPrimary)
                 .start(new MaterialCab.Callback() {
                     @Override
                     public boolean onCabCreated(MaterialCab cab, Menu menu) {
