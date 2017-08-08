@@ -20,6 +20,7 @@ import com.neuroandroid.pyreader.ui.activity.MainActivity;
 import com.neuroandroid.pyreader.utils.DividerUtils;
 import com.neuroandroid.pyreader.utils.FragmentUtils;
 import com.neuroandroid.pyreader.utils.ShowUtils;
+import com.neuroandroid.pyreader.utils.ThemeUtils;
 import com.neuroandroid.pyreader.utils.UIUtils;
 
 import java.util.ArrayList;
@@ -58,6 +59,8 @@ public class CategoryFragment extends BaseFragment<ICategoryContract.Presenter>
 
     @Override
     protected void initView() {
+        mRootView.setBackgroundColor(ThemeUtils.getBackgroundColor());
+
         setDisplayHomeAsUpEnabled();
         setToolbarTitle(UIUtils.getString(R.string.category));
         mGridLayoutManager = new GridLayoutManager(mContext, CATEGORY_SPAN_SIZE);
@@ -155,14 +158,20 @@ public class CategoryFragment extends BaseFragment<ICategoryContract.Presenter>
 
         @Override
         public void convert(BaseViewHolder holder, CategoryList.MaleBean item, int position, int viewType) {
+            int mainColor = ThemeUtils.getMainColor();
             switch (viewType) {
                 case 0:
+                    holder.getView(R.id.view_split).setBackgroundColor(ThemeUtils.getSplitColor());
+
                     holder.setText(R.id.tv_category_title, item.getName())
+                            .setTextColor(R.id.tv_category_title, mainColor)
                             .setText(R.id.tv_book_count, String.format(
-                                    UIUtils.getString(R.string.category_book_count), item.getBookCount()));
+                                    UIUtils.getString(R.string.category_book_count), item.getBookCount()))
+                            .setTextColor(R.id.tv_book_count, ThemeUtils.getSubColor());
                     break;
                 case -1:
-                    holder.setText(R.id.tv_text, position == 0 ? Constant.MALE_TEXT : Constant.FEMALE_TEXT);
+                    holder.setText(R.id.tv_text, position == 0 ? Constant.MALE_TEXT : Constant.FEMALE_TEXT)
+                            .setTextColor(R.id.tv_text, mainColor);
                     break;
             }
         }

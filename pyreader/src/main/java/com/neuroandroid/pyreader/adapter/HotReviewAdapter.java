@@ -10,6 +10,7 @@ import com.neuroandroid.pyreader.config.Constant;
 import com.neuroandroid.pyreader.model.response.HotReview;
 import com.neuroandroid.pyreader.utils.FormatUtils;
 import com.neuroandroid.pyreader.utils.ImageLoader;
+import com.neuroandroid.pyreader.utils.ThemeUtils;
 import com.neuroandroid.pyreader.utils.UIUtils;
 import com.neuroandroid.pyreader.widget.PYRatingBar;
 
@@ -34,6 +35,9 @@ public class HotReviewAdapter extends BaseRvAdapter<HotReview.ReviewsBean> {
 
     @Override
     public void convert(BaseViewHolder holder, HotReview.ReviewsBean item, int position, int viewType) {
+        int mainColor = ThemeUtils.getMainColor();
+        int subColor = ThemeUtils.getSubColor();
+
         CircleImageView ivHead = holder.getView(R.id.iv_head);
         HotReview.ReviewsBean.AuthorBean author = item.getAuthor();
         ImageLoader.getInstance().displayImage(mContext, Constant.IMG_BASE_URL + author.getAvatar(),
@@ -44,8 +48,11 @@ public class HotReviewAdapter extends BaseRvAdapter<HotReview.ReviewsBean> {
                 .setText(R.id.tv_user_level, String.format(UIUtils.getString(R.string
                         .book_detail_user_lv), author.getLv()))
                 .setText(R.id.tv_review_title, item.getTitle())
+                .setTextColor(R.id.tv_review_title, mainColor)
                 .setText(R.id.tv_review_content, item.getContent())
-                .setText(R.id.tv_thumb_up, String.valueOf(item.getHelpful().getYes()));
+                .setTextColor(R.id.tv_review_content, subColor)
+                .setText(R.id.tv_thumb_up, String.valueOf(item.getHelpful().getYes()))
+                .setTextColor(R.id.tv_thumb_up, subColor);
         PYRatingBar rbBookRating = holder.getView(R.id.rb_book_rating);
         rbBookRating.setStar(item.getRating());
         if (showReviewTime) holder.setText(R.id.tv_review_time, FormatUtils.getDescriptionTimeFromDateString(item.getCreated()));

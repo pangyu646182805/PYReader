@@ -12,6 +12,7 @@ import com.neuroandroid.pyreader.config.Constant;
 import com.neuroandroid.pyreader.model.response.Recommend;
 import com.neuroandroid.pyreader.utils.FormatUtils;
 import com.neuroandroid.pyreader.utils.ImageLoader;
+import com.neuroandroid.pyreader.utils.ThemeUtils;
 import com.neuroandroid.pyreader.utils.UIUtils;
 
 import java.util.List;
@@ -39,6 +40,8 @@ public class RecommendAdapter extends SelectAdapter<Recommend.BooksBean> {
         }
         subTitle += item.getLastChapter();
         holder.setText(R.id.tv_book_title, item.getTitle())
-                .setText(R.id.tv_book_sub_title, subTitle);
+                .setText(R.id.tv_book_sub_title, subTitle)
+                .setTextColor(R.id.tv_book_title, ThemeUtils.getMainColor())
+                .setTextColor(R.id.tv_book_sub_title, ThemeUtils.getSubColor());
     }
 }

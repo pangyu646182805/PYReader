@@ -8,6 +8,7 @@ import android.support.v4.view.ViewPager;
 import com.neuroandroid.pyreader.R;
 import com.neuroandroid.pyreader.base.BaseFragment;
 import com.neuroandroid.pyreader.config.Constant;
+import com.neuroandroid.pyreader.utils.ThemeUtils;
 import com.neuroandroid.pyreader.utils.UIUtils;
 import com.neuroandroid.pyreader.widget.tablayout.SlidingTabLayout;
 
@@ -42,6 +43,7 @@ public class BookDetailCommunityFragment extends BaseFragment {
 
     @Override
     protected void initView() {
+        mRootView.setBackgroundColor(ThemeUtils.getBackgroundColor());
         setDisplayHomeAsUpEnabled();
     }
 

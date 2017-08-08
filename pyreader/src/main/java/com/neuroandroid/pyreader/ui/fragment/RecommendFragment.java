@@ -6,6 +6,7 @@ import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.ImageView;
 
 import com.afollestad.materialcab.MaterialCab;
 import com.google.gson.Gson;
@@ -28,8 +29,10 @@ import com.neuroandroid.pyreader.utils.DividerUtils;
 import com.neuroandroid.pyreader.utils.L;
 import com.neuroandroid.pyreader.utils.NavigationUtils;
 import com.neuroandroid.pyreader.utils.ShowUtils;
+import com.neuroandroid.pyreader.utils.ThemeUtils;
 import com.neuroandroid.pyreader.utils.UIUtils;
 import com.neuroandroid.pyreader.widget.CustomRefreshHeader;
+import com.neuroandroid.pyreader.widget.NoPaddingTextView;
 import com.neuroandroid.pyreader.widget.dialog.BookDialog;
 
 import org.greenrobot.eventbus.Subscribe;
@@ -77,6 +80,10 @@ public class RecommendFragment extends BaseLazyFragment<IRecommendContract.Prese
         mRefreshLayout.setHeaderView(new CustomRefreshHeader(mContext));
 
         View footerView = LayoutInflater.from(mContext).inflate(R.layout.item_recomment_footer, mRvRecommend, false);
+        ImageView ivAdd = (ImageView) footerView.findViewById(R.id.iv_add);
+        ivAdd.setColorFilter(ThemeUtils.getMainColor());
+        NoPaddingTextView tvAdd = (NoPaddingTextView) footerView.findViewById(R.id.tv_add);
+        tvAdd.setTextColor(ThemeUtils.getMainColor());
         mRecommendAdapter.addFooterView(footerView);
     }
 

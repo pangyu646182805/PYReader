@@ -13,6 +13,7 @@ import com.neuroandroid.pyreader.mvp.contract.IRankingBookListContract;
 import com.neuroandroid.pyreader.mvp.presenter.RankingBookListPresenter;
 import com.neuroandroid.pyreader.utils.DividerUtils;
 import com.neuroandroid.pyreader.utils.NavigationUtils;
+import com.neuroandroid.pyreader.utils.ThemeUtils;
 import com.neuroandroid.pyreader.utils.UIUtils;
 import com.neuroandroid.pyreader.widget.CustomRefreshHeader;
 
@@ -49,6 +50,8 @@ public class RankingBookListFragment extends BaseFragment<IRankingBookListContra
 
     @Override
     protected void initView() {
+        mRootView.setBackgroundColor(ThemeUtils.getBackgroundColor());
+
         mRefreshLayout.setHeaderView(new CustomRefreshHeader(mContext));
         mRefreshLayout.setEnableLoadmore(false);
 

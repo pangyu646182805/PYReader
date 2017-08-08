@@ -3,10 +3,10 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:background="@color/backgroundPanel"
     android:orientation="vertical">
 
     <com.neuroandroid.pyreader.widget.NoPaddingTextView
+        android:id="@+id/tv_hot_review_title"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_centerVertical="true"
@@ -18,7 +18,9 @@
         android:textColor="@color/colorGray333"
         android:textSize="15sp"/>
 
-    <View style="@style/HorizontalSplit"/>
+    <View
+        android:id="@+id/view_split_1"
+        style="@style/HorizontalSplit"/>
 
     <android.support.v7.widget.RecyclerView
         android:id="@+id/rv_hot_review"
@@ -27,7 +29,9 @@
         android:overScrollMode="never"
         android:scrollbars="none"/>
 
-    <View style="@style/HorizontalSplit"/>
+    <View
+        android:id="@+id/view_split"
+        style="@style/HorizontalSplit"/>
 
     <com.neuroandroid.pyreader.widget.NoPaddingTextView
         android:id="@+id/tv_all_review_count"

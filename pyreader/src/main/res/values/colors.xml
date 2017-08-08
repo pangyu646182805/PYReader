@@ -12,14 +12,17 @@
 
     <color name="split">#eeeeee</color>
     <color name="backgroundColor">#f8f8f8</color>
+    <color name="backgroundColorDark">#312f31</color>
     <color name="backgroundPanel">#fefefe</color>
     <color name="transparent">#00000000</color>
 
     <color name="white">#fff</color>
     <color name="white_a">#afff</color>
     <color name="white_c">#cfff</color>
+    <color name="white_1">#1fff</color>
     <color name="white_3">#3fff</color>
     <color name="white_6">#6fff</color>
+    <color name="white_9">#9fff</color>
     <color name="white_7">#7fff</color>
     <color name="black">#000</color>
     <color name="black_a">#a000</color>

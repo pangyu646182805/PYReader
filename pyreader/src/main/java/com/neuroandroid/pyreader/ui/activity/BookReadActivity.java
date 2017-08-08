@@ -106,6 +106,8 @@ public class BookReadActivity extends BaseActivity<IBookReadContract.Presenter>
     NoPaddingTextView mTvPreChapter;
     @BindView(R.id.tv_next_chapter)
     NoPaddingTextView mTvNextChapter;
+    @BindView(R.id.ll_night_mode)
+    LinearLayout mLlNightMode;
 
     // 书籍是否来自SD卡
     private boolean mFromSD;
@@ -366,6 +368,9 @@ public class BookReadActivity extends BaseActivity<IBookReadContract.Presenter>
             }
             mReadChapter++;
             jumpToTargetChapter(mReadChapter);
+        });
+        mLlNightMode.setOnClickListener(view -> {
+
         });
     }
 
@@ -701,6 +706,11 @@ public class BookReadActivity extends BaseActivity<IBookReadContract.Presenter>
         }
     }
 
+    /**
+     * 更新电池图标
+     *
+     * @param level 电池电量
+     */
     private void updateBatteryImage(int level) {
         L.e("level : " + level);
         if (level < 0) level = 0;

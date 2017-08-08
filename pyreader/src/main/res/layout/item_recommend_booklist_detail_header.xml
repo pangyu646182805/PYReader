@@ -6,7 +6,7 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_margin="@dimen/x16"
-    app:cardBackgroundColor="@color/backgroundPanel"
+    app:cardBackgroundColor="@color/transparent"
     app:cardCornerRadius="@dimen/x12"
     app:cardElevation="@dimen/x4">
 
@@ -50,6 +50,7 @@
                 tools:src="@mipmap/ic_male"/>
 
             <com.neuroandroid.pyreader.widget.NoPaddingTextView
+                android:id="@+id/tv"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="@dimen/x24"

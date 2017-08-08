@@ -15,6 +15,7 @@ import com.neuroandroid.pyreader.mvp.contract.IBooksByTagContract;
 import com.neuroandroid.pyreader.mvp.presenter.BooksByTagPresenter;
 import com.neuroandroid.pyreader.utils.DividerUtils;
 import com.neuroandroid.pyreader.utils.NavigationUtils;
+import com.neuroandroid.pyreader.utils.ThemeUtils;
 import com.neuroandroid.pyreader.widget.CustomRefreshHeader;
 
 import butterknife.BindView;
@@ -49,6 +50,8 @@ public class BooksByTagFragment extends BaseFragment<IBooksByTagContract.Present
 
     @Override
     protected void initView() {
+        mRootView.setBackgroundColor(ThemeUtils.getBackgroundColor());
+
         setDisplayHomeAsUpEnabled();
         mRefreshLayout.setHeaderView(new CustomRefreshHeader(mContext));
         mRefreshLayout.setBottomView(new BallPulseView(mContext));

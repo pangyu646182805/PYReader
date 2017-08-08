@@ -5,7 +5,6 @@
     android:id="@+id/ll_container"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:background="@color/backgroundPanel"
     android:orientation="vertical"
     android:paddingBottom="@dimen/y48"
     android:paddingTop="@dimen/y48">

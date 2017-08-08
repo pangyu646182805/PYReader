@@ -5,7 +5,6 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:background="@color/backgroundPanel"
     android:orientation="vertical">
 
     <FrameLayout
@@ -259,6 +258,7 @@
         app:rowSpacing="@dimen/y16"/>
 
     <View
+        android:id="@+id/view_split"
         style="@style/HorizontalSplit"/>
 
     <com.ms.square.android.expandabletextview.ExpandableTextView
@@ -284,9 +284,9 @@
             android:id="@id/expand_collapse"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:visibility="gone"
-            android:padding="16dp"
             android:layout_gravity="right|bottom"
-            android:background="@android:color/transparent"/>
+            android:background="@android:color/transparent"
+            android:padding="16dp"
+            android:visibility="gone"/>
     </com.ms.square.android.expandabletextview.ExpandableTextView>
 </LinearLayout>

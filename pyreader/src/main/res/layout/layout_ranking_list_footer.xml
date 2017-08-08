@@ -10,7 +10,6 @@
         android:id="@+id/ll_other_ranking_list"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@color/colorTabItem"
         android:gravity="center"
         android:orientation="horizontal"
         android:paddingBottom="@dimen/y48"

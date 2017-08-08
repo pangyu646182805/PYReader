@@ -15,6 +15,7 @@ import com.neuroandroid.pyreader.mvp.contract.ITopicBookListContract;
 import com.neuroandroid.pyreader.mvp.presenter.TopicBookListPresenter;
 import com.neuroandroid.pyreader.ui.activity.MainActivity;
 import com.neuroandroid.pyreader.utils.FragmentUtils;
+import com.neuroandroid.pyreader.utils.ThemeUtils;
 import com.neuroandroid.pyreader.utils.UIUtils;
 import com.neuroandroid.pyreader.widget.dialog.TopicTagsDialog;
 import com.neuroandroid.pyreader.widget.tablayout.SlidingTabLayout;
@@ -57,6 +58,8 @@ public class TopicBookListFragment extends BaseFragment<ITopicBookListContract.P
 
     @Override
     protected void initView() {
+        mRootView.setBackgroundColor(ThemeUtils.getBackgroundColor());
+
         setDisplayHomeAsUpEnabled();
         setToolbarTitle(UIUtils.getString(R.string.topic));
     }

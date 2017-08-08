@@ -9,6 +9,7 @@ import com.neuroandroid.pyreader.adapter.base.BaseViewHolder;
 import com.neuroandroid.pyreader.config.Constant;
 import com.neuroandroid.pyreader.model.response.BooksByCategory;
 import com.neuroandroid.pyreader.utils.ImageLoader;
+import com.neuroandroid.pyreader.utils.ThemeUtils;
 import com.neuroandroid.pyreader.utils.UIUtils;
 
 import java.util.List;
@@ -31,6 +32,8 @@ public class BooksByCategoryAdapter extends BaseRvAdapter<BooksByCategory.BooksB
 
     @Override
     public void convert(BaseViewHolder holder, BooksByCategory.BooksBean item, int position, int viewType) {
+        int subColor = ThemeUtils.getSubColor();
+
         ImageView ivBookCover = holder.getView(R.id.iv_book_cover);
         if (mBookCoverWidth != 0) {
             ivBookCover.getLayoutParams().width = mBookCoverWidth;
@@ -44,12 +47,17 @@ public class BooksByCategoryAdapter extends BaseRvAdapter<BooksByCategory.BooksB
         }
         ImageLoader.getInstance().displayImage(mContext, Constant.IMG_BASE_URL + item.getCover(), R.mipmap.cover_default, ivBookCover);
         holder.setText(R.id.tv_book_title, item.getTitle())
+                .setTextColor(R.id.tv_book_title, ThemeUtils.getMainColor())
                 .setText(R.id.tv_book_author, (UIUtils.isEmpty(item.getAuthor()) ? "未知" : item.getAuthor()) + " | " +
                         (UIUtils.isEmpty(item.getMajorCate()) ? "未知" : item.getMajorCate()))
+                .setTextColor(R.id.tv_book_author, subColor)
                 .setText(R.id.tv_book_intro, item.getShortIntro())
+                .setTextColor(R.id.tv_book_intro, subColor)
                 .setText(R.id.tv_follower, String.format(
                         UIUtils.getString(R.string.subject_book_list_detail_book_lately_follower), item.getLatelyFollower()))
+                .setTextColor(R.id.tv_follower, subColor)
                 .setText(R.id.tv_word_count, String.format(
-                        UIUtils.getString(R.string.retention_ratio), item.getRetentionRatio()));
+                        UIUtils.getString(R.string.retention_ratio), item.getRetentionRatio()))
+                .setTextColor(R.id.tv_word_count, subColor);
     }
 }

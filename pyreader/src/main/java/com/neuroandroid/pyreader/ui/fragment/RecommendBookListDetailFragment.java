@@ -17,6 +17,7 @@ import com.neuroandroid.pyreader.mvp.contract.IRecommendBookListDetailContract;
 import com.neuroandroid.pyreader.mvp.presenter.RecommendBookListDetailPresenter;
 import com.neuroandroid.pyreader.utils.ImageLoader;
 import com.neuroandroid.pyreader.utils.NavigationUtils;
+import com.neuroandroid.pyreader.utils.ThemeUtils;
 import com.neuroandroid.pyreader.utils.UIUtils;
 import com.neuroandroid.pyreader.widget.NoPaddingTextView;
 
@@ -52,6 +53,7 @@ public class RecommendBookListDetailFragment extends BaseFragment<IRecommendBook
 
     @Override
     protected void initView() {
+        mRootView.setBackgroundColor(ThemeUtils.getBackgroundColor());
         setDisplayHomeAsUpEnabled();
         setToolbarTitle(UIUtils.getString(R.string.book_list_detail));
         mRvBookList.setLayoutManager(new LinearLayoutManager(mContext));
@@ -105,9 +107,16 @@ public class RecommendBookListDetailFragment extends BaseFragment<IRecommendBook
         ImageView mIvHead;
         @BindView(R.id.tv_author)
         NoPaddingTextView mTvAuthor;
+        @BindView(R.id.tv)
+        NoPaddingTextView mTv;
 
         public HeaderViewHolder(View headerView) {
             ButterKnife.bind(this, headerView);
+            int mainColor = ThemeUtils.getMainColor();
+            int subColor = ThemeUtils.getSubColor();
+            mTvBookListTitle.setTextColor(mainColor);
+            mTvBookListDesc.setTextColor(subColor);
+            mTv.setTextColor(subColor);
         }
     }
 }

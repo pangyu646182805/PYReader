@@ -31,6 +31,7 @@ import com.neuroandroid.pyreader.utils.DividerUtils;
 import com.neuroandroid.pyreader.utils.FragmentUtils;
 import com.neuroandroid.pyreader.utils.L;
 import com.neuroandroid.pyreader.utils.ShowUtils;
+import com.neuroandroid.pyreader.utils.ThemeUtils;
 import com.neuroandroid.pyreader.utils.UIUtils;
 
 import java.util.ArrayList;
@@ -79,7 +80,7 @@ public class BookDetailActivity extends BaseActivity<IBookDetailContract.Present
         setToolbarTitle(R.string.book_detail);
         setDisplayHomeAsUpEnabled();
         mRvBookDetail.setLayoutManager(new LinearLayoutManager(this));
-        mRvBookDetail.addItemDecoration(DividerUtils.generateHorizontalDivider(this, R.dimen.y16, R.color.split));
+        mRvBookDetail.addItemDecoration(DividerUtils.generateHorizontalDivider(this, R.dimen.y16, ThemeUtils.getSplitColorRes()));
         mBookDetailAdapter = new BookDetailAdapter(this, null, null);
         mBookDetailAdapter.clearRvAnim(mRvBookDetail);
         mRvBookDetail.setAdapter(mBookDetailAdapter);

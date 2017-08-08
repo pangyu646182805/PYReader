@@ -120,7 +120,7 @@ public class MainActivity extends BaseActivity implements MaterialCabCallBack {
                             .primaryColor(themeColor)
                             .accentColor(themeColor)
                             .translucent(false)
-                            .dark(false)
+                            .dark(true)
                             .apply();
                     changeTheme();
                 });

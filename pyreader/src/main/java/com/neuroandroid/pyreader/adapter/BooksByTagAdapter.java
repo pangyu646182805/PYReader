@@ -9,6 +9,7 @@ import com.neuroandroid.pyreader.adapter.base.BaseViewHolder;
 import com.neuroandroid.pyreader.config.Constant;
 import com.neuroandroid.pyreader.model.response.BooksByTag;
 import com.neuroandroid.pyreader.utils.ImageLoader;
+import com.neuroandroid.pyreader.utils.ThemeUtils;
 import com.neuroandroid.pyreader.utils.UIUtils;
 
 import java.util.List;
@@ -39,7 +40,10 @@ public class BooksByTagAdapter extends BaseRvAdapter<BooksByTag.BooksBean> {
         ImageView ivCover = holder.getView(R.id.iv_book_cover);
         ImageLoader.getInstance().displayImage(mContext, Constant.IMG_BASE_URL + item.getCover(), R.mipmap.cover_default, ivCover);
         holder.setText(R.id.tv_book_title, item.getTitle())
+                .setTextColor(R.id.tv_book_title, ThemeUtils.getMainColor())
                 .setText(R.id.tv_book_intro, item.getShortIntro())
-                .setText(R.id.tv_book_tags, tags.trim());
+                .setTextColor(R.id.tv_book_intro, ThemeUtils.getSubColor())
+                .setText(R.id.tv_book_tags, tags.trim())
+                .setTextColor(R.id.tv_book_tags, ThemeUtils.getThreeLevelColor());
     }
 }

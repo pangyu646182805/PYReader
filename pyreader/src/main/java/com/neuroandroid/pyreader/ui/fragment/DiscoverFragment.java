@@ -3,6 +3,7 @@ package com.neuroandroid.pyreader.ui.fragment;
 import android.content.Context;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.widget.ImageView;
 
 import com.neuroandroid.pyreader.R;
 import com.neuroandroid.pyreader.adapter.base.BaseRvAdapter;
@@ -11,6 +12,7 @@ import com.neuroandroid.pyreader.base.BaseFragment;
 import com.neuroandroid.pyreader.bean.MenuItem;
 import com.neuroandroid.pyreader.ui.activity.MainActivity;
 import com.neuroandroid.pyreader.utils.DividerUtils;
+import com.neuroandroid.pyreader.utils.ThemeUtils;
 import com.neuroandroid.pyreader.utils.UIUtils;
 
 import java.util.Arrays;
@@ -69,7 +71,10 @@ public class DiscoverFragment extends BaseFragment {
 
         @Override
         public void convert(BaseViewHolder holder, MenuItem item, int position, int viewType) {
-            holder.setText(R.id.tv_title, item.getText());
+            ImageView ivArrow = holder.getView(R.id.iv_arrow);
+            ivArrow.setColorFilter(ThemeUtils.getMainColor());
+            holder.setText(R.id.tv_title, item.getText())
+                    .setTextColor(R.id.tv_title, ThemeUtils.getMainColor());
         }
     }
 }

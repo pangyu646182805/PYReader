@@ -9,6 +9,7 @@ import com.neuroandroid.pyreader.config.Constant;
 import com.neuroandroid.pyreader.model.response.DiscussionList;
 import com.neuroandroid.pyreader.utils.FormatUtils;
 import com.neuroandroid.pyreader.utils.ImageLoader;
+import com.neuroandroid.pyreader.utils.ThemeUtils;
 import com.neuroandroid.pyreader.utils.UIUtils;
 
 import java.util.List;
@@ -26,6 +27,9 @@ public class BookDiscussionAdapter extends BaseRvAdapter<DiscussionList.PostsBea
 
     @Override
     public void convert(BaseViewHolder holder, DiscussionList.PostsBean item, int position, int viewType) {
+        int mainColor = ThemeUtils.getMainColor();
+        int subColor = ThemeUtils.getSubColor();
+
         CircleImageView ivHead = holder.getView(R.id.iv_head);
         DiscussionList.PostsBean.AuthorBean author = item.getAuthor();
         ImageLoader.getInstance().displayImage(mContext, Constant.IMG_BASE_URL + author.getAvatar(),
@@ -35,8 +39,12 @@ public class BookDiscussionAdapter extends BaseRvAdapter<DiscussionList.PostsBea
                 .setText(R.id.tv_user_level, String.format(UIUtils.getString(R.string
                         .book_detail_user_lv), author.getLv()))
                 .setText(R.id.tv_discussion_time, FormatUtils.getDescriptionTimeFromDateString(item.getCreated()))
+                .setTextColor(R.id.tv_discussion_time, subColor)
                 .setText(R.id.tv_discussion_title, item.getTitle())
+                .setTextColor(R.id.tv_discussion_title, mainColor)
                 .setText(R.id.tv_comment_count, String.valueOf(item.getCommentCount()))
-                .setText(R.id.tv_like_count, String.valueOf(item.getLikeCount()));
+                .setTextColor(R.id.tv_comment_count, subColor)
+                .setText(R.id.tv_like_count, String.valueOf(item.getLikeCount()))
+                .setTextColor(R.id.tv_like_count, subColor);
     }
 }

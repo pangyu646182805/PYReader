@@ -24,8 +24,11 @@ import com.neuroandroid.pyreader.ui.activity.MainActivity;
 import com.neuroandroid.pyreader.utils.FragmentUtils;
 import com.neuroandroid.pyreader.utils.RankingUtils;
 import com.neuroandroid.pyreader.utils.ShowUtils;
+import com.neuroandroid.pyreader.utils.ThemeUtils;
 import com.neuroandroid.pyreader.utils.UIUtils;
 import com.neuroandroid.pyreader.widget.NoPaddingTextView;
+
+import org.polaric.colorful.Colorful;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -81,6 +84,8 @@ public class RankingFragment extends BaseFragment<IRankingContract.Presenter>
 
     @Override
     protected void initView() {
+        mRootView.setBackgroundColor(ThemeUtils.getBackgroundColor());
+
         setDisplayHomeAsUpEnabled();
         setToolbarTitle(UIUtils.getString(R.string.ranking));
 
@@ -104,6 +109,13 @@ public class RankingFragment extends BaseFragment<IRankingContract.Presenter>
 
         mBookListFragment = new RankingBookListFragment();
         FragmentUtils.replaceFragment(getChildFragmentManager(), mBookListFragment, R.id.fl_container, false);
+
+        mRvRankingList.setBackgroundColor(getRvRankingListBackgroundColor());
+    }
+
+    private int getRvRankingListBackgroundColor() {
+        return Colorful.getThemeDelegate().isDark() ?
+                UIUtils.getColor(R.color.backgroundColorDark) : UIUtils.getColor(R.color.colorTabItem);
     }
 
     @Override
@@ -200,9 +212,18 @@ public class RankingFragment extends BaseFragment<IRankingContract.Presenter>
 
     private void addOtherRankingListFooter() {
         View otherRankingListFooter = LayoutInflater.from(mContext).inflate(R.layout.layout_ranking_list_footer, mRvRankingList, false);
+
+        otherRankingListFooter.setBackgroundColor(getRvRankingListBackgroundColor());
+        int mainColor = ThemeUtils.getMainColor();
+
         mRankingListAdapter.addFooterView(otherRankingListFooter);
         mRvOtherRankingList = (RecyclerView) otherRankingListFooter.findViewById(R.id.rv_other_ranking_list);
         mIvArrow = (ImageView) otherRankingListFooter.findViewById(R.id.iv_arrow);
+        mIvArrow.setColorFilter(mainColor);
+
+        NoPaddingTextView tvTitle = (NoPaddingTextView) otherRankingListFooter.findViewById(R.id.tv_title);
+        tvTitle.setTextColor(mainColor);
+
         mLlOtherRankingList = (LinearLayout) otherRankingListFooter.findViewById(R.id.ll_other_ranking_list);
         mRvOtherRankingList.setLayoutManager(new LinearLayoutManager(mContext));
         mOtherRankingListAdapter = new RankingListAdapter(mContext, null, R.layout.item_ranking_list);
@@ -378,10 +399,15 @@ public class RankingFragment extends BaseFragment<IRankingContract.Presenter>
         @Override
         public void convert(BaseViewHolder holder, RankingList.MaleBean item, int position, int viewType) {
             holder.setTextColor(R.id.tv_title, item.isSelected() ? mTypedValue.data :
-                    UIUtils.getColor(R.color.colorGray333))
-                    .setBackgroundColor(R.id.ll_container, item.isSelected() ? UIUtils.getColor(R.color.backgroundPanel) :
-                            UIUtils.getColor(R.color.colorTabItem))
+                    ThemeUtils.getMainColor())
+                    .setBackgroundColor(R.id.ll_container, item.isSelected() ? getSelectedBackgroundColor() :
+                            getRvRankingListBackgroundColor())
                     .setText(R.id.tv_title, item.getTitle());
+        }
+
+        private int getSelectedBackgroundColor() {
+            return Colorful.getThemeDelegate().isDark() ?
+                    UIUtils.getColor(R.color.white_1) : UIUtils.getColor(R.color.backgroundPanel);
         }
     }
 }

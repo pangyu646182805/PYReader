@@ -27,6 +27,7 @@ import com.neuroandroid.pyreader.utils.DividerUtils;
 import com.neuroandroid.pyreader.utils.FormatUtils;
 import com.neuroandroid.pyreader.utils.ImageLoader;
 import com.neuroandroid.pyreader.utils.ShowUtils;
+import com.neuroandroid.pyreader.utils.ThemeUtils;
 import com.neuroandroid.pyreader.utils.UIUtils;
 import com.neuroandroid.pyreader.widget.NoPaddingTextView;
 import com.nex3z.flowlayout.FlowLayout;
@@ -65,10 +66,18 @@ public class BookDetailAdapter extends BaseRvAdapter<BaseResponse> {
 
     @Override
     public void convert(BaseViewHolder holder, BaseResponse item, int position, int viewType) {
+        int mainColor = ThemeUtils.getMainColor();
+        int subColor = ThemeUtils.getSubColor();
+        int splitColor = ThemeUtils.getSplitColor();
+        View split;
         switch (viewType) {
             case VIEW_TYPE_BOOK_DETAIL_HEADER:
                 LinearLayout llBookDetailHeader = holder.getView(R.id.ll_book_detail_header);
                 llBookDetailHeader.setPadding(0, mToolBarHeight, 0, 0);
+
+                split = holder.getView(R.id.view_split);
+                split.setBackgroundColor(splitColor);
+
                 if (item != null) {
                     BookDetail bookDetail = (BookDetail) item;
                     mPostCount = bookDetail.getPostCount();
@@ -93,6 +102,8 @@ public class BookDetailAdapter extends BaseRvAdapter<BaseResponse> {
                     }
                     ExpandableTextView expandLayout = holder.getView(R.id.expand_layout);
                     expandLayout.setText(bookDetail.getLongIntro());
+
+                    holder.setTextColor(R.id.expandable_text, mainColor);
 
                     if (mBookDetailHeaderHeight == -1) {
                         llBookDetailHeader.getViewTreeObserver().addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
@@ -132,6 +143,13 @@ public class BookDetailAdapter extends BaseRvAdapter<BaseResponse> {
                 }
                 break;
             case VIEW_TYPE_BOOK_DETAIL_HOT_REVIEW:
+                split = holder.getView(R.id.view_split);
+                split.setBackgroundColor(splitColor);
+                split = holder.getView(R.id.view_split_1);
+                split.setBackgroundColor(splitColor);
+
+                holder.setTextColor(R.id.tv_hot_review_title, mainColor);
+
                 if (item != null) {
                     HotReview hotReview = (HotReview) item;
                     RecyclerView rvHotReview = holder.getView(R.id.rv_hot_review);
@@ -147,10 +165,20 @@ public class BookDetailAdapter extends BaseRvAdapter<BaseResponse> {
                 }
                 break;
             case VIEW_TYPE_BOOK_DETAIL_COMMUNITY:
-                holder.setText(R.id.tv_book_posts_count, String.format(UIUtils.getString(
-                        R.string.book_detail_post_count), mPostCount));
+                ImageView ivArrow = holder.getView(R.id.iv_arrow);
+                ivArrow.setColorFilter(mainColor);
+
+                holder.setTextColor(R.id.tv_book_community, mainColor)
+                        .setText(R.id.tv_book_posts_count, String.format(UIUtils.getString(
+                                R.string.book_detail_post_count), mPostCount))
+                .setTextColor(R.id.tv_book_posts_count, subColor);
                 break;
             case VIEW_TYPE_BOOK_DETAIL_RECOMMEND_BOOK_LIST:
+                split = holder.getView(R.id.view_split);
+                split.setBackgroundColor(ThemeUtils.getSplitColor());
+
+                holder.setTextColor(R.id.tv_recommend_title, mainColor);
+
                 if (item != null) {
                     RecommendBookList recommendBookList = (RecommendBookList) item;
                     RecyclerView rvRecommendBookList = holder.getView(R.id.rv_recommend_booklist);
@@ -248,13 +276,19 @@ public class BookDetailAdapter extends BaseRvAdapter<BaseResponse> {
             ImageView ivBookCover = holder.getView(R.id.iv_book_cover);
             ImageLoader.getInstance().displayImage(mContext, Constant.IMG_BASE_URL + item.getCover(), R.mipmap.cover_default, ivBookCover);
 
-            holder.setText(R.id.tv_title, item.getTitle())
-                    .setText(R.id.tv_author, item.getAuthor())
-                    .setText(R.id.tv_desc, item.getDesc())
+            int mainColor = ThemeUtils.getMainColor();
+            int subColor = ThemeUtils.getSubColor();
+            int threeLevelColor = ThemeUtils.getThreeLevelColor();
+
+            holder.setText(R.id.tv_title, item.getTitle()).setTextColor(R.id.tv_title, mainColor)
+                    .setText(R.id.tv_author, item.getAuthor()).setTextColor(R.id.tv_author, subColor)
+                    .setText(R.id.tv_desc, item.getDesc()).setTextColor(R.id.tv_desc, subColor)
                     .setText(R.id.tv_recommend_count, String.format(getString(R.string
                             .book_detail_recommend_book_list_book_count), item.getBookCount()))
+                    .setTextColor(R.id.tv_recommend_count, threeLevelColor)
                     .setText(R.id.tv_collect_count, String.format(getString(R.string
-                            .book_detail_recommend_book_list_collect_count), item.getCollectorCount()));
+                            .book_detail_recommend_book_list_collect_count), item.getCollectorCount()))
+                    .setTextColor(R.id.tv_collect_count, threeLevelColor);
         }
     }
 }

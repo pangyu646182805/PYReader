@@ -38,6 +38,7 @@ import com.neuroandroid.pyreader.ui.activity.MainActivity;
 import com.neuroandroid.pyreader.utils.L;
 import com.neuroandroid.pyreader.utils.NavigationUtils;
 import com.neuroandroid.pyreader.utils.ShowUtils;
+import com.neuroandroid.pyreader.utils.ThemeUtils;
 import com.neuroandroid.pyreader.utils.UIUtils;
 import com.neuroandroid.pyreader.widget.CustomRefreshHeader;
 
@@ -99,6 +100,8 @@ public class CategoryListFragment extends BaseFragment<ICategoryListContract.Pre
 
     @Override
     protected void initView() {
+        mRootView.setBackgroundColor(ThemeUtils.getBackgroundColor());
+
         setDisplayHomeAsUpEnabled();
         mRefreshLayout.setHeaderView(new CustomRefreshHeader(mContext));
         mRefreshLayout.setBottomView(new BallPulseView(mContext));

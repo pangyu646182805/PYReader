@@ -9,7 +9,7 @@
     android:layout_marginLeft="@dimen/x16"
     android:layout_marginRight="@dimen/x16"
     android:foreground="?attr/selectableItemBackground"
-    app:cardBackgroundColor="@color/backgroundPanel"
+    app:cardBackgroundColor="@color/transparent"
     app:cardCornerRadius="@dimen/x12"
     app:cardElevation="@dimen/x4">
 
@@ -85,6 +85,7 @@
         </LinearLayout>
 
         <View
+            android:id="@id/view_split"
             style="@style/HorizontalSplit"
             android:layout_marginBottom="@dimen/y16"
             android:layout_marginTop="@dimen/y16"/>

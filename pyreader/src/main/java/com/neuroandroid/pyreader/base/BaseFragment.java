@@ -161,7 +161,7 @@ public abstract class BaseFragment<P extends IPresenter> extends RxFragment impl
      * 获取activity
      */
     public <T> T getActivity(Class<T> clazz) {
-        return (T) mActivity;
+        return clazz.cast(mActivity);
     }
 
     /**

@@ -3,10 +3,10 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:background="@color/backgroundPanel"
     android:orientation="vertical">
 
     <com.neuroandroid.pyreader.widget.NoPaddingTextView
+        android:id="@+id/tv_recommend_title"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:paddingBottom="@dimen/y16"
@@ -17,7 +17,9 @@
         android:textColor="@color/colorGray333"
         android:textSize="15sp"/>
 
-    <View style="@style/HorizontalSplit"/>
+    <View
+        android:id="@+id/view_split"
+        style="@style/HorizontalSplit"/>
 
     <android.support.v7.widget.RecyclerView
         android:id="@+id/rv_recommend_booklist"

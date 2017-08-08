@@ -10,7 +10,6 @@
         android:id="@+id/refresh_layout"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="@color/backgroundPanel"
         app:tr_max_bottom_height="@dimen/y1280"
         app:tr_max_head_height="@dimen/y1280">
 

@@ -4,10 +4,12 @@ import android.content.Context;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.widget.LinearLayout;
 
 import com.neuroandroid.pyreader.R;
 import com.neuroandroid.pyreader.adapter.base.BaseRvAdapter;
 import com.neuroandroid.pyreader.adapter.base.BaseViewHolder;
+import com.neuroandroid.pyreader.utils.ThemeUtils;
 import com.neuroandroid.pyreader.widget.NoPaddingTextView;
 import com.neuroandroid.pyreader.widget.dialog.base.PYDialog;
 
@@ -40,7 +42,11 @@ public class BookDialog extends PYDialog<BookDialog> {
 
     @Override
     protected void initView() {
+        LinearLayout llContainer = getViewHelper().getView(R.id.ll_container);
+        llContainer.setBackgroundColor(ThemeUtils.getBackgroundColor());
+
         mTvBookTitle = getViewHelper().getView(R.id.tv_book_title);
+        mTvBookTitle.setTextColor(ThemeUtils.getMainColor());
         mRv = getViewHelper().getView(R.id.rv);
         mRv.setLayoutManager(new LinearLayoutManager(mContext));
         mBookDialogAdapter = new BookDialogAdapter(mContext, null, R.layout.item_book_dialog);
@@ -78,7 +84,8 @@ public class BookDialog extends PYDialog<BookDialog> {
 
         @Override
         public void convert(BaseViewHolder holder, String item, int position, int viewType) {
-            holder.setText(R.id.tv, item);
+            holder.setText(R.id.tv, item)
+                    .setTextColor(R.id.tv, ThemeUtils.getMainColor());
         }
     }
 }
