@@ -1,6 +1,7 @@
 package com.neuroandroid.pyreader.base;
 
 import android.app.ActivityManager;
+import android.graphics.Color;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.LayoutRes;
@@ -13,6 +14,8 @@ import android.view.View;
 
 import com.neuroandroid.pyreader.R;
 import com.neuroandroid.pyreader.utils.SystemUtils;
+import com.neuroandroid.pyreader.utils.ThemeUtils;
+import com.neuroandroid.pyreader.utils.UIUtils;
 import com.neuroandroid.pyreader.widget.StateLayout;
 import com.trello.rxlifecycle2.components.support.RxAppCompatActivity;
 
@@ -79,6 +82,10 @@ public abstract class BaseActivity<P extends IPresenter> extends RxAppCompatActi
             mImmersive = SystemUtils.setTranslateStatusBar(this);
             if (mImmersive) {
                 mStatusBarHeight = SystemUtils.getStatusHeight(this);
+                if (ThemeUtils.isDarkMode()) {
+                    mStatusBar.setBackgroundColor(translateStatusBar() ? Color.TRANSPARENT :
+                            UIUtils.getColor(R.color.backgroundColorDark));
+                }
                 setStatusBar(mStatusBarHeight);
             }
         }
@@ -191,6 +198,13 @@ public abstract class BaseActivity<P extends IPresenter> extends RxAppCompatActi
             mStatusBar.getLayoutParams().height = statusBarHeight;
             mStatusBar.requestLayout();
         }
+    }
+
+    /**
+     * 是否是透明状态栏
+     */
+    protected boolean translateStatusBar() {
+        return false;
     }
 
     @Override

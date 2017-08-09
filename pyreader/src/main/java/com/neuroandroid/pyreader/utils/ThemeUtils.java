@@ -11,39 +11,70 @@ import org.polaric.colorful.Colorful;
  */
 
 public class ThemeUtils {
-    private static boolean isDarkMode() {
+    /**
+     * 是否是暗色主题
+     */
+    public static boolean isDarkMode() {
         return Colorful.getThemeDelegate().isDark();
     }
 
+    /**
+     * 获取亮色/暗色主题下分割线颜色
+     */
     public static int getSplitColor() {
         return UIUtils.getColor(getSplitColorRes());
     }
 
+    /**
+     * 获取亮色/暗色主题下分割线颜色资源
+     */
     public static int getSplitColorRes() {
         return isDarkMode() ? R.color.white_1 : R.color.split;
     }
 
+    /**
+     * 获取亮色/暗色主题下的主颜色
+     */
     public static int getMainColor() {
-        return getMainColor(R.color.white_9, R.color.colorGray333);
+        return getThemeColor(R.color.white_9, R.color.colorGray333);
     }
 
+    /**
+     * 获取亮色/暗色主题下的背景色
+     */
     public static int getBackgroundColor() {
         return UIUtils.getColor(getBackgroundColorRes());
     }
 
+    /**
+     * 获取亮色/暗色主题下的背景色资源
+     */
     public static int getBackgroundColorRes() {
         return isDarkMode() ? R.color.backgroundColorDark : R.color.backgroundColor;
     }
 
+    /**
+     * 获取亮色/暗色主题下的副颜色
+     */
     public static int getSubColor() {
-        return getMainColor(R.color.white_6, R.color.colorGray666);
+        return getThemeColor(R.color.white_6, R.color.colorGray666);
     }
 
+    /**
+     * 获取亮色/暗色主题下的第三颜色
+     */
     public static int getThreeLevelColor() {
-        return getMainColor(R.color.white_3, R.color.colorGray999);
+        return getThemeColor(R.color.white_3, R.color.colorGray999);
     }
 
-    public static int getMainColor(@ColorRes int darkModeColor, @ColorRes int notDarkModeColor) {
+    /**
+     * 获取亮色/暗色主题下的颜色
+     *
+     * @param darkModeColor    暗色主题的颜色资源
+     * @param notDarkModeColor 亮色主题的颜色资源
+     * @return
+     */
+    public static int getThemeColor(@ColorRes int darkModeColor, @ColorRes int notDarkModeColor) {
         if (isDarkMode()) {
             return UIUtils.getColor(darkModeColor);
         } else {

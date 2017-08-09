@@ -8,6 +8,8 @@ import com.neuroandroid.pyreader.R;
 import com.neuroandroid.pyreader.base.BaseFragment;
 import com.neuroandroid.pyreader.model.response.BookMixAToc;
 import com.neuroandroid.pyreader.utils.SystemUtils;
+import com.neuroandroid.pyreader.utils.ThemeUtils;
+import com.neuroandroid.pyreader.utils.UIUtils;
 import com.neuroandroid.pyreader.widget.tablayout.SlidingTabLayout;
 
 import java.util.ArrayList;
@@ -28,22 +30,25 @@ public class ChapterListFragment extends BaseFragment {
     @BindView(R.id.vp_content)
     ViewPager mVpContent;
 
-    private String[] mTitles = new String[] {"目录", "书签"};
+    private String[] mTitles = new String[]{"目录", "书签"};
     private List<BaseFragment> mFragments = new ArrayList<>();
     private boolean mImmersive;
+    private String mBookId;
 
     private OnDrawerPageChangeListener mDrawerPageChangeListener;
     private CatalogFragment mCatalogFragment;
     private BookmarksFragment mBookmarksFragment;
+    private List<BookMixAToc.MixToc.Chapters> mChaptersList;
 
     public void setChaptersList(List<BookMixAToc.MixToc.Chapters> chaptersList) {
-        mCatalogFragment.setChaptersList(chaptersList);
+        mChaptersList = chaptersList;
     }
 
     public void setImmersive(boolean immersive) {
         mImmersive = immersive;
         if (mImmersive) {
-            getStatusBar().getLayoutParams().height = SystemUtils.getStatusHeight(mActivity);
+            if (getStatusBar() != null)
+                getStatusBar().getLayoutParams().height = SystemUtils.getStatusHeight(mActivity);
         }
     }
 
@@ -54,8 +59,20 @@ public class ChapterListFragment extends BaseFragment {
 
     @Override
     protected void initView() {
+        mRootView.setBackgroundColor(ThemeUtils.getBackgroundColor());
+
+        boolean darkMode = ThemeUtils.isDarkMode();
+        if (darkMode) {
+            int darkColor = UIUtils.getColor(R.color.backgroundColorDark);
+            getStatusBar().setBackgroundColor(darkColor);
+            mTabs.setBackgroundColor(darkColor);
+        }
+        getStatusBar().getLayoutParams().height = SystemUtils.getStatusHeight(mActivity);
+
         mDrawerPageChangeListener = (OnDrawerPageChangeListener) mActivity;
         mCatalogFragment = new CatalogFragment();
+        mCatalogFragment.setBookId(mBookId);
+        mCatalogFragment.setChaptersList(mChaptersList);
         mFragments.add(mCatalogFragment);
         mBookmarksFragment = new BookmarksFragment();
         mFragments.add(mBookmarksFragment);
@@ -104,7 +121,7 @@ public class ChapterListFragment extends BaseFragment {
      * 设置bookId
      */
     public void setBookId(String bookId) {
-        mCatalogFragment.setBookId(bookId);
+        mBookId = bookId;
     }
 
     /**

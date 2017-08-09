@@ -2,6 +2,7 @@ package com.neuroandroid.pyreader.widget.reader;
 
 import android.content.Context;
 import android.graphics.Canvas;
+import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Path;
 import android.graphics.Rect;
@@ -16,6 +17,7 @@ import com.neuroandroid.pyreader.bean.BookReadThemeBean;
 import com.neuroandroid.pyreader.config.Constant;
 import com.neuroandroid.pyreader.utils.BookReadSettingUtils;
 import com.neuroandroid.pyreader.utils.ColorUtils;
+import com.neuroandroid.pyreader.utils.ThemeUtils;
 import com.neuroandroid.pyreader.utils.UIUtils;
 
 import java.util.List;
@@ -71,12 +73,20 @@ public class BookReadView extends View {
      * 重新设置一些颜色和画笔
      */
     private void invalidateBookReadView() {
-        BookReadThemeBean bookReadTheme = BookReadSettingUtils.getBookReadTheme(mContext);
-        int fontColor = bookReadTheme.getBookReadFontColor();
+        boolean darkMode = ThemeUtils.isDarkMode();
+        int fontColor, backgroundColor;
+        if (darkMode) {
+            fontColor = Color.rgb(135, 135, 135);
+            backgroundColor = Color.rgb(0, 0, 0);
+        } else {
+            BookReadThemeBean bookReadTheme = BookReadSettingUtils.getBookReadTheme(mContext);
+            fontColor = bookReadTheme.getBookReadFontColor();
+            backgroundColor = bookReadTheme.getBookReadInterfaceBackgroundColor();
+        }
         mBookReadFactory.getFontPaint().setColor(fontColor);
         mBookReadFactory.getOtherFontPaint().setColor(ColorUtils.adjustAlpha(fontColor, 0.7f));
         mBookReadFactory.getBatteryIconPaint().setColor(ColorUtils.adjustAlpha(fontColor, 0.7f));
-        mBookReadFactory.setReadBackgroundColor(bookReadTheme.getBookReadInterfaceBackgroundColor());
+        mBookReadFactory.setReadBackgroundColor(backgroundColor);
     }
 
     private BookReadFactory mBookReadFactory;

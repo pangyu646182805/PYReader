@@ -4,8 +4,10 @@ import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
 import android.support.annotation.NonNull;
+import android.support.design.widget.AppBarLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewPager;
+import android.support.v7.app.AppCompatDelegate;
 import android.view.Menu;
 import android.view.MenuItem;
 
@@ -24,6 +26,7 @@ import com.neuroandroid.pyreader.ui.fragment.TopicBookListFragment;
 import com.neuroandroid.pyreader.utils.FragmentUtils;
 import com.neuroandroid.pyreader.utils.L;
 import com.neuroandroid.pyreader.utils.ShowUtils;
+import com.neuroandroid.pyreader.utils.ThemeUtils;
 import com.neuroandroid.pyreader.utils.UIUtils;
 import com.neuroandroid.pyreader.widget.dialog.ChooseSexDialog;
 import com.neuroandroid.pyreader.widget.tablayout.SlidingTabLayout;
@@ -42,6 +45,8 @@ public class MainActivity extends BaseActivity implements MaterialCabCallBack {
     SlidingTabLayout mTabs;
     @BindView(R.id.vp_content)
     ViewPager mVpContent;
+    @BindView(R.id.app_bar)
+    AppBarLayout mAppBarLayout;
 
     private MainActivityFragmentCallbacks mCurrentFragment;
     private MaterialCab mCab;
@@ -62,6 +67,9 @@ public class MainActivity extends BaseActivity implements MaterialCabCallBack {
 
         UIUtils.getHandler().postDelayed(() -> showChooseSexDialog(), 500);
         // Util.resolveColor(this.mContext, R.attr.colorPrimary, 0)
+
+        if (ThemeUtils.isDarkMode())
+            mAppBarLayout.setBackgroundColor(UIUtils.getColor(R.color.backgroundColorDark));
     }
 
     /**
@@ -101,7 +109,14 @@ public class MainActivity extends BaseActivity implements MaterialCabCallBack {
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.menu_main, menu);
+        MenuItem item = menu.findItem(R.id.action_dark_theme);
+        item.setTitle(ThemeUtils.isDarkMode() ? Constant.LIGHT_THEME : Constant.DARK_THEME);
         return true;
+    }
+
+    @Override
+    public boolean onPrepareOptionsMenu(Menu menu) {
+        return super.onPrepareOptionsMenu(menu);
     }
 
     @Override
@@ -120,11 +135,25 @@ public class MainActivity extends BaseActivity implements MaterialCabCallBack {
                             .primaryColor(themeColor)
                             .accentColor(themeColor)
                             .translucent(false)
-                            .dark(true)
+                            .dark(ThemeUtils.isDarkMode())
                             .apply();
                     changeTheme();
                 });
                 colorPickerDialog.show();
+                break;
+            case R.id.action_dark_theme:
+                boolean darkMode;
+                if (Constant.LIGHT_THEME.equals(item.getTitle())) {
+                    AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO);
+                    darkMode = false;
+                } else {
+                    AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES);
+                    darkMode = true;
+                }
+                Colorful.config(this)
+                        .dark(darkMode)
+                        .apply();
+                changeTheme();
                 break;
         }
         return super.onOptionsItemSelected(item);

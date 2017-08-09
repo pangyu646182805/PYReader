@@ -4,6 +4,7 @@ import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
 import android.animation.ValueAnimator;
 import android.content.Context;
+import android.content.res.ColorStateList;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.view.ViewCompat;
 import android.support.v7.widget.LinearLayoutManager;
@@ -101,6 +102,9 @@ public class CategoryListFragment extends BaseFragment<ICategoryListContract.Pre
     @Override
     protected void initView() {
         mRootView.setBackgroundColor(ThemeUtils.getBackgroundColor());
+
+        if (ThemeUtils.isDarkMode())
+            mBtnFilter.setBackgroundTintList(ColorStateList.valueOf(UIUtils.getColor(R.color.black)));
 
         setDisplayHomeAsUpEnabled();
         mRefreshLayout.setHeaderView(new CustomRefreshHeader(mContext));

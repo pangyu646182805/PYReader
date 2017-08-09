@@ -1,5 +1,6 @@
 package com.neuroandroid.pyreader.ui.fragment;
 
+import android.content.res.ColorStateList;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
@@ -62,6 +63,9 @@ public class TopicBookListFragment extends BaseFragment<ITopicBookListContract.P
 
         setDisplayHomeAsUpEnabled();
         setToolbarTitle(UIUtils.getString(R.string.topic));
+
+        if (ThemeUtils.isDarkMode())
+            mBtnFilter.setBackgroundTintList(ColorStateList.valueOf(UIUtils.getColor(R.color.black)));
     }
 
     @Override

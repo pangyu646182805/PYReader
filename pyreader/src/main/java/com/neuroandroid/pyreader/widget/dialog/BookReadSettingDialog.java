@@ -5,6 +5,8 @@ import android.content.Context;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.neuroandroid.pyreader.R;
@@ -12,6 +14,7 @@ import com.neuroandroid.pyreader.adapter.BookReadThemeAdapter;
 import com.neuroandroid.pyreader.bean.BookReadThemeBean;
 import com.neuroandroid.pyreader.event.BookReadSettingEvent;
 import com.neuroandroid.pyreader.utils.BookReadSettingUtils;
+import com.neuroandroid.pyreader.utils.ThemeUtils;
 import com.neuroandroid.pyreader.utils.UIUtils;
 import com.neuroandroid.pyreader.widget.NoPaddingTextView;
 import com.neuroandroid.pyreader.widget.dialog.base.DialogViewHelper;
@@ -61,6 +64,18 @@ public class BookReadSettingDialog extends PYDialog<BookReadSettingDialog> {
     @Override
     protected void initView() {
         DialogViewHelper viewHelper = getViewHelper();
+
+        LinearLayout llContainer = viewHelper.getView(R.id.ll_container);
+        ImageView ivBulb = viewHelper.getView(R.id.iv_bulb);
+        ImageView ivBulbOn = viewHelper.getView(R.id.iv_bulb_on);
+        boolean darkMode = ThemeUtils.isDarkMode();
+        if (darkMode) {
+            llContainer.setBackgroundColor(UIUtils.getColor(R.color.backgroundColorDark));
+            int color = UIUtils.getColor(R.color.white);
+            ivBulb.setColorFilter(color);
+            ivBulbOn.setColorFilter(color);
+        }
+
         RecyclerView rvBookReadTheme = viewHelper.getView(R.id.rv_book_read_theme);
         rvBookReadTheme.setLayoutManager(new LinearLayoutManager(mContext, LinearLayoutManager.HORIZONTAL, false));
         List<BookReadThemeBean> bookReadThemeBeanList =

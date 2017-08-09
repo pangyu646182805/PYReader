@@ -16,6 +16,10 @@
     <color name="backgroundPanel">#fefefe</color>
     <color name="transparent">#00000000</color>
 
+    <color name="colorBackground">#fffafafa</color>
+    <color name="textColor">#333333</color>
+    <color name="listSelector">#66000000</color>
+
     <color name="white">#fff</color>
     <color name="white_a">#afff</color>
     <color name="white_c">#cfff</color>

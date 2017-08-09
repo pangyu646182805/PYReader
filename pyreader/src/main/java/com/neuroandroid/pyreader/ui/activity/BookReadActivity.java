@@ -12,6 +12,7 @@ import android.support.v4.view.GravityCompat;
 import android.support.v4.view.ViewCompat;
 import android.support.v4.view.ViewPropertyAnimatorListenerAdapter;
 import android.support.v4.widget.DrawerLayout;
+import android.support.v7.app.AppCompatDelegate;
 import android.support.v7.widget.LinearLayoutManager;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -19,6 +20,7 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewTreeObserver;
 import android.view.animation.DecelerateInterpolator;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 
 import com.google.gson.Gson;
@@ -45,6 +47,7 @@ import com.neuroandroid.pyreader.utils.FragmentUtils;
 import com.neuroandroid.pyreader.utils.L;
 import com.neuroandroid.pyreader.utils.NavigationUtils;
 import com.neuroandroid.pyreader.utils.ShowUtils;
+import com.neuroandroid.pyreader.utils.ThemeUtils;
 import com.neuroandroid.pyreader.utils.TimeUtils;
 import com.neuroandroid.pyreader.utils.UIUtils;
 import com.neuroandroid.pyreader.widget.NoPaddingTextView;
@@ -57,6 +60,7 @@ import com.xw.repo.BubbleSeekBar;
 
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
+import org.polaric.colorful.Colorful;
 
 import java.lang.ref.WeakReference;
 import java.util.List;
@@ -108,6 +112,16 @@ public class BookReadActivity extends BaseActivity<IBookReadContract.Presenter>
     NoPaddingTextView mTvNextChapter;
     @BindView(R.id.ll_night_mode)
     LinearLayout mLlNightMode;
+    @BindView(R.id.iv_night_mode)
+    ImageView mIvNightMode;
+    @BindView(R.id.tv_night_mode)
+    NoPaddingTextView mTvNightMode;
+    @BindView(R.id.iv_catalog)
+    ImageView mIvCatalog;
+    @BindView(R.id.iv_file_download)
+    ImageView mIvFileDownload;
+    @BindView(R.id.iv_aa)
+    ImageView mIvAa;
 
     // 书籍是否来自SD卡
     private boolean mFromSD;
@@ -205,11 +219,28 @@ public class BookReadActivity extends BaseActivity<IBookReadContract.Presenter>
         mBookReadAdapter.setRvBookRead(mRvBookRead);
         mRvBookRead.setAdapter(mBookReadAdapter);
 
-        mChapterListFragment = (ChapterListFragment) getSupportFragmentManager().findFragmentById(R.id.left_menu);
+        // mChapterListFragment = (ChapterListFragment) getSupportFragmentManager().findFragmentById(R.id.left_menu);
+        mChapterListFragment = new ChapterListFragment();
+        FragmentUtils.replaceFragment(getSupportFragmentManager(), mChapterListFragment, R.id.fl_left_menu, false);
         mChapterListFragment.setImmersive(mImmersive);
         mDrawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED);
 
         setScreenBrightness();
+
+        boolean darkMode = ThemeUtils.isDarkMode();
+        changeNightModeIcon(darkMode);
+
+        if (darkMode) {
+            mLlBottomControl.setBackgroundColor(UIUtils.getColor(R.color.backgroundColorDark));
+            int color = UIUtils.getColor(R.color.white);
+            mIvCatalog.setColorFilter(color);
+            mIvFileDownload.setColorFilter(color);
+            mIvAa.setColorFilter(color);
+            mIvNightMode.setColorFilter(color);
+        }
+
+        if (ThemeUtils.isDarkMode())
+            mAppBarLayout.setBackgroundColor(UIUtils.getColor(R.color.backgroundColorDark));
     }
 
     /**
@@ -331,6 +362,7 @@ public class BookReadActivity extends BaseActivity<IBookReadContract.Presenter>
         });
         mLlCatalog.setOnClickListener(view ->
                 hideAppBarAndBottomControl(() -> {
+                    mChapterListFragment.restoreOrder();
                     mChapterListFragment.setCurrentItem(ChapterListFragment.CATALOG_POSITION);
                     mChapterListFragment.setReadChapter(mReadChapter);
                     mDrawerLayout.openDrawer(GravityCompat.START);
@@ -370,8 +402,30 @@ public class BookReadActivity extends BaseActivity<IBookReadContract.Presenter>
             jumpToTargetChapter(mReadChapter);
         });
         mLlNightMode.setOnClickListener(view -> {
-
+            boolean darkMode;
+            if (ThemeUtils.isDarkMode()) {
+                AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO);
+                darkMode = false;
+            } else {
+                AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES);
+                darkMode = true;
+            }
+            changeNightModeIcon(darkMode);
+            Colorful.config(this)
+                    .dark(darkMode)
+                    .apply();
+            UIUtils.getHandler().postDelayed(() -> changeTheme(), 300);
         });
+    }
+
+    private void changeNightModeIcon(boolean darkMode) {
+        if (darkMode) {
+            mIvNightMode.setImageResource(R.drawable.ic_sunny_mode);
+            mTvNightMode.setText("日间模式");
+        } else {
+            mIvNightMode.setImageResource(R.drawable.ic_night_mode);
+            mTvNightMode.setText("夜间模式");
+        }
     }
 
     /**
@@ -513,6 +567,14 @@ public class BookReadActivity extends BaseActivity<IBookReadContract.Presenter>
         }
         BookReadSettingUtils.saveBookReadTheme(this, bookReadThemeBean);
         mBookReadAdapter.notifyItemChanged(mRvBookRead.getCurrentPosition());
+
+        if (ThemeUtils.isDarkMode()) {
+            AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO);
+            Colorful.config(this)
+                    .dark(false)
+                    .apply();
+            UIUtils.getHandler().postDelayed(() -> changeTheme(), 300);
+        }
     }
 
     private InnerBookReadPositionCallBack mReadPositionCallBack;

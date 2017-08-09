@@ -2,10 +2,11 @@
 <LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/ll_container"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_gravity="bottom"
-    android:background="@color/backgroundColor"
+    android:background="@color/colorTabItem"
     android:orientation="vertical">
 
     <LinearLayout
@@ -27,6 +28,7 @@
             android:orientation="horizontal">
 
             <ImageView
+                android:id="@+id/iv_bulb"
                 android:layout_width="@dimen/x40"
                 android:layout_height="@dimen/y40"
                 app:srcCompat="@drawable/ic_bulb"/>
@@ -48,6 +50,7 @@
                 app:bsb_track_size="@dimen/y6"/>
 
             <ImageView
+                android:id="@+id/iv_bulb_on"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 app:srcCompat="@drawable/ic_bulb_on"/>

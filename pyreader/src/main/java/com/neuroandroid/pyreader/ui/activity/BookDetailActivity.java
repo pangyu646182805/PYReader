@@ -56,6 +56,7 @@ public class BookDetailActivity extends BaseActivity<IBookDetailContract.Present
     private BaseFragment mCurrentFragment;
     private boolean mFromBookRead;
     private TypedValue mTypedValue;
+    private int mDarkColor = -1;
 
     public boolean isFromBookRead() {
         return mFromBookRead;
@@ -84,6 +85,14 @@ public class BookDetailActivity extends BaseActivity<IBookDetailContract.Present
         mBookDetailAdapter = new BookDetailAdapter(this, null, null);
         mBookDetailAdapter.clearRvAnim(mRvBookDetail);
         mRvBookDetail.setAdapter(mBookDetailAdapter);
+
+        if (ThemeUtils.isDarkMode())
+            mDarkColor = UIUtils.getColor(R.color.backgroundColorDark);
+    }
+
+    @Override
+    protected boolean translateStatusBar() {
+        return true;
     }
 
     @Override
@@ -112,7 +121,8 @@ public class BookDetailActivity extends BaseActivity<IBookDetailContract.Present
             @Override
             public void onGlobalLayout() {
                 mAppBarLayout.getViewTreeObserver().removeOnGlobalLayoutListener(this);
-                if (mBookDetailAdapter != null) mBookDetailAdapter.setAppBarLayoutHeight(mAppBarLayout.getHeight());
+                if (mBookDetailAdapter != null)
+                    mBookDetailAdapter.setAppBarLayoutHeight(mAppBarLayout.getHeight());
             }
         });
         mRvBookDetail.addOnScrollListener(new RecyclerView.OnScrollListener() {
@@ -130,12 +140,13 @@ public class BookDetailActivity extends BaseActivity<IBookDetailContract.Present
                     } else if (mScrollX > 0 && mScrollX <= mBookDetailAdapter.getBookDetailHeaderHeight()) {
                         // 滑动距离小于banner图的高度时，设置背景和字体颜色颜色透明度渐变
                         float scale = (float) mScrollX / mBookDetailAdapter.getBookDetailHeaderHeight();
-                        mAppBarLayout.setBackgroundColor(ColorUtils.adjustAlpha(mTypedValue.data, scale));
+                        mAppBarLayout.setBackgroundColor(ColorUtils.adjustAlpha(
+                                mDarkColor == -1 ? mTypedValue.data : mDarkColor, scale));
                         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
                             mAppBarLayout.setTranslationZ(scale * UIUtils.getDimen(R.dimen.y8));
                         }
                     } else {
-                        mAppBarLayout.setBackgroundColor(mTypedValue.data);
+                        mAppBarLayout.setBackgroundColor(mDarkColor == -1 ? mTypedValue.data : mDarkColor);
                         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
                             mAppBarLayout.setTranslationZ(UIUtils.getDimen(R.dimen.y8));
                         }

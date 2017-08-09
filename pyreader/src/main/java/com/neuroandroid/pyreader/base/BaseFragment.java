@@ -5,6 +5,7 @@ import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.annotation.StringRes;
+import android.support.design.widget.AppBarLayout;
 import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -14,6 +15,9 @@ import android.view.ViewGroup;
 
 import com.neuroandroid.pyreader.R;
 import com.neuroandroid.pyreader.utils.SystemUtils;
+import com.neuroandroid.pyreader.utils.ThemeUtils;
+import com.neuroandroid.pyreader.utils.UIUtils;
+import com.neuroandroid.pyreader.widget.LinearGradientView;
 import com.neuroandroid.pyreader.widget.StateLayout;
 import com.trello.rxlifecycle2.components.support.RxFragment;
 
@@ -42,6 +46,10 @@ public abstract class BaseFragment<P extends IPresenter> extends RxFragment impl
     @Nullable
     @BindView(R.id.status_bar)
     View mStatusBar;
+
+    @Nullable
+    @BindView(R.id.app_bar)
+    AppBarLayout mAppBarLayout;
 
     protected P mPresenter;
     private Unbinder mUnBinder;
@@ -74,6 +82,13 @@ public abstract class BaseFragment<P extends IPresenter> extends RxFragment impl
                 getBaseActivity().setSupportActionBar(mToolbar);
                 setHasOptionsMenu(true);
                 if (supportImmersive() && mStatusBar != null) {
+                    if (ThemeUtils.isDarkMode() && !(mStatusBar instanceof LinearGradientView)) {
+                        int darkColor = UIUtils.getColor(R.color.backgroundColorDark);
+                        mStatusBar.setBackgroundColor(darkColor);
+                        if (mAppBarLayout != null) {
+                            mAppBarLayout.setBackgroundColor(darkColor);
+                        }
+                    }
                     setStatusBar(mStatusBar);
                 }
             }

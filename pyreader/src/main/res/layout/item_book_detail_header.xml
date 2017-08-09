@@ -19,6 +19,7 @@
             tools:background="@mipmap/dazhuzai"/>
 
         <com.github.mmin18.widget.RealtimeBlurView
+            android:id="@+id/blur_view"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             app:realtimeBlurRadius="1000000dp"

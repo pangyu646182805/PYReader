@@ -12,6 +12,8 @@ import android.view.View;
 import com.afollestad.materialcab.Util;
 import com.neuroandroid.pyreader.R;
 import com.neuroandroid.pyreader.utils.ColorUtils;
+import com.neuroandroid.pyreader.utils.ThemeUtils;
+import com.neuroandroid.pyreader.utils.UIUtils;
 
 /**
  * Created by NeuroAndroid on 2017/8/4.
@@ -41,7 +43,11 @@ public class LinearGradientView extends View {
         mPaint = new Paint();
         mPaint.setDither(true);
         mPaint.setAntiAlias(true);
-        mColor = Util.resolveColor(mContext, R.attr.colorPrimary, 0);
+        if (ThemeUtils.isDarkMode()) {
+            mColor = UIUtils.getColor(R.color.backgroundColorDark);
+        } else {
+            mColor = Util.resolveColor(mContext, R.attr.colorPrimary, 0);
+        }
     }
 
     @Override
@@ -54,9 +60,9 @@ public class LinearGradientView extends View {
     protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
         super.onMeasure(widthMeasureSpec, heightMeasureSpec);
         mLinearGradient = new LinearGradient(0, 0, 0, getMeasuredHeight(),
-                new int[]{ColorUtils.adjustAlpha(mColor, 0.85f),
-                        ColorUtils.adjustAlpha(mColor, 0.45f),
-                        ColorUtils.adjustAlpha(mColor, 0.15f)}, null, Shader.TileMode.MIRROR);
+                new int[]{ColorUtils.adjustAlpha(mColor, 0.95f),
+                        ColorUtils.adjustAlpha(mColor, 0.55f),
+                        ColorUtils.adjustAlpha(mColor, 0.25f)}, null, Shader.TileMode.MIRROR);
         mPaint.setShader(mLinearGradient);
     }
 }

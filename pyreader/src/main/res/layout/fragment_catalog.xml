@@ -19,11 +19,13 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:overScrollMode="never"
+            android:requiresFadingEdge="vertical"
             android:scrollbars="none"
             app:fastScrollTrackColor="@color/transparent"/>
     </com.lcodecore.tkrefreshlayout.TwinklingRefreshLayout>
 
     <LinearLayout
+        android:id="@+id/ll_bottom"
         android:layout_width="match_parent"
         android:layout_height="@dimen/y72"
         android:background="?attr/colorPrimary"

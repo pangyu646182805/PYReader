@@ -16,4 +16,9 @@
         android:id="@+id/action_theme"
         android:title="主题"
         app:showAsAction="never"/>
+
+    <item
+        android:id="@+id/action_dark_theme"
+        android:title="暗色主题"
+        app:showAsAction="never"/>
 </menu>

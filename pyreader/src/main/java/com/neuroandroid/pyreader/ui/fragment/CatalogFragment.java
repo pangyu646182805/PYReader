@@ -3,6 +3,7 @@ package com.neuroandroid.pyreader.ui.fragment;
 import android.content.Context;
 import android.support.v7.widget.LinearLayoutManager;
 import android.widget.FrameLayout;
+import android.widget.LinearLayout;
 
 import com.afollestad.materialcab.Util;
 import com.neuroandroid.pyreader.R;
@@ -14,6 +15,7 @@ import com.neuroandroid.pyreader.provider.PYReaderStore;
 import com.neuroandroid.pyreader.ui.activity.BookReadActivity;
 import com.neuroandroid.pyreader.utils.DividerUtils;
 import com.neuroandroid.pyreader.utils.ShowUtils;
+import com.neuroandroid.pyreader.utils.ThemeUtils;
 import com.neuroandroid.pyreader.utils.UIUtils;
 import com.simplecityapps.recyclerview_fastscroll.views.FastScrollRecyclerView;
 
@@ -33,6 +35,8 @@ public class CatalogFragment extends BaseFragment {
     FrameLayout mFlJumpCurrent;
     @BindView(R.id.rv_catalog)
     FastScrollRecyclerView mRvCatalog;
+    @BindView(R.id.ll_bottom)
+    LinearLayout mLlBottom;
 
     private List<BookMixAToc.MixToc.Chapters> mChaptersList;
     private CatalogAdapter mCatalogAdapter;
@@ -61,8 +65,10 @@ public class CatalogFragment extends BaseFragment {
      */
     public void setReadChapter(int readChapter) {
         this.mReadChapter = readChapter;
-        mCatalogAdapter.select(readChapter);
-        mRvCatalog.scrollToPosition(readChapter);
+        if (mCatalogAdapter != null) {
+            mCatalogAdapter.select(readChapter);
+            mRvCatalog.scrollToPosition(readChapter);
+        }
     }
 
     /**
@@ -79,9 +85,13 @@ public class CatalogFragment extends BaseFragment {
 
     @Override
     protected void initView() {
+        if (ThemeUtils.isDarkMode()) {
+            mLlBottom.setBackgroundColor(UIUtils.getColor(R.color.backgroundColorDark));
+        }
+
         mLayoutManager = new LinearLayoutManager(mContext);
         mRvCatalog.setLayoutManager(new LinearLayoutManager(mContext));
-        mRvCatalog.addItemDecoration(DividerUtils.generateHorizontalDivider(mContext, R.dimen.y1, R.color.split));
+        mRvCatalog.addItemDecoration(DividerUtils.generateHorizontalDivider(mContext, R.dimen.y1, ThemeUtils.getSplitColorRes()));
         mCatalogAdapter = new CatalogAdapter(mContext, mChaptersList, R.layout.item_catalog);
         mCatalogAdapter.clearRvAnim(mRvCatalog);
         mCatalogAdapter.longTouchSelectModeEnable(false);
@@ -178,10 +188,13 @@ public class CatalogFragment extends BaseFragment {
             } else {
                 noCached = mPyReaderStore.findChapterByBookId(mChaptersList.size() - 1 - position, mBookId);
             }
+            int mainColor = ThemeUtils.getMainColor();
+            int threeLevelColor = ThemeUtils.getThreeLevelColor();
+
             holder.setText(R.id.tv_catalog, item.getTitle())
                     .setTextColor(R.id.tv_catalog, item.isSelected() ?
                             Util.resolveColor(this.mContext, R.attr.colorPrimary, 0) : noCached ?
-                            UIUtils.getColor(R.color.colorGray999) : UIUtils.getColor(R.color.black));
+                            threeLevelColor : mainColor);
         }
     }
 }

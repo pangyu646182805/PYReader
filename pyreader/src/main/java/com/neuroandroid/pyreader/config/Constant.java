@@ -53,13 +53,17 @@ public class Constant {
 
     public static final String INTENT_BOOK_BEAN = "intent_book_bean";
 
-    public static final String INTENT_FROM_SD= "intent_from_sd";
+    public static final String INTENT_FROM_SD = "intent_from_sd";
 
     public static final String BOOK_TAG = "book_tag";
 
     public static final String BOOK_ID = "book_ID";
 
     public static final String BOOK_TITLE = "book_title";
+
+    public static final String LIGHT_THEME = "亮色主题";
+
+    public static final String DARK_THEME = "暗色主题";
 
     public static final String BOOK_DETAIL_COMMUNITY_INDEX = "book_detail_community_index";
 

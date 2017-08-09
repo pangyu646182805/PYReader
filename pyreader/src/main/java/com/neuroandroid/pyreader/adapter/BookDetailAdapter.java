@@ -9,6 +9,7 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.github.mmin18.widget.RealtimeBlurView;
 import com.ms.square.android.expandabletextview.ExpandableTextView;
 import com.neuroandroid.pyreader.R;
 import com.neuroandroid.pyreader.adapter.base.BaseRvAdapter;
@@ -72,6 +73,10 @@ public class BookDetailAdapter extends BaseRvAdapter<BaseResponse> {
         View split;
         switch (viewType) {
             case VIEW_TYPE_BOOK_DETAIL_HEADER:
+                RealtimeBlurView blurView = holder.getView(R.id.blur_view);
+                if (ThemeUtils.isDarkMode())
+                    blurView.setOverlayColor(UIUtils.getColor(R.color.black_a));
+
                 LinearLayout llBookDetailHeader = holder.getView(R.id.ll_book_detail_header);
                 llBookDetailHeader.setPadding(0, mToolBarHeight, 0, 0);
 

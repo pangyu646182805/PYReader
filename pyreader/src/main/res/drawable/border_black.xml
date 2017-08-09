@@ -5,5 +5,5 @@
     <solid android:color="@color/transparent"/>
     <stroke
         android:width="@dimen/x2"
-        android:color="@color/black_a"/>
+        android:color="@color/listSelector"/>
 </shape>
