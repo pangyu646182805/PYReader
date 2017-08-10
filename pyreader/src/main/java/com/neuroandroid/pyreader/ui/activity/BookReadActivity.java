@@ -51,6 +51,7 @@ import com.neuroandroid.pyreader.utils.ThemeUtils;
 import com.neuroandroid.pyreader.utils.TimeUtils;
 import com.neuroandroid.pyreader.utils.UIUtils;
 import com.neuroandroid.pyreader.widget.NoPaddingTextView;
+import com.neuroandroid.pyreader.widget.dialog.BookReadLoadingDialog;
 import com.neuroandroid.pyreader.widget.dialog.BookReadSettingDialog;
 import com.neuroandroid.pyreader.widget.dialog.ColorPickerDialog;
 import com.neuroandroid.pyreader.widget.reader.BookReadFactory;
@@ -164,6 +165,8 @@ public class BookReadActivity extends BaseActivity<IBookReadContract.Presenter>
     private int mSystemScreenBrightness;
     private BookReadSettingDialog mBookReadSettingDialog;
 
+    private BookReadLoadingDialog mBookReadLoadingDialog;
+
     @Override
     public void onPageSelected(boolean isLast) {
         if (isLast) {
@@ -209,6 +212,10 @@ public class BookReadActivity extends BaseActivity<IBookReadContract.Presenter>
         setDisplayHomeAsUpEnabled();
         setToolbarTitle("");
         UIUtils.fullScreen(this, true);
+
+        /*new BookReadLoadingDialog(this)
+                .setDialogCanceledOnTouchOutside(false)
+                .showDialog();*/
 
         mViewCover.setVisibility(View.GONE);
 
@@ -273,6 +280,7 @@ public class BookReadActivity extends BaseActivity<IBookReadContract.Presenter>
         mChapterListFragment.setBookId(mBookId);
         List<BookMixAToc.MixToc.Chapters> chapterList = CacheManager.getChapterList(this, mBookId);
         if (chapterList == null) {
+            showBookReaderLoadingDialog();
             mPresenter.getBookMixAToc(mBookId);
         } else {
             L.e("从缓存加载章节列表");
@@ -418,6 +426,33 @@ public class BookReadActivity extends BaseActivity<IBookReadContract.Presenter>
         });
     }
 
+    /**
+     * 显示加载dialog
+     */
+    private void showBookReaderLoadingDialog() {
+        if (mBookReadLoadingDialog == null) {
+            mBookReadLoadingDialog = new BookReadLoadingDialog(this)
+                    .setDialogCanceledOnTouchOutside(false)
+                    .showDialog();
+        } else {
+            mBookReadLoadingDialog.showDialog();
+        }
+    }
+
+    /**
+     * 隐藏加载dialog
+     */
+    private void dismissBookReadLoadingDialog() {
+        if (mBookReadLoadingDialog != null && mBookReadLoadingDialog.isShowing()) {
+            mBookReadLoadingDialog.dismissDialog();
+        }
+    }
+
+    /**
+     * 改变夜间模式的图标
+     *
+     * @param darkMode 是否是夜间模式
+     */
     private void changeNightModeIcon(boolean darkMode) {
         if (darkMode) {
             mIvNightMode.setImageResource(R.drawable.ic_sunny_mode);
@@ -445,8 +480,14 @@ public class BookReadActivity extends BaseActivity<IBookReadContract.Presenter>
         mDrawerLayout.closeDrawers();
     }
 
+    public DrawerLayout getDrawerLayout() {
+        return mDrawerLayout;
+    }
+
     @Override
     public void showBookToc(List<BookMixAToc.MixToc.Chapters> list) {
+        dismissBookReadLoadingDialog();
+
         mChapterList = list;
         mChapterListFragment.setChaptersList(list);
         CacheManager.saveChapterList(this, mBookId, mChapterList);
@@ -502,6 +543,8 @@ public class BookReadActivity extends BaseActivity<IBookReadContract.Presenter>
     private void loadChapterContent(int chapter) {
         L.e("加载第" + chapter + "章, 总章节数: " + mChapterList.size());
         if (mPYReaderStore.findChapterByBookId(chapter, mBookId)) {
+            // show dialog
+            showBookReaderLoadingDialog();
             mPresenter.getChapterRead(mChapterList.get(chapter).getLink(), chapter);
         } else {
             mBookReadFactory.setChapterContent(mBookReadAdapter, mPYReaderStore.getChapter(chapter, mBookId),
@@ -511,6 +554,7 @@ public class BookReadActivity extends BaseActivity<IBookReadContract.Presenter>
 
     @Override
     public void showChapterRead(ChapterRead.Chapter data, int chapter) {
+        dismissBookReadLoadingDialog();
         // 缓存
         mPYReaderStore.addChapter(chapter, mBookId, data.getBody());
         mBookReadFactory.setChapterContent(mBookReadAdapter, mPYReaderStore.getChapter(chapter, mBookId),

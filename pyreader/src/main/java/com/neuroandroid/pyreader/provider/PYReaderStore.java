@@ -89,6 +89,16 @@ public class PYReaderStore extends SQLiteOpenHelper {
         return count == 0;
     }
 
+    /**
+     * 根据书籍ID删除章节内容
+     */
+    public int deleteChapterByBookId(String bookId) {
+        SQLiteDatabase db = getWritableDatabase();
+        int delete = db.delete(TABLE_NAME, "book_id=?", new String[]{bookId});
+        db.close();
+        return delete;
+    }
+
     private ContentValues getContentValues(int chapter, String bookId, String body) {
         ContentValues values = new ContentValues();
         values.put("book_id", bookId);

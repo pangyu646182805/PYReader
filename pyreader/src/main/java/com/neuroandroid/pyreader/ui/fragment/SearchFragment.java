@@ -141,7 +141,10 @@ public class SearchFragment extends BaseFragment<ISearchContract.Presenter>
                 animator.start();
             }
         });
-        mIvBack.setOnClickListener(view -> mActivity.onBackPressed());
+        mIvBack.setOnClickListener(view -> {
+            hideSoftKeyboard();
+            mActivity.onBackPressed();
+        });
         mEtSearch.setOnTouchListener((view, motionEvent) -> {
             mSvNested.smoothScrollTo(0, 0);
             return false;
@@ -187,10 +190,12 @@ public class SearchFragment extends BaseFragment<ISearchContract.Presenter>
 
             @Override
             public void onSoftKeyboardClosed() {
-                mEtSearch.clearFocus();
-                if (mSearch) {
-                    searchBooks(mSearchStr);
-                    mSearch = false;
+                if (mEtSearch != null) {
+                    mEtSearch.clearFocus();
+                    if (mSearch) {
+                        searchBooks(mSearchStr);
+                        mSearch = false;
+                    }
                 }
             }
         });

@@ -5,7 +5,10 @@ import android.content.Context;
 import com.neuroandroid.pyreader.bean.SearchHistoryBean;
 import com.neuroandroid.pyreader.config.Constant;
 import com.neuroandroid.pyreader.model.response.BookMixAToc;
+import com.neuroandroid.pyreader.model.response.Recommend;
+import com.neuroandroid.pyreader.provider.PYReaderStore;
 import com.neuroandroid.pyreader.utils.CacheUtils;
+import com.neuroandroid.pyreader.utils.L;
 import com.neuroandroid.pyreader.utils.SPUtils;
 import com.neuroandroid.pyreader.utils.UIUtils;
 
@@ -106,6 +109,13 @@ public class CacheManager {
         return null;
     }
 
+    /**
+     * 根据书籍ID删除对应的章节列表
+     */
+    public static boolean deleteChapterListByBookId(Context context, String bookId) {
+        return CacheUtils.get(context).remove(getChapterListKey(bookId));
+    }
+
     private static String getReadPositionKey(String bookId) {
         return bookId + "_read_position";
     }
@@ -133,5 +143,35 @@ public class CacheManager {
         readPosition[0] = Integer.parseInt(split[0]);
         readPosition[1] = Integer.parseInt(split[1]);
         return readPosition;
+    }
+
+    /**
+     * 根据书籍ID删除阅读位置
+     */
+    public static boolean deleteReadPositionByBookId(Context context, String bookId) {
+        return SPUtils.putString(context, getReadPositionKey(bookId), "0-1");
+    }
+
+    /**
+     * RecommendFragment 批量管理
+     *
+     * @param selectedBooks 选择的书籍
+     * @param delLocalCache 是否删除本地缓存
+     */
+    public static void batchManage(Context context, List<Recommend.BooksBean> selectedBooks, boolean delLocalCache) {
+        for (Recommend.BooksBean booksBean : selectedBooks) {
+            String bookId = booksBean.getBookId();
+            // 删除对应书籍的阅读位置
+            deleteReadPositionByBookId(context, bookId);
+            // 删除对应书籍的章节列表
+            boolean deleteChapterListByBookId = deleteChapterListByBookId(context, bookId);
+            L.e("删除[" + booksBean.getTitle() + "]的章节列表成功 : " + deleteChapterListByBookId);
+            RecommendManager.getInstance().removeRecommend(bookId);
+            if (delLocalCache) {
+                // 删除书籍对应的章节内容
+                int delete = PYReaderStore.getInstance(context).deleteChapterByBookId(bookId);
+                L.e("删除[" + booksBean.getTitle() + "]的章节内容共" + delete + "章");
+            }
+        }
     }
 }

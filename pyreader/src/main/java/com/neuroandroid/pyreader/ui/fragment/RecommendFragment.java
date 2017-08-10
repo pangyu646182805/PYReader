@@ -1,5 +1,8 @@
 package com.neuroandroid.pyreader.ui.fragment;
 
+import android.app.ProgressDialog;
+import android.os.AsyncTask;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -19,6 +22,7 @@ import com.neuroandroid.pyreader.adapter.base.ISelect;
 import com.neuroandroid.pyreader.adapter.base.SelectAdapter;
 import com.neuroandroid.pyreader.base.BaseLazyFragment;
 import com.neuroandroid.pyreader.event.BaseEvent;
+import com.neuroandroid.pyreader.manager.CacheManager;
 import com.neuroandroid.pyreader.manager.RecommendManager;
 import com.neuroandroid.pyreader.manager.SettingManager;
 import com.neuroandroid.pyreader.model.response.Recommend;
@@ -147,13 +151,14 @@ public class RecommendFragment extends BaseLazyFragment<IRecommendContract.Prese
                     mSelectedBooks.remove(booksBean);
                 }
                 setMaterialCabTitle();
+                mCab.getMenu().findItem(R.id.action_delete).setEnabled(!mSelectedBooks.isEmpty());
                 mCab.getMenu().findItem(R.id.action_select_all).setTitle(mSelectedBooks.size() == mRecommendAdapter.getDataListSize() ?
                         UIUtils.getString(R.string.un_select_all) : UIUtils.getString(R.string.select_all));
             }
 
             @Override
             public void onNothingSelected() {
-                closeMaterialCab();
+                // closeMaterialCab();
             }
         });
         mRecommendAdapter.setOnItemClickListener((holder, position, item) ->
@@ -238,6 +243,7 @@ public class RecommendFragment extends BaseLazyFragment<IRecommendContract.Prese
         mRefreshLayout.setEnableRefresh(false);
         mRecommendAdapter.updateSelectMode(true);
         cab.setTitle(UIUtils.getString(R.string.book_manage));
+        menu.findItem(R.id.action_delete).setEnabled(!mSelectedBooks.isEmpty());
         return true;
     }
 
@@ -259,10 +265,19 @@ public class RecommendFragment extends BaseLazyFragment<IRecommendContract.Prese
                     mCab.setTitle(UIUtils.getString(R.string.book_manage));
                     mSelectedBooks.clear();
                 }
+                mCab.getMenu().findItem(R.id.action_delete).setEnabled(!mSelectedBooks.isEmpty());
                 mRecommendAdapter.notifyDataSetChanged();
                 break;
             case R.id.action_delete:
-                ShowUtils.showToast("删除");
+                final boolean[] selected = {true};
+                new AlertDialog.Builder(mActivity)
+                        .setTitle(UIUtils.getString(R.string.remove_selected_book))
+                        .setMultiChoiceItems(new String[]{UIUtils.getString(R.string.delete_local_cache)},
+                                selected, (dialogInterface, which, isChecked) -> selected[0] = isChecked)
+                        .setPositiveButton("确定", (dialogInterface, which) ->
+                                new BatchManageTask().execute(mSelectedBooks, selected[0]))
+                        .setNegativeButton("取消", null)
+                        .create().show();
                 break;
         }
         return true;
@@ -275,5 +290,33 @@ public class RecommendFragment extends BaseLazyFragment<IRecommendContract.Prese
         mRecommendAdapter.updateSelectMode(false);
         mSelectedBooks.clear();
         return true;
+    }
+
+    private class BatchManageTask extends AsyncTask<Object, Void, Void> {
+        private ProgressDialog mProgressDialog;
+
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+            mProgressDialog = new ProgressDialog(mContext);
+        }
+
+        @Override
+        protected Void doInBackground(Object... objects) {
+            List<Recommend.BooksBean> selectedBooks = (List<Recommend.BooksBean>) objects[0];
+            boolean delLocalCache = (boolean) objects[1];
+            long start = System.currentTimeMillis();
+            CacheManager.batchManage(mContext, selectedBooks, delLocalCache);
+            L.e("time : " + (System.currentTimeMillis() - start));
+            return null;
+        }
+
+        @Override
+        protected void onPostExecute(Void aVoid) {
+            super.onPostExecute(aVoid);
+            mProgressDialog.dismiss();
+            mProgressDialog = null;
+            closeMaterialCab();
+        }
     }
 }

@@ -71,4 +71,7 @@
 
     <string name="topic_book_count">共%1$d本书</string>
     <string name="topic_book_collection">%1$d人收藏</string>
+
+    <string name="remove_selected_book">移除所选书籍</string>
+    <string name="delete_local_cache">同时删除本地缓存</string>
 </resources>

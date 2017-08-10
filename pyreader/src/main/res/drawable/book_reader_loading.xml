@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<animation-list xmlns:android="http://schemas.android.com/apk/res/android"
+    android:oneshot="false">
+    <item android:drawable="@drawable/animation_book_01"
+        android:duration="100"/>
+    <item android:drawable="@drawable/animation_book_02"
+        android:duration="100"/>
+    <item android:drawable="@drawable/animation_book_03"
+        android:duration="100"/>
+    <item android:drawable="@drawable/animation_book_04"
+        android:duration="100"/>
+    <item android:drawable="@drawable/animation_book_05"
+        android:duration="100"/>
+    <item android:drawable="@drawable/animation_book_06"
+        android:duration="100"/>
+    <item android:drawable="@drawable/animation_book_07"
+        android:duration="100"/>
+    <item android:drawable="@drawable/animation_book_08"
+        android:duration="100"/>
+    <item android:drawable="@drawable/animation_book_09"
+        android:duration="100"/>
+    <item android:drawable="@drawable/animation_book_10"
+        android:duration="100"/>
+    <item android:drawable="@drawable/animation_book_11"
+        android:duration="100"/>
+    <item android:drawable="@drawable/animation_book_12"
+        android:duration="100"/>
+</animation-list>

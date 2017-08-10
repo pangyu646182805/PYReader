@@ -220,6 +220,8 @@ public class MainActivity extends BaseActivity implements MaterialCabCallBack {
                         return callback.onCabFinished(cab);
                     }
                 });
+        if (ThemeUtils.isDarkMode())
+            mCab.setBackgroundColor(UIUtils.getColor(R.color.backgroundColorDark));
         return mCab;
     }
 

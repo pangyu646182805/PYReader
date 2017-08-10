@@ -33,11 +33,6 @@ import java.util.TreeMap;
 
 public class BookReadFactory {
     private static BookReadFactory sReadFactory;
-    /**
-     * 章节实体类
-     * 一章的内容
-     */
-    private ChapterRead.Chapter mChapter;
     private List<BookReadBean> mBookReadBeanList;
     private List<BookReadBean> mDataList = new ArrayList<>();
     private Map<Integer, List<BookReadBean>> mBookReadMap;
@@ -62,7 +57,6 @@ public class BookReadFactory {
     public void setChapterContent(BookReadAdapter bookReadAdapter, ChapterRead.Chapter chapter, final int currentChapter,
                                   final String chapterTitle, final String bookTitle,
                                   ReadPositionCallBack readPositionCallBack, int targetChapter) {
-        mChapter = chapter;
         mBookReadAdapter = bookReadAdapter;
         transformChapterContent(chapter, currentChapter, chapterTitle, bookTitle, readPositionCallBack, targetChapter);
     }

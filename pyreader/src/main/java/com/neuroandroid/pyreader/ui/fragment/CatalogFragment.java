@@ -1,7 +1,9 @@
 package com.neuroandroid.pyreader.ui.fragment;
 
 import android.content.Context;
+import android.support.v4.widget.DrawerLayout;
 import android.support.v7.widget.LinearLayoutManager;
+import android.view.View;
 import android.widget.FrameLayout;
 import android.widget.LinearLayout;
 
@@ -50,6 +52,7 @@ public class CatalogFragment extends BaseFragment {
     private PYReaderStore mPyReaderStore;
 
     private String mBookId;
+    private int mTargetPosition;
 
     public void setChaptersList(List<BookMixAToc.MixToc.Chapters> chaptersList) {
         mChaptersList = chaptersList;
@@ -125,10 +128,16 @@ public class CatalogFragment extends BaseFragment {
             @Override
             public void onItemSelected(BaseViewHolder viewHolder, int position, boolean isSelected, BookMixAToc.MixToc.Chapters chapters) {
                 if (isSelected) {
-                    position = mOrderFlag ? position : mChaptersList.size() - 1 - position;
+                    mTargetPosition = mOrderFlag ? position : mChaptersList.size() - 1 - position;
                     BookReadActivity bookReadActivity = (BookReadActivity) mActivity;
                     bookReadActivity.closeDrawer();
-                    bookReadActivity.jumpToTargetChapter(position);
+                    bookReadActivity.getDrawerLayout().addDrawerListener(new DrawerLayout.SimpleDrawerListener() {
+                        @Override
+                        public void onDrawerClosed(View drawerView) {
+                            super.onDrawerClosed(drawerView);
+                            bookReadActivity.jumpToTargetChapter(mTargetPosition);
+                        }
+                    });
                 }
             }
 

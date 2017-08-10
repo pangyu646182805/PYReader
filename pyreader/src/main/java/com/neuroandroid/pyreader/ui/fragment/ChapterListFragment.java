@@ -42,6 +42,7 @@ public class ChapterListFragment extends BaseFragment {
 
     public void setChaptersList(List<BookMixAToc.MixToc.Chapters> chaptersList) {
         mChaptersList = chaptersList;
+        if (mCatalogFragment != null) mCatalogFragment.setChaptersList(chaptersList);
     }
 
     public void setImmersive(boolean immersive) {
