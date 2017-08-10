@@ -555,6 +555,7 @@ public class BookReadActivity extends BaseActivity<IBookReadContract.Presenter>
     @Override
     public void showChapterRead(ChapterRead.Chapter data, int chapter) {
         dismissBookReadLoadingDialog();
+
         // 缓存
         mPYReaderStore.addChapter(chapter, mBookId, data.getBody());
         mBookReadFactory.setChapterContent(mBookReadAdapter, mPYReaderStore.getChapter(chapter, mBookId),
