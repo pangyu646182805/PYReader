@@ -7,7 +7,6 @@ import android.support.annotation.NonNull;
 import android.support.design.widget.AppBarLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewPager;
-import android.support.v7.app.AppCompatDelegate;
 import android.view.Menu;
 import android.view.MenuItem;
 
@@ -144,10 +143,8 @@ public class MainActivity extends BaseActivity implements MaterialCabCallBack {
             case R.id.action_dark_theme:
                 boolean darkMode;
                 if (Constant.LIGHT_THEME.equals(item.getTitle())) {
-                    AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO);
                     darkMode = false;
                 } else {
-                    AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES);
                     darkMode = true;
                 }
                 Colorful.config(this)

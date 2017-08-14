@@ -7,6 +7,7 @@ import android.os.Bundle;
 import android.support.annotation.LayoutRes;
 import android.support.annotation.Nullable;
 import android.support.annotation.StringRes;
+import android.support.v7.app.AppCompatDelegate;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.MenuItem;
@@ -62,6 +63,7 @@ public abstract class BaseActivity<P extends IPresenter> extends RxAppCompatActi
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        switchDayAndNightMode();
         this.mThemeString = Colorful.getThemeString();
         this.setTheme(Colorful.getThemeDelegate().getStyle());
         if (Build.VERSION.SDK_INT >= 21) {
@@ -216,7 +218,16 @@ public abstract class BaseActivity<P extends IPresenter> extends RxAppCompatActi
     public void changeTheme() {
         if (!Colorful.getThemeString().equals(this.mThemeString)) {
             Log.d("Colorful", "Theme change detected, restarting activity");
+            switchDayAndNightMode();
             this.recreate();
+        }
+    }
+
+    private void switchDayAndNightMode() {
+        if (ThemeUtils.isDarkMode()) {
+            AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES);
+        } else {
+            AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO);
         }
     }
 

@@ -133,7 +133,10 @@ public class RecommendFragment extends BaseLazyFragment<IRecommendContract.Prese
                                         break;
                                     case 1:
                                         break;
-                                    case 2:
+                                    case 2:  // 删除
+                                        List<Recommend.BooksBean> selectedBooks = new ArrayList<>();
+                                        selectedBooks.add(mRecommendAdapter.getItem(position));
+                                        batchManage(selectedBooks);
                                         break;
                                     case 3:  // 批量管理
                                         mCab = getActivity(MainActivity.class).openCab(R.menu.menu_book_manage, this);
@@ -269,18 +272,22 @@ public class RecommendFragment extends BaseLazyFragment<IRecommendContract.Prese
                 mRecommendAdapter.notifyDataSetChanged();
                 break;
             case R.id.action_delete:
-                final boolean[] selected = {true};
-                new AlertDialog.Builder(mActivity)
-                        .setTitle(UIUtils.getString(R.string.remove_selected_book))
-                        .setMultiChoiceItems(new String[]{UIUtils.getString(R.string.delete_local_cache)},
-                                selected, (dialogInterface, which, isChecked) -> selected[0] = isChecked)
-                        .setPositiveButton("确定", (dialogInterface, which) ->
-                                new BatchManageTask().execute(mSelectedBooks, selected[0]))
-                        .setNegativeButton("取消", null)
-                        .create().show();
+                batchManage(mSelectedBooks);
                 break;
         }
         return true;
+    }
+
+    private void batchManage(List<Recommend.BooksBean> selectedBooks) {
+        final boolean[] selected = {true};
+        new AlertDialog.Builder(mActivity)
+                .setTitle(UIUtils.getString(R.string.remove_selected_book))
+                .setMultiChoiceItems(new String[]{UIUtils.getString(R.string.delete_local_cache)},
+                        selected, (dialogInterface, which, isChecked) -> selected[0] = isChecked)
+                .setPositiveButton("确定", (dialogInterface, which) ->
+                        new BatchManageTask().execute(selectedBooks, selected[0]))
+                .setNegativeButton("取消", null)
+                .create().show();
     }
 
     @Override
